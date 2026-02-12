@@ -2,6 +2,17 @@
 
 This repository contains the numerical experiments and dynamical systems identified during our **AI-augmented search** for the physical origins of the **Riemann Zeros**. We demonstrate that the distribution of the first 10,000 zeros can be effectively reconstructed by a specific **non-autonomous renormalization flow**.
 
+# Riemann-Dynamics-AI: Spectral Isomorphism Discovery
+
+> **"Wait... It's HIM!!!"**
+> 
+> While using AI to scale the search for dynamical systems isomorphic to the **Riemann Zeros**, I was deeply immersed in the **Berry-Keating Conjecture**. Suddenly, it struck me: the Sir Michael Berry who had been kindly replying to my emails is the same legend who "legislated" the spectral statistics of the zeros (and famously made a frog fly)! **Oh my!!!** > 
+> This project is a direct tribute to that realization.
+
+![Spectral Alignment Results](./fig2.png)
+*Figure 2: Deterministic trajectory alignment with R² > 0.997 achieved via AI-augmented search.*
+
+
 ## 📊 Quick Start: Visualizing Results
 
 If you want to reproduce the result plots (like `fig2.png`) immediately:
