@@ -38,11 +38,13 @@ If you wish to re-run the entire discovery pipeline, please note that it is comp
 ## 🖼️ Result Preview
 ![拟合图](fig2.png)
 
-## cite paper
-wang, . liang . (2026). Spectral Isomorphism between Renormalization Flow in Non-Autonomous Quadratic Maps and Riemann Zeros (v1.0). Zenodo. https://doi.org/10.5281/zenodo.18618087
-
 Our model achieves **Deterministic Spectral Matching** with :
 
 > "Success = My Idea. Failure = Gemini 3's Hallucination." 😂
+
+## cite paper
+wang, . liang . (2026). Spectral Isomorphism between Renormalization Flow in Non-Autonomous Quadratic Maps and Riemann Zeros (v1.0). Zenodo. https://doi.org/10.5281/zenodo.18618087
+
+
 
 
