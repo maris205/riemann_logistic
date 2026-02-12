@@ -1,2 +1,45 @@
-## Spectral Isomorphism between Renormalization Flow in Non-Autonomous Quadratic Maps and Riemann Zeros
-The non-trivial zeros of the Riemann $\zeta$ function are widely conjectured to correspond to the eigenvalue spectrum of an unknown quantum chaotic system (the Hilbert-Pólya conjecture). While Random Matrix Theory (RMT) successfully describes the local statistical correlations of these zeros (GUE statistics), finding a deterministic dynamic operator that reproduces the global asymptotic behavior of the zeros remains an open challenge. In this work, we propose a dynamical model based on a Non-autonomous Logistic Map. By introducing a physically constrained renormalization flow $k(n) \sim 1/\ln n$ to drive the system's control parameter, we break classical fractal self-similarity in phase space. Utilizing massive parallel computation (256 cores), we generated the first $10^4$ eigenmodes of this operator. Phase Unwrapping analysis reveals that the cumulative phase of the dynamic system exhibits a strict global linear isomorphism with the Riemann zeros, achieving a correlation coefficient of $R^2 > 0.997$. Although a linear scaling deviation of $\sim 4\%$ persists, residual analysis uncovers smooth, coherent fluctuations, suggesting the existence of high-order perturbative terms in the Hamiltonian. This result provides a concrete physical pathway to reconstruct the Riemann $\zeta$ function via non-autonomous chaotic systems.
+# Riemann-Dynamics-AI: Spectral Isomorphism Discovery
+
+This repository contains the numerical experiments and dynamical systems identified during our **AI-augmented search** for the physical origins of the **Riemann Zeros**. We demonstrate that the distribution of the first 10,000 zeros can be effectively reconstructed by a specific **non-autonomous renormalization flow**.
+
+## 📊 Quick Start: Visualizing Results
+
+If you want to reproduce the result plots (like `fig2.png`) immediately:
+
+1. **Clone the full repository** to your local machine.
+2. **Locate the compressed data** in the `riemann_10k_survey` directory and **unzip it** first.
+3. **Run `phase_unwrapping.ipynb**`: This is the primary pre-processing script for handling the spectral phase of the zeta function and generating the core visual alignments.
+
+---
+
+## 📁 Repository Structure (Ordered by Workflow)
+
+1. **`phase_unwrapping.ipynb`**: Pre-processing scripts for handling the spectral phase of the zeta function. **Start here for visualization.**
+2. **`riemann_10k_survey.ipynb`**: Comparative analysis against GUE (Gaussian Unitary Ensemble) statistics and final performance metrics.
+3. **`riemann_10k_harvest.ipynb`**: The "harvesting" pipeline where the AI-guided symbolic regression surfaced the optimal parameters.
+4. **`pipeline_survey.py`**: The automated search core used to scale the dynamical isomorphism discovery.
+5. **`riemann_10k_true.npy`**: Ground truth data for the first 10,000 Riemann zeros used for calibration.
+
+---
+
+## ⚡ Heavy Computation: Rerunning the Search
+
+If you wish to re-run the entire discovery pipeline, please note that it is computationally intensive. **A CPU with high core count (e.g., 256 cores) is highly recommended.**
+
+### Step-by-Step Execution:
+
+1. **Environment Setup**: Ensure you have Python 3.8+ and the required deep learning/dynamics libraries installed.
+2. **Data Preparation**: Ensure `riemann_10k_true.npy` is in the root directory.
+3. **Scalable Search**: Run `python pipeline_survey.py` to initiate the parallelized search for the optimal renormalization flow parameters.
+4. **Parameter Harvesting**: Use `riemann_10k_harvest.ipynb` to filter and extract the most promising candidate formulas from the search logs.
+
+---
+
+## 🖼️ Result Preview
+![拟合图]fig2.png
+
+Our model achieves **Deterministic Spectral Matching** with :
+
+> "Success = My Idea. Failure = Gemini 3's Hallucination." 😂
+
+
