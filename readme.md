@@ -9,7 +9,7 @@ This repository contains the numerical experiments and dynamical systems identif
 > While using AI to scale the search for dynamical systems isomorphic to the **Riemann Zeros**, I was deeply immersed in the **Berry-Keating Conjecture**. Suddenly, it struck me: the Sir Michael Berry who had been kindly replying to my emails is the same legend who "legislated" the spectral statistics of the zeros (and famously made a frog fly)! **Oh my!!!** > 
 > This project is a direct tribute to that realization.
 
-![Spectral Alignment Results](./fig2.png)
+![Spectral Alignment Results](./logistic.jpg)
 *Figure 2: Deterministic trajectory alignment with R² > 0.997 achieved via AI-augmented search.*
 
 
