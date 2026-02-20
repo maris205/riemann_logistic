@@ -20,12 +20,10 @@ If you want to reproduce the result plots (like `fig2.png`) immediately:
 ---
 
 ## 📁 Repository Structure (Ordered by Workflow)
+1. **`pipeline_survey.py`**: The automated search core used to scale the dynamical isomorphism discovery.
+2. **`riemann_10k_harvest.ipynb`**: The "harvesting" pipeline where the AI-guided symbolic regression surfaced the optimal parameters.
+3. **`phase_unwrapping.ipynb`**: Pre-processing scripts for handling the spectral phase of the zeta function. **Start here for visualization.**
 
-1. **`phase_unwrapping.ipynb`**: Pre-processing scripts for handling the spectral phase of the zeta function. **Start here for visualization.**
-2. **`riemann_10k_survey.ipynb`**: Comparative analysis against GUE (Gaussian Unitary Ensemble) statistics and final performance metrics.
-3. **`riemann_10k_harvest.ipynb`**: The "harvesting" pipeline where the AI-guided symbolic regression surfaced the optimal parameters.
-4. **`pipeline_survey.py`**: The automated search core used to scale the dynamical isomorphism discovery.
-5. **`riemann_10k_true.npy`**: Ground truth data for the first 10,000 Riemann zeros used for calibration.
 
 ---
 
