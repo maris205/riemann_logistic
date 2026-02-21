@@ -41,7 +41,17 @@ If you wish to re-run the entire discovery pipeline, please note that it is comp
 ---
 
 ## 🖼️ Result Preview
+1. **Generation of 10,000 Riemann zeros via the non-autonomous dynamical system.**
 ![拟合图](fig2.png)
+
+2. **Generation of 10,000 Riemann zeros after the elimination of negative energy components.**
+![拟合图](Riemann_10k_Pure_Unwrapped.png)
+
+3. **Benchmarking and alignment with USTC physical measurement data.**
+![拟合图](ustc_data.png)
+   
+4. **Microscopic analysis of the generation of the first 20 Riemann zeros.**
+![拟合图](low_zeros.png)
 
 Our model achieves **Deterministic Spectral Matching** with :
 
