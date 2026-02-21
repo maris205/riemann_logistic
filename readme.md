@@ -18,8 +18,8 @@ If you want to reproduce the result plots immediately, you have two options:
 
 
 * **Run `p3_phase_unwrapping.ipynb`**: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phase_unwrapping.ipynb) This demonstrates the non-autonomous dynamical system generating the first 10,000 Riemann zeros , with a relative error of approximately 3%. 
-* **Run `p3_phrase_unrap_pure1.ipynb`**:  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phrase_unrap_pure1.ipynb) The "Magical Moment"—after removing the negative energy levels from the dynamical system , the relative error drops significantly to 0.08%!!! 
-* **Run `p3_ustc_data_match.ipynb`**: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_ustc_data_match.ipynb) Benchmarking against actual measurement data from the USTC physical system. Wait, the relative error is also roughly 3%???
+* **Run `p3_phrase_unrap_pure1.ipynb`**:  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phrase_unrap_pure1.ipynb) The "Magical Moment"—after removing the negative energy levels from the dynamical system , the relative error for the first 10,000 Riemann zeros drops significantly to 0.08%!!! 
+* **Run `p3_ustc_data_match.ipynb`**: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_ustc_data_match.ipynb) Benchmarking against actual measurement data from the USTC physical system. Wait, the relative error is also roughly 3%??? 😲 It feels like we’ve stumbled upon something legendary! 🚀 Negative energy??? 🌌 The Dirac Sea within Riemann Zeros!!! 🌊✨
 
 
 
