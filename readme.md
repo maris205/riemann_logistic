@@ -13,11 +13,11 @@ This is it! The mysterious mapping aligned with the Riemann Zeros—the one my A
 
 
 If you want to reproduce the result plots immediately, you have two options:
-1. Run in Cloud (Highly Recommended): Simply click the "Open in Colab" badge next to each file below. This will launch a pre-configured environment in your browser—no local setup required.
+1. Run in Cloud (Highly Recommended): Simply click the "Open in Colab" badge next to each file below. This will launch a pre-configured environment in your browser—no local setup required.(Tip: To keep this page open, we recommend Ctrl + Click (or Cmd + Click on Mac) the "Open in Colab" badges to launch them in a new tab.)
 2. Local Execution: Clone the full repository to your local machine and run the notebooks manually.
 
 
-* **Run `p3_phase_unwrapping.ipynb`**: <a href="https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phase_unwrapping.ipynb" target="_blank">![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)</a> This demonstrates the non-autonomous dynamical system generating the first 10,000 Riemann zeros , with a relative error of approximately 3%.
+* **Run `p3_phase_unwrapping.ipynb`**: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phase_unwrapping.ipynb) This demonstrates the non-autonomous dynamical system generating the first 10,000 Riemann zeros , with a relative error of approximately 3%. 
 * **Run `p3_phrase_unrap_pure1.ipynb`**:  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phrase_unrap_pure1.ipynb) The "Magical Moment"—after removing the negative energy levels from the dynamical system , the relative error drops significantly to 0.08%!!! 
 * **Run `p3_ustc_data_match.ipynb`**: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_ustc_data_match.ipynb) Benchmarking against actual measurement data from the USTC physical system. Wait, the relative error is also roughly 3%???
 
