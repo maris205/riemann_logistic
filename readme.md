@@ -13,7 +13,7 @@ This is it! The mysterious mapping aligned with the Riemann Zeros—the one my A
 
 If you want to reproduce the result plots immediately:
 1. **Clone the full repository** to your local machine.
-2. **Run `p3_phase_unwrapping.ipynb`**: This demonstrates the non-autonomous dynamical system generating the first 10,000 Riemann zeros , with a relative error of approximately 3%.
+2. **Run `p3_phase_unwrapping.ipynb`**: This demonstrates the non-autonomous dynamical system generating the first 10,000 Riemann zeros , with a relative error of approximately 3%.[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phase_unwrapping.ipynb)
 3. **Run `p3_phrase_unrap_pure1.ipynb`**`: The "Magical Moment"—after removing the negative energy levels from the dynamical system , the relative error drops significantly to 0.08%!!! 
 4. **Run `p3_ustc_data_match.ipynb`**: Benchmarking against actual measurement data from the USTC physical system. Wait, the relative error is also roughly 3%???
 
