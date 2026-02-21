@@ -11,11 +11,11 @@ This is it! The mysterious mapping aligned with the Riemann Zeros—the one my A
 
 ## 📊 Quick Start: Visualizing Results
 
-If you want to reproduce the result plots (like `fig2.png`) immediately:
-
+If you want to reproduce the result plots immediately:
 1. **Clone the full repository** to your local machine.
-2. **Locate the compressed data** in the `riemann_10k_survey` directory and **unzip it** first.
-3. **Run `phase_unwrapping.ipynb**`: This is the primary pre-processing script for handling the spectral phase of the zeta function and generating the core visual alignments.
+2. **Run `p3_phase_unwrapping.ipynb**`: This demonstrates the non-autonomous dynamical system generating the first 10,000 Riemann zeros , with a relative error of approximately 3%.
+3. **Run `p3_phrase_unrap_pure1.ipynb**`: The "Magical Moment"—after removing the negative energy levels from the dynamical system , the relative error drops significantly to 0.08%!!! 
+4. **Run `p3_ustc_data_match.ipynb**`: Benchmarking against actual measurement data from the USTC physical system. Wait, the relative error is also roughly 3%???
 
 ---
 
