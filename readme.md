@@ -48,7 +48,7 @@ Our model achieves **Deterministic Spectral Matching** with :
 > "Success = My Idea. Failure = Gemini 3's Hallucination." 😂
 
 ## cite paper
-wang, . liang . (2026). Spectral Isomorphism between Renormalization Flow in Non-Autonomous Quadratic Maps and Riemann Zeros (v1.0). Zenodo. https://doi.org/10.5281/zenodo.18618087
+wang, . liang . (2026). Spectral Isomorphism between Renormalization Flow in Non-Autonomous Quadratic Maps and Riemann Zeros (v2.0). Zenodo. https://doi.org/10.5281/zenodo.18714279
 
 
 
