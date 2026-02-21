@@ -17,26 +17,28 @@ If you want to reproduce the result plots immediately:
 3. **Run `p3_phrase_unrap_pure1.ipynb`**`: The "Magical Moment"—after removing the negative energy levels from the dynamical system , the relative error drops significantly to 0.08%!!! 
 4. **Run `p3_ustc_data_match.ipynb`**: Benchmarking against actual measurement data from the USTC physical system. Wait, the relative error is also roughly 3%???
 
----
-
-## 📁 Repository Structure (Ordered by Workflow)
-1. **`pipeline_survey.py`**: The automated search core used to scale the dynamical isomorphism discovery.
-2. **`riemann_10k_harvest.ipynb`**: The "harvesting" pipeline where the AI-guided symbolic regression surfaced the optimal parameters.
-3. **`phase_unwrapping.ipynb`**: Pre-processing scripts for handling the spectral phase of the zeta function. **Start here for visualization.**
-
 
 ---
 
-## ⚡ Heavy Computation: Rerunning the Search
+## ⚡ Heavy Computation: Rerunning the experiments
 
-If you wish to re-run the entire discovery pipeline, please note that it is computationally intensive. **A CPU with high core count (e.g., 256 cores) is highly recommended.**
+**Macroscopic Experiments: Generation of the First 10,000 Riemann Zeros** 
 
-### Step-by-Step Execution:
+**Full Spectrum Section:**
 
-1. **Environment Setup**: Ensure you have Python 3.8+ and the required deep learning/dynamics libraries installed.
-2. **Data Preparation**: Ensure `riemann_10k_true.npy` is in the root directory.
-3. **Scalable Search**: Run `python pipeline_survey.py` to initiate the parallelized search for the optimal renormalization flow parameters.
-4. **Parameter Harvesting**: Use `riemann_10k_harvest.ipynb` to filter and extract the most promising candidate formulas from the search logs.
+1. **`p3_riemann_10k_harvest.ipynb`**: Generation of the non-autonomous system transfer matrix.
+2. **`p3_phase_unwrapping.ipynb`**: Basic linear fitting and matching with the first 10,000 zeros.
+3. **`p3_fit_high_order_10k.ipynb`**: High-order fitting and matching with the first 10,000 zeros.
+4. **`p3_ustc_data_match.ipynb`**: Benchmarking against actual measurement data from the USTC physical system.
+   
+**Negative Energy Removal Section:**
+1. **`p3_riemann_10k_harvest_pure.ipynb`**: Generation of the non-autonomous system transfer matrix with negative energy levels removed, retaining only positive energy levels.
+2. **`p3_phrase_unrap_pure1.ipynb`**: Basic linear fitting and matching with the first 10,000 zeros using only positive energy levels.
+
+**Microscopic Experiments: Generation of the First 20 Riemann Zeros** 
+1. **`p4_find_best_eps_global.ipynb`**: Coarse-grained search for the  (eps) parameter.
+2. **`p4_find_best_eps_detail.ipynb`**: Fine-grained search for the  (eps) parameter.
+3. **`p4_ustc_data_match.ipynb`**: Generation of the first 20 Riemann zeros under optimal parameters and comparison with USTC data.
 
 ---
 
