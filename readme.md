@@ -28,6 +28,9 @@ If you want to reproduce the result plots immediately, you have two options:
 
 ## ⚡ Heavy Computation: Rerunning the experiments
 
+⚠️ **Computational Resource Requirement**: The full simulation of 10,000 modes involves massive parallel matrix operations. It is highly recommended to run these experiments on a high-core CPU server (e.g., 256 cores or more). For users without local HPC access, cloud GPU/CPU instances such as AutoDL, vast.ai, or Lambda Labs are recommended to ensure numerical stability and reasonable execution time.
+
+
 **Macroscopic Experiments: Generation of the First 10,000 Riemann Zeros** 
 
 **Full Spectrum Section:**
