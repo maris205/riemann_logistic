@@ -72,12 +72,12 @@ Our model achieves **Deterministic Spectral Matching** with :
 
 ## 📂 Supplementary Resources & Additional Directories
 
-### 1. [MVP3: Experimental Insights & Ablation Graveyard](https://www.google.com/search?q=https://github.com/your-repo/mvp3)
+### 1. [MVP3: Experimental Insights & Ablation Graveyard](https://www.google.com/search?q=https://github.com/maris205/riemann_logistic/mvp3)
 
 * **The "Behind the Scenes" of Research**: This directory contains the exhaustive experimental data for MVP3, including the first-principles derivation of core parameters.
 * **Failed Attempts**: We have documented the "wrong paths" and failed simulations. These ablation studies are crucial as they define the boundaries of the non-autonomous dynamical operator and validate the uniqueness of the final model.
 
-### 2. [Lecture : AI for Science - A Practitioner's Guide](https://www.google.com/search?q=https://github.com/your-repo/lecture1)
+### 2. [Lecture : AI for Science - A Practitioner's Guide](https://www.google.com/search?q=https://github.com/maris205/riemann_logistic/lecture)
 
 * **Educational Outreach**: A dedicated course designed to bridge the gap between Number Theory and Nonlinear Dynamics using modern AI tools.
 * **Prerequisites**: Accessible to anyone with a background in Undergraduate Mathematics and Basic Python.
