@@ -8,6 +8,21 @@ This is it! The mysterious mapping aligned with the Riemann Zeros—the one my A
 
 ![logistic](./logistic.jpg)
 
+---
+
+## 🖼️ Result Preview
+1. **Generation of 10,000 Riemann zeros via the non-autonomous dynamical system.**
+![拟合图](fig2.png)
+
+2. **Generation of 10,000 Riemann zeros after the elimination of negative energy components.**
+![拟合图](Riemann_10k_Pure_Unwrapped.png)
+
+3. **Benchmarking and alignment with USTC physical measurement data.**
+![拟合图](ustc_data.png)
+   
+4. **Microscopic analysis of the generation of the first 20 Riemann zeros.**
+![拟合图](low_zeros.png)
+
 
 ## 📊 Quick Start: Visualizing Results
 
@@ -20,7 +35,6 @@ If you want to reproduce the result plots immediately, you have two options:
 * **Run `p3_phase_unwrapping.ipynb`**: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phase_unwrapping.ipynb) This demonstrates the non-autonomous dynamical system generating the first 10,000 Riemann zeros , with a relative error of approximately 3%
 * **Run `p3_phrase_unrap_pure1.ipynb`**:  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_phrase_unrap_pure1.ipynb) The "Magical Moment"—after removing the negative energy levels from the dynamical system , the relative error for the first 10,000 Riemann zeros drops significantly to 0.08%!!! 
 * **Run `p3_ustc_data_match.ipynb`**: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/maris205/riemann_logistic/blob/main/p3_ustc_data_match.ipynb) Benchmarking against actual measurement data from the USTC physical system. Wait, the relative error is also roughly 3%??? 😲 It feels like we’ve stumbled upon something legendary! 🚀 Negative energy??? 🌌 The Dirac Sea within Riemann Zeros!!! 🌊✨
-
 
 
 
@@ -49,20 +63,6 @@ If you want to reproduce the result plots immediately, you have two options:
 2. **`p4_find_best_eps_detail.ipynb`**: Fine-grained search for the  (eps) parameter.
 3. **`p4_ustc_data_match.ipynb`**: Generation of the first 20 Riemann zeros under optimal parameters and comparison with USTC data.
 
----
-
-## 🖼️ Result Preview
-1. **Generation of 10,000 Riemann zeros via the non-autonomous dynamical system.**
-![拟合图](fig2.png)
-
-2. **Generation of 10,000 Riemann zeros after the elimination of negative energy components.**
-![拟合图](Riemann_10k_Pure_Unwrapped.png)
-
-3. **Benchmarking and alignment with USTC physical measurement data.**
-![拟合图](ustc_data.png)
-   
-4. **Microscopic analysis of the generation of the first 20 Riemann zeros.**
-![拟合图](low_zeros.png)
 
 Our model achieves **Deterministic Spectral Matching** with :
 
