@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
 \usepackage{longtable,booktabs,array}
+\usepackage{float}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \title{Spectral Isomorphism between Renormalization Flow in Non-Autonomous Quadratic Maps and Riemann Zeros}
@@ -385,7 +386,7 @@ indicated that when the diffusion scale advanced to
 \(\text{\ensuremath{\epsilon}=0.001916}\), the system underwent a significant numerical
 convergence phase transition, Figure 1:
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image1.png}
 \caption{\textbf{Figure 1. High-density parameter scanning and the emergence of mode-locking under the critical discrete scale.} The scatter plot displays the trajectory of the objective function ErrSum (the sum of absolute deviations of the first 6 eigen-energy levels) varying with the spatial discretization scale \(\text{\ensuremath{\epsilon}}\). Within the ``mode-locking basin'' (green shaded area) determined by the broadband coarse scan, the spectral deviation exhibits strong non-linear oscillation. When \(\text{\ensuremath{\epsilon}}\) advances to the global minimum 0.001916 (red star, ErrSum=2.1991), the system undergoes an extremely steep numerical phase transition. This critical point signifies that the continuous Fokker-Planck numerical diffusion has precisely and closely neutralized the discrete spatial truncation error, allowing the system's pure dynamical eigen-spectrum to emerge.}
@@ -417,7 +418,7 @@ validity of the non-autonomous dynamical model near the ground state, we
 first directly compared the predicted first 20 equivalent energy levels
 with the true Riemann zeros (theoretical true values), Figure 2.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image2.png}
 \caption{\textbf{Figure 2. Microscopic empirical validation of the dynamical eigen-spectrum and the emergence of the} \(\text{N=20}\) \textbf{resonance anomaly.} (Top) The alignment trajectory of the dynamical predicted energy levels (\(\text{E}_{\text{pred}}\), colored dots) and the true Riemann zeros (\(\text{\ensuremath{\gamma}}_{\text{n}}\), golden stars) under the critical numerical discrete scale \(\text{\ensuremath{\epsilon}=0.001916}\). In the low-frequency limit (\(\text{N=1}\) to \(\text{6}\), green shaded area), the system achieves high-fidelity ``Quantum Lock-in,'' verifying the accuracy of the ground state linear homomorphic mapping. (Bottom) Actual dynamical residual distribution with signs (\(\text{\ensuremath{\Delta}E=}\text{E}_{\text{pred}}\text{\ensuremath{-}}\text{\ensuremath{\gamma}}_{\text{n}}\)). Despite being constrained by nonlinear state density, causing the system to exhibit natural systematic phase drift at higher energy levels, when evolving to \(\text{N=20}\), the predicted spectrum spontaneously excites an extremely steep, isolated structural breaking---a dynamical anomaly spike (marked in red). This nonlinear resonance anomaly, ``blind-box emerged'' from a purely numerical computing engine under finite precision, achieves a notable homomorphic benchmarking in both position and mutational tendency with the inexplicable massive measurement error bars encountered at the same energy level in recent physical ion-trap quantum simulation experiments.}
@@ -453,7 +454,7 @@ instantaneously leaped to 16.5025, forming a locally extremely abrupt
 ``isolated error spike,'' which subsequently showed a receding and
 oscillating trend at higher energy levels.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image3.png}
 \caption{\textbf{Figure 3. Direct Benchmarking: Back-to-back comparison of the dynamical numerical model and physical quantum simulation.} Direct comparison of our numerical prediction residuals (red star line) with USTC physical experimental data (ion-trap quantum simulation under different trap frequencies \(\text{\ensuremath{\Omega}}\)). In the \(\text{N<19}\) region, the numerical model successfully captured the near-zero fluctuation baseline of the physical system. Crucially, at \(\text{N=19\ensuremath{\sim}20}\), the numerical computation's ``anomaly spike'' and the severe divergence of experimental measurement uncertainty (red shaded area) completely align in position and qualitative characteristics. This high degree of commonality provides strong evidence that ``experimental collapse is an intrinsic topological property of finite-precision dynamics rather than random instrumental error.''}
@@ -696,7 +697,7 @@ inescapable cost is a trumpet-shaped maximum error envelope
 (\(\text{\ensuremath{\sim}2.8\%}\)). The dynamic divergence of these different anchoring
 strategies over 100 orders is visually compared in \textbf{Figure 4}.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image4.png}
 \caption{\textbf{Figure 4: Reconstruction Domains and Anchoring Strategies: A Comparative Analysis of Models A, C, and D.}  * \textbf{Model A (Orange / Single-Point Anchoring):} Utilizes solely the first zero as the absolute physical baseline (\(\text{k}\text{\ensuremath{\approx}7.429}\)). While strictly aligning the ground state, it accumulates the largest macroscopic divergence over 100 orders (MSE \(\text{\ensuremath{\approx}20.22}\)). \textbf{Model C (Blue / Forced Origin Scaling):} Represents the optimal engineering compromise within the single-sided positive spectrum (\(\text{k}\text{\ensuremath{\approx}8.070}\)). By applying a global least-squares fit constrained to the origin (\(\text{b}\text{=0}\)), it effectively suppresses error divergence, yielding the lowest global mean squared error (MSE \(\text{\ensuremath{\approx}10.08}\)). \textbf{Model D (Green / Conjugate Full Spectrum Free Fit):} Represents the most complete physical topology (\(\text{k}\text{\ensuremath{\approx}8.783}\)). When executing a completely free linear fit incorporating both positive and negative energy states (conjugate spectrum), the system reveals a striking intrinsic symmetry---the intercept spontaneously zeros out (\(\text{b}\text{=0.000}\)). It achieves a highly robust residual envelope (MSE \(\text{\ensuremath{\approx}10.81}\)) without any artificial truncation constraints.}
@@ -713,7 +714,7 @@ suppress this intrinsic dispersion stiffness. To explicitly demonstrate
 this phenomenon, we directly overlay our deterministic Model C
 trajectory with the empirical USTC hardware data in \textbf{Figure 5}.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image5.png}
 \caption{\textbf{Figure 5: Spectral Showdown: Hardware Limitations vs.~Dynamics Model Topology.}  * \textbf{Scatter Points and Purple Shading (Quantum Hardware):} Displays the actual measurement deviations from the University of Science and Technology of China (USTC) ion-trap quantum hardware. Primarily limited by quantum decoherence effects, the experimental hardware experiences signal breakdown in the \(\text{N}\text{\ensuremath{\approx}76\ensuremath{-}80}\) band, establishing a physical error envelope restricted to \(\text{\ensuremath{\pm}1.96\%}\).\textbf{Red Solid Line (Dynamics Model):} Represents the theoretical deviation trajectory derived from 10 billion steps of evolution using the proposed dynamics model (Model C: Single-sided positive spectrum forced origin scaling, \(\text{k}_{\text{1}}\text{=8.070}\)). The model's mean error is 2.69\%. The model successfully overcomes the hardware's physical limitation boundary, extending deterministic predictions stably to the \(\text{N}\text{=100}\) order. Notable is the surprising spatial synchronization between the macroscopic oscillation peaks of the theoretical model (red line) and the local error extrema of the quantum hardware (around \(\text{N}\text{\ensuremath{\approx}20,40,76}\)).}
@@ -774,7 +775,7 @@ models against a Gaussian Unitary Ensemble (GUE) random matrix baseline.
 The comparative spectral alignments and relative error divergences are
 visualized in \textbf{Figure 6}.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image6.png}
 \caption{\textbf{Figure 6: Macroscopic Spectral Alignment and RMT Ablation: Deterministic Cooling vs.~Wigner's Semicircle.}  \textbf{Model M-GUE (Purple Dashed / Gaussian Unitary Ensemble):} Serving as the microscopic statistical baseline, the GUE matrix exhibits severe non-linear macroscopic divergence (right panel, MSE \(\text{\ensuremath{\approx}7006.1}\)) even under optimal Global Least-Squares Scaling. This explicitly exposes that pure random matrices, governed by Wigner's Semicircle Law, inherently lack the critical macroscopic logarithmic density features required to approximate the Riemann manifold.\textbf{Models M1 \& M2 (Orange \& Red / Non-autonomous Dynamics):} Represent the 1D and 2D dynamic prediction models proposed in this work. Under the extremely rigorous constraint of \textbf{Single-Point Anchoring} (utilizing solely the first zero), M1 and M2 demonstrate notable macroscopic topological rigidity. Specifically, the 2D model (red line) with the running coupling constant not only eliminates systematic parabolic drift over a span of \(\text{N}\text{=1000}\) orders, but also suppresses the global residual to a minimal level (MSE \(\text{\ensuremath{\approx}1515.3}\)).}
@@ -866,7 +867,7 @@ thermodynamic cooling operator against the Gaussian Unitary Ensemble
 (GUE) and a trivial linear fit baseline. The results are visualized in
 Figure 7.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image7.png}
 \caption{\textbf{Figure 7: Ultra-Macroscopic Spectral Alignment (}\(\text{N}\text{=10,000}\)\textbf{): Thermodynamic Cooling vs. Statistical Baselines.} M-GUE (Purple Dashed / Gaussian Unitary Ensemble): The pure Random Matrix Theory baseline suffers a catastrophic structural divergence (MSE \(\text{\ensuremath{\approx}255455.9}\)). This visually exposes that without a deterministic cooling mechanism, Wigner's Semicircle Law fundamentally fails to capture the macroscopic logarithmic density of the Riemann manifold.M1 (Orange Solid / 1D Thermodynamic Cooling): The 1D non-autonomous dynamical model (\(\text{k}_{\text{1}}\text{\ensuremath{\approx}13.431}\)) effectively paces the true Riemann zeros. It successfully anchors both the highly sensitive low-frequency ground states and the deep-water high-frequency states.}

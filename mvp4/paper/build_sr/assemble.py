@@ -34,6 +34,7 @@ preamble = r'''\documentclass[fleqn,10pt]{wlscirep}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
 \usepackage{longtable,booktabs,array}
+\usepackage{float}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \title{Spectral Isomorphism between Renormalization Flow in Non-Autonomous Quadratic Maps and Riemann Zeros}
