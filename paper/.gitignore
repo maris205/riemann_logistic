@@ -1,0 +1,10 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+# heavy intermediate build dir (keep sr/ final output instead)
+build_sr/media/
+build_sr/figures/
+build_sr/*.pdf

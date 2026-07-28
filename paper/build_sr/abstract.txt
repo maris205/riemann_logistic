@@ -1,0 +1,30 @@
+Finding a dynamical system whose spectrum corresponds to the non-trivial
+zeros of the Riemann \(\text{ζ}\) function is a long-standing question in
+mathematical physics. Building on our recent result that the symbolic
+dynamics of the Logistic map at its band-merging point is isomorphic to
+the prime sieve [Wang, \emph{Research in Mathematics} 13(1), 2026], we
+study a discrete dynamical operator driven by a non-autonomous
+logarithmic cooling schedule
+(\(\text{μ}_{\text{n}}\text{∼1/}\text{ln}^{\text{2}}\text{n}\)) and
+compare its spectrum numerically to the Riemann zeros. At low and
+intermediate orders the model reproduces the first zeros with small
+error and exhibits a change of behavior near \(\text{N}\text{≈20}\). We
+observe that this feature coincides spatially with the enlarged
+measurement deviations reported near the same orders in recent ion-trap
+quantum-simulation experiments (e.g., USTC), and we discuss --- as a
+hypothesis rather than a demonstrated mechanism --- whether part of that
+deviation could reflect a single-sided phase-space truncation rather
+than purely instrumental decoherence. Extending the evolution into the
+macroscopic regime (\(\text{N}\text{≥1000}\)), an ablation comparison
+shows that a globally scaled Gaussian Unitary Ensemble (GUE) surrogate
+deviates systematically in this counting-function comparison, consistent
+with the fact that a single global scale cannot match a logarithmically
+varying mean density; restoring the conjugate (\(\text{±}\text{θ}\))
+spectrum drives the fitted ground-state intercept to approximately zero.
+A second-order term motivated by a renormalization-group running
+coupling improves the match to the logarithmic densification of the
+zeros. We present these results as numerical observations and heuristic
+arguments rather than proofs, and we state explicitly which claims are
+established, numerical, or conjectural. This offers a non-autonomous,
+dissipative-dynamics perspective on the Hilbert--Pólya program,
+complementary to static-Hamiltonian and random-matrix approaches.
