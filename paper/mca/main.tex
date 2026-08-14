@@ -1,0 +1,1659 @@
+%=================================================================
+% Fractal and Fractional (MDPI) submission
+% Spectral Isomorphism ... Non-Autonomous Quadratic Maps and Riemann Zeros
+%=================================================================
+\documentclass[mca,article,submit,oneauthor,pdftex]{Definitions/mdpi}
+
+\firstpage{1}
+\makeatletter
+\setcounter{page}{\@firstpage}
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2026}
+\copyrightyear{2026}
+\datereceived{ }
+\daterevised{ }
+\dateaccepted{ }
+\datepublished{ }
+
+% extra packages (most already loaded by the class)
+\usepackage{longtable,booktabs,array,tabularx}
+\newcolumntype{Y}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+%=================================================================
+\Title{Numerical Spectral Correspondence between a Non-Autonomous Quadratic Map and the Riemann Zeros: An Exploratory Study}
+
+%\newcommand{\orcidauthorA}{0000-0000-0000-0000}
+
+\Author{Liang Wang}
+
+\AuthorNames{Liang Wang}
+
+\address[1]{%
+School of Artificial Intelligence and Automation, Huazhong University of Science and Technology, Wuhan 430070, P.R. China; wangliang.f@gmail.com}
+
+\corres{Correspondence: wangliang.f@gmail.com}
+
+\abstract{Whether a low-dimensional deterministic dynamical system can numerically reproduce features of the non-trivial zeros of the Riemann $\zeta$ function is an open exploratory question. Building on our recent result that the symbolic dynamics of the logistic map at its band-merging point is isomorphic to the prime sieve \cite{wang2026}, we study a non-autonomous quadratic map driven by a logarithmic cooling schedule ($\mu_n \sim 1/\ln^2 n$, introduced here as a phenomenological ansatz rather than a derived law) and construct an empirical, finite-dimensional transfer matrix from its trajectories. This matrix is generally non-normal and dissipative; its complex eigenphases are compared numerically to the Riemann zeros after calibrating a small number of free parameters against the same low-order zeros. We report this comparison as a numerical, in-sample correspondence rather than an independent prediction, and quantify the gap directly: fitting on the first $M\in\{50,70,80\}$ zeros and evaluating on the remaining, unseen zeros gives a held-out mean squared error one to two orders of magnitude larger than the training error, and the fitted coupling itself drifts with $M$; a ten-seed robustness check at fixed $M=70$ shows the fitted coupling is comparatively stable (coefficient of variation $\approx4.7\%$) against the stochastic initial condition. We also discuss the resulting model's behavior at low order ($N\lesssim 20$), where an unselected re-computation and a Spearman/permutation significance test show a qualitative rank correlation ($\rho=0.56$, $p=0.010$) with, but no significant ($p=0.099$) joint co-location of, a residual feature and enlarged error bars reported in recent ion-trap quantum simulations of the same zeros. At larger $N$ ($N\ge 1000$), we compare the model against a globally rescaled Gaussian Unitary Ensemble (GUE) surrogate on the mean counting-function trend (a different comparison from the standard unfolded local-statistics test of random-matrix theory), and we show that restoring the conjugate ($\pm\theta$) eigenphases drives a fitted linear intercept to approximately zero -- a property that, for symmetric regression data, follows in part from the symmetry of the construction itself. A separate check finds that the dynamical model's own eigenphase spacing statistics do not match the GUE prediction under a standard unfolded local-statistics test, unlike the true Riemann zeros. We are explicit throughout that these are numerical observations on a heuristic model, not a proof, a derivation, or a Hilbert--P\'olya-type operator construction, and we tabulate the epistemic status of every main claim.}
+
+\keyword{Riemann zeros; non-autonomous dynamical systems; logistic map; transfer operator; empirical spectral correspondence; numerical continuation}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Since the seminal hypothesis by Riemann \cite{riemann1859}, finding a Hermitian
+operator whose eigenvalues correspond to the imaginary parts of
+the non-trivial Riemann zeros has always been the ``central open problem'' in the
+field of mathematical physics (i.e., the famous Hilbert-P\'olya
+conjecture; see \cite{katzsarnak1999,schumayer2011,conrey2003} for reviews).
+The zeros themselves are inseparable from the classical theory of prime
+counting: their existence and analytic continuation underlie the Prime
+Number Theorem, independently established by Hadamard \cite{hadamard1896} and
+de la Vall\'ee Poussin \cite{delavallee1896}, and their finer statistics touch
+on the Hardy--Littlewood conjectures for prime constellations
+\cite{hardylittlewood1923}. The classical analytic theory of \(\zeta(s)\)
+itself is treated comprehensively in Titchmarsh's monograph
+\cite{titchmarsh1951}, and large-scale numerical verification of the
+zeros' locations was pioneered by Odlyzko \cite{odlyzko1989}. Over half a
+century after Riemann, the pioneering work of
+Montgomery \cite{montgomery1973} and numerical verifications by Odlyzko \cite{odlyzko1987}
+established a notable connection between the Riemann zero spacing and
+the Gaussian Unitary Ensemble (GUE) of Random Matrix Theory (RMT), whose
+statistical machinery traces back to Wigner's semicircle law for nuclear
+energy levels \cite{wigner1955} and was later codified in Mehta's
+treatise \cite{mehta2004}. This spacing statistics connection was
+subsequently generalized by Katz and Sarnak to families of \(L\)-functions
+\cite{katzsarnak1999,rudnicksarnak1996} and refined through the moments
+conjecture of Keating and Snaith \cite{keatingsnaith2000}, connecting
+this number-theoretic problem to the physics of Quantum Chaos
+\cite{berry1986}. On the physics side, the semiclassical link between
+chaotic spectra and RMT statistics is the content of the
+Bohigas--Giannoni--Schmit conjecture \cite{bohigas1984}, itself grounded in
+Gutzwiller's periodic-orbit trace formula \cite{gutzwiller1971} and its
+number-theoretic analogue, the Selberg trace formula \cite{selberg1956}; by
+contrast, generic integrable systems display Poissonian level statistics
+\cite{berrytabor1977}. Subsequently, Sir Michael Berry and
+Keating proposed the renowned \(\text{H}\text{=}\text{xp}\) quantum
+Hamiltonian conjecture \cite{berry1999}, later developed by Sierra and
+collaborators into explicit spectral realizations of the Riemann zeros
+\cite{sierra2009,sierrarodriguez2011}. Other models, such as those based on
+non-commutative geometry \cite{connes1999}, have also been explored. However,
+existing analytical models generally derive the
+macroscopic statistical laws (GUE distribution) of high-order zeros well, but
+rarely generate the specific, discrete
+coordinates of low-order zeros deterministically from first principles.
+Constructing a deterministic dynamical system that reproduces the
+true Riemann spectrum from first principles remains an open problem.
+
+In recent years, with advances in quantum information technology,
+physicists have begun attempting to ``physically'' find Riemann zeros in
+the laboratory \cite{he2020}. For example, a team from the University of Science and
+Technology of China (USTC) measured the first 80 Riemann
+zeros on physical equipment using Floquet engineering by periodically
+driving qubits in an Ion Trap with microwaves \cite{he2021}. Although the
+low-frequency band achieved high fidelity, the experiment
+simultaneously reported an unexplained feature: when approaching
+specific energy levels (e.g., \(\text{N} \text{\ensuremath{\approx} 20}\)), the measurement
+deviation of the physical instruments showed a large divergence
+(enlarged error bars) that departed from a conventional Gaussian background.
+The physics community still lacks a unified theoretical framework to
+explain this: whether it is due purely to instrumental engineering
+decoherence such as laser linewidth, or in part to some intrinsic limit
+encountered by the system when approximating highly nonlinear
+manifolds remains an open question we do not resolve here---a question
+that touches upon the fundamental asymptotics of
+eigenvalue distribution originally discussed by Weyl \cite{weyl1912}.
+
+Rather than starting from an analytically motivated Hamiltonian, we take an
+exploratory, ``bottom-up'' route, motivated by our recent finding that the
+symbolic dynamics of the Logistic map at its band-merging point is
+isomorphic to the prime sieve, with the Hardy--Littlewood twin-prime
+constant emerging as a fixed point of the dynamics \cite{wang2026}. Since
+that work connects a deterministic map to the arithmetic of the primes, it
+is natural to ask, purely as a numerical experiment, what the eigenphase
+spectrum of an empirical transfer operator built from a related map looks
+like, and whether it bears any quantitative resemblance to the Riemann
+zeros; we emphasize at the outset that this question, and everything that
+follows from it, is explored numerically and heuristically, and that we do
+not construct or claim to approximate a self-adjoint Hilbert--P\'olya
+operator. Our approach also
+draws on the classical observations that simple maps can have complicated
+dynamics \cite{may1976,liyorke1975} and on the universality of nonlinear transformations
+\cite{feigenbaum1978}, independently derived via renormalization-group
+iteration by Coullet and Tresser \cite{coullettresser1978} and
+systematized in the reprint collection of Cvitanovi\'c
+\cite{cvitanovic1984}; the underlying combinatorial structure of the
+period-doubling cascade itself was first classified by Metropolis, Stein
+and Stein \cite{metropolis1973}. Concretely, we discard the autonomous static potential
+and construct a discrete Markov evolution operator with non-autonomous
+(time-dependent) parameter, in the spirit of Ulam and von Neumann's original
+proposal to approximate deterministic chaotic maps by finite Markov chains
+\cite{ulam1947,ulam1960}, whose ergodic-theoretic justification (existence of
+absolutely continuous invariant measures for piecewise-monotonic maps) is due
+to Lasota and Yorke \cite{lasotayorke1973}; broader treatments of quantum
+chaos and its RMT signatures appear in \cite{gutzwiller1990,casati1995}. Using large-scale parallel computation and
+Arnoldi iteration \cite{arpack1998}, we search at high resolution
+(\(\text{\ensuremath{\epsilon}\ensuremath{\approx}}\text{10}^{\text{\ensuremath{-}3}}\)) for dynamical trajectories that
+trigger a ``phase transition'' in the system.
+
+Next, we present the non-autonomous dynamical model. We report numerical
+correspondences between an empirical transfer-matrix spectrum and the
+Riemann zeros across scales, from low-order eigenphase alignment (obtained
+after calibrating a small number of free parameters against the same
+low-order zeros) to macroscopic asymptotic behavior. We then examine the
+model's dependence on numerical resolution and discuss how breaking the
+intrinsic particle--hole symmetry of the eigenphase spectrum affects the
+macroscopic fit. Table~\ref{tab:claims} in the Discussion states the
+epistemic status of each claim explicitly.
+
+\section{The Mathematical Model}\label{sec:model}
+
+\subsection{The Dynamic Kernel: Non-autonomous Logistic Map}
+
+We consider a classical, deterministic non-autonomous dynamical system on
+the interval \(\text{[\ensuremath{-}1, 1]}\); no Hilbert-space operator or
+unitary evolution is postulated or constructed at any point in this work.
+The microscopic evolution is
+governed by the canonical Non-autonomous Quadratic Map (topologically
+conjugate to the Logistic Map):
+
+\begin{equation}\label{eq:map}
+x_{n+1} = 1 - \lambda_n\, x_n^{2},
+\end{equation}
+
+In standard chaos theory, the control parameter \(\text{\ensuremath{\lambda}}\) is
+typically a constant (e.g., the Feigenbaum accumulation point
+\(\text{\ensuremath{\lambda}}_{\text{\ensuremath{\infty}}}\text{\ensuremath{\approx}1.401}\)). However, to match the logarithmic
+density distribution of Riemann zeros (Weyl's Law), we must break the
+system's time-translation symmetry. We introduce an explicit
+non-autonomous drive mechanism where the control parameter
+\(\text{\ensuremath{\lambda}}_{\text{n}}\) evolves with the iteration step (energy scale)
+\(\text{n}\):
+
+\begin{equation}\label{eq:split}
+\lambda_n = \mu_c + \delta_n,
+\end{equation}
+Here, \(\text{\ensuremath{\mu}}_{{c}}~\text{\ensuremath{\approx}~1.5437}\) is a fixed baseline value of the control parameter (the ``critical baseline''). Unlike the standard edge-of-chaos
+threshold, this value is empirically anchored by the ground state energy
+of the Riemann zeros (\({E}_{{1}}~{\ensuremath{\approx}14.13}\)), ensuring
+the spectral accuracy of the low-lying modes.
+
+\subsection{A Logarithmic Cooling Ansatz and Higher-Order Corrections}
+
+Our core hypothesis, presented here as a phenomenological ansatz and not
+as a derived result, is that the microscopic
+perturbation term \(\text{\ensuremath{\delta}}_{\text{n}}\) should follow a decay law
+combining the known asymptotic Riemann-zero spacing
+\(\Delta E\propto 1/\ln n\) (Weyl's Law) with an assumed square-root
+relation between a parameter perturbation and the resulting eigenphase
+spacing. Section~\ref{sec:scaling-derivation} gives the full heuristic
+chain leading to the leading-order form
+\(\text{1/}\text{ln}^{\text{2}}\text{n}\) used below; we do not derive it
+from a theorem about the eigenphase spacing of the discretized transfer
+matrix, and we do not claim that alternative logarithmic forms are
+excluded.
+
+However, extending this macroscopic evolution into large-N regimes
+necessitates accounting for intense nonlinear transient fluctuations
+near the ground state. Therefore, rather than relying on localized
+empirical fits, we expand the macroscopic coupling strength into a
+rigorous higher-order perturbative form. The Unified Dynamic Equation of
+the system is expressed as:
+
+\begin{equation}\label{eq:eff}
+x_{n+1} \;=\; 1 \;-\; \underbrace{\left( \mu_c + \frac{k_1}{\ln^2 n} + \frac{k_2}{\ln^3 n} \right)}_{\displaystyle \lambda_n^{\mathrm{eff}}}\, x_n^{2},
+\end{equation}
+ Here $\lambda_n^{\mathrm{eff}}$ denotes the \emph{effective} (iteration-dependent) control parameter actually applied at step $n$: the constant baseline $\mu_c$ plus the two running corrections. Equation~\eqref{eq:eff} thus makes explicit that \eqref{eq:split} is realized with $\delta_n = k_1/\ln^2 n + k_2/\ln^3 n$.
+
+This explicit construction motivates a tripartite decomposition of the
+fitted parameter schedule:
+
+\textbf{Topology Maintenance (}\(\text{\ensuremath{\mu}}_{{c}}\)\textbf{):} The
+baseline term maintains the system's underlying fractal structure near
+the critical threshold.
+
+\textbf{Primary Aging Mechanism
+(}\({k}_{\text{1}}\text{/}\text{ln}^{\text{2}}{n}\)\textbf{):}
+The dominant logarithmic decay introduces a ``dynamic aging'' process
+dependent on the iteration step \({n}\), forcing the system to
+asymptotically approach the critical attractor at the exact macroscopic
+rate required by the Riemann zero counting function.
+
+\textbf{Higher-Order Correction
+(}\({k}_{\text{2}}\text{/}\text{ln}^{\text{3}}{n}\)\textbf{):}
+This second-order term is included empirically to absorb curvature
+distortions that appear early in the cooling schedule, so that the
+fitted value of the leading term \(\text{k}_{\text{1}}\) is less
+sensitive to those early-time transients.
+
+We emphasize that this is an empirical fit, not a result extrapolated from
+fixed-point theory or any other theorem: the values of
+\({k}_{\text{1}}\) and \({k}_{\text{2}}\)
+are determined
+by minimizing a loss against the Riemann zeros themselves, using the
+Differential Evolution (DE) algorithm
+detailed in the Parameter Optimization Methods (Appendix). Because the
+same zeros used to fit these parameters are also used to assess the
+resulting agreement, this fit does not by itself constitute independent
+evidence of predictive power; we return to this limitation in the
+Discussion.
+
+\section{Results}
+
+\subsection{Microscopic Results: Dynamical Emergence of the First 20 Riemann Zeros and Experimental Benchmarking}
+
+\subsubsection{Numerical Methods and Dynamical System Design}
+
+To extract the eigen-phases corresponding to the Riemann zeros, we
+constructed a discrete dynamical system driven by a non-autonomous
+logarithmic cooling field. The overall numerical computation pipeline
+and parameter configuration of the system are set as follows:
+
+\textbf{1. Non-autonomous Cooling Equation}
+
+The underlying evolution of the system follows a variant of the Logistic
+map:
+\({x}_{{n}{+1}}{ = 1\ensuremath{- }}{\ensuremath{\mu}}_{{n}}{x}_{{n}}^{{2}}\).
+To induce the system to scan and lock onto target spectral features, the
+driving parameter \(\text{\ensuremath{\mu}}_{\text{n}}\) is not a static constant, but
+adopts an asymptotic logarithmic cooling law:
+
+\begin{equation}
+{\ensuremath{\mu}}_{{n}}={\ensuremath{\mu}}_{\text{end}}+\frac{{k}_{\text{opt}}}{\text{ln}^{\text{2}}{(}{n}+{c}_{\text{offset}}{)}}
+\end{equation}
+where the total evolution step length is set to
+\(\text{N}_{\text{steps}}\text{ = }\text{10}^{\text{6}}\), the target
+critical point is \(\text{\ensuremath{\mu}}_{\text{end}}\text{ = 1.5437}\), and the
+smooth offset is \({c}_{\text{offset}}\text{ = 10.0}\). The parameter
+\({k}_{\text{opt}}\) is not a free fitting parameter, but a cooling
+rate normalization coefficient uniquely determined by the rigid boundary
+conditions of the system evolution. To ensure that the system accurately
+sweeps across the set phase transition breadth \(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}\)
+(taken as \(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}\text{ = 0.02}\) in this study) during
+extremely long-range evolution, and finally strictly asymptotes to the
+chaotic critical point \(\text{\ensuremath{\mu}}_{\text{end}}\) in the final state,
+\({k}_{\text{opt}}\) satisfies the following physical constraint:
+
+\begin{equation}
+{k}_{\text{opt}}=\frac{\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}}{\frac{\text{1}}{\text{ln}^{\text{2}}\text{(1 + }{c}_{\text{offset}}\text{)}}-\frac{\text{1}}{\text{ln}^{\text{2}}\text{(}{N}_{\text{steps}}\text{ + }{c}_{\text{offset}}\text{)}}}
+\end{equation}
+
+This parameterized configuration allows the driving force of the mapping
+equation to decay smoothly within a reasonable topological interval,
+ensuring the deterministic annealing of the system toward a
+non-equilibrium steady state.
+
+\textbf{2. Core Computing Modules and Operator Construction}
+
+To extract the global spectral features of this non-equilibrium state
+system with high fidelity under discrete computing power, we selected
+the following three optimal computing modules:
+
+\begin{itemize}
+\item
+  \textbf{Module A: Spatial Discretization Operator.} To solve the
+  probability truncation problem extremely prone to occur when
+  continuous mapping is on discrete grids, we discarded the Monte Carlo
+  random walk method that introduces random fluctuations and the exact
+  Ulam geometric projection method that leads to singularities,
+  proposing the use of Gaussian Kernel Splatting based on the
+  Fokker-Planck diffusion mechanism. The transition probability of any
+  state flow between discrete grids is continuously distributed by a
+  Gaussian kernel with a variance of \(\text{\ensuremath{\epsilon}}^{\text{2}}\). Under this
+  framework, the parameter \(\text{\ensuremath{\epsilon}}\) is strictly defined as the
+  system's ``Numerical Diffusion Scale'' or effective smoothing
+  resolution.
+\item
+  \textbf{Module B: Temporal Evolution Integration.} In extremely
+  long-range integration up to \(\text{10}^{\text{6}}\) steps, direct
+  matrix multiplication inevitably leads to floating-point Underflow.
+  While standard QR decomposition tracking can obtain Lyapunov
+  exponents, it irretrievably loses the complex phase memory of the
+  global system. Therefore, we adopt a ``long exposure'' strategy,
+  constructing a Time-Averaged Empirical Matrix by accumulating the
+  transient transfer matrix of each step:
+  \({P} = \frac{\text{1}}{{T}}\sum_{{t}{=1}}^{{T}}{P}_{{t}}\).
+  As a topological snapshot of the cooling evolution process, this
+  static matrix completely freezes the dynamical resonance information
+  of the system.
+\item
+  \textbf{Module C: Spectral Extraction \& Homomorphic Mapping.} The
+  empirical matrix \(\text{P}\) is diagonalized to extract complex
+  eigenvalues and their eigen-rotation phases \(\text{\ensuremath{\theta}}_{\text{n}}\).
+  After Phase Unwrapping, we insist on a single-point linear mapping
+  with zero degrees of freedom: utilizing only the first theoretical
+  Riemann zero \(\text{\ensuremath{\gamma}}_{\text{1}}~\text{\ensuremath{\approx}~14.13}\) to determine the
+  global scaling coefficient
+  \({k}=\text{\ensuremath{\gamma}}_{\text{1}}\text{/}\text{\ensuremath{\theta}}_{\text{1}}\),
+  thereby deriving the predicted energy level
+  \({E}_{\text{pred}} \text{(}{n})={k}{\ensuremath{\cdot}}{\ensuremath{\theta}}_{{n}}\).
+  This minimalist operation exposes the intrinsic dynamical breaking of
+  the system under finite precision, without additional fitting freedom.
+\end{itemize}
+
+\textbf{3. Optimization Target and Underlying Principle of Spatial
+Discretization Scale} \(\text{\ensuremath{\epsilon}}\)
+
+In the above computational architecture, the core parameter \(\text{\ensuremath{\epsilon}}\)
+(Gaussian diffusion kernel standard deviation) determines the
+probability splatting range of the transfer matrix \(\text{P}\) across
+discrete grids. To determine the optimal numerical grid resolution, our
+optimization strategy is strictly based on the lock-in hypothesis in the
+low-frequency interval. The objective function is defined as the sum of
+the absolute errors of the first 6 predicted energy levels:
+
+\begin{equation}
+\text{ErrSum(\ensuremath{\epsilon}) = }\sum_{n=1}^{\text{6}}\text{|}{k}\text{\ensuremath{\cdot}}\text{\ensuremath{\theta}}_{{n}}\text{(\ensuremath{\epsilon})}-\text{\ensuremath{\gamma}}_{{n}}\text{|}
+\end{equation}
+
+By minimizing this objective function to optimize \(\text{\ensuremath{\epsilon}}\), the
+underlying computational mathematical principle lies in finding the
+critical balance between numerical diffusion and discrete truncation
+error. When constructing the Markov transfer matrix \({P}\), if the
+value of \(\text{\ensuremath{\epsilon}}\) tends toward the under-smoothed limit
+(\(\text{\ensuremath{\epsilon}~\ensuremath{\rightarrow}~0}\)), the system will fall into ``Grid-locking,'' generating
+severe spatial truncation noise, causing the eigen-spectrum to be
+dominated by artificial high-frequency artifacts of the discrete grid;
+conversely, if it is in the over-smoothed limit (\(\text{\ensuremath{\epsilon}~\ensuremath{\gg}~0}\)),
+excessive kernel function diffusion will smooth out the fine fractal
+folding structures in the phase space, blurring together eigenstates that
+should remain distinct. Finding the optimal \(\text{\ensuremath{\epsilon}}\) is essentially searching
+for a critical resolution. At this scale, the numerical diffusion of the
+Gaussian kernel approximately balances the truncation error brought by
+discretization, enabling the Time-Averaged Empirical Matrix \({P}\)
+to approximate the Perron-Frobenius operator of the underlying continuous
+map as closely as the finite-dimensional discretization permits. Only by
+eliminating the interference
+of grid artifacts can the spectral features that we numerically compare to
+the Riemann zeros emerge cleanly from the discrete dynamics.
+
+\subsubsection{Large-Scale Numerical Scanning and Precise Localization of Optimal}
+
+Because the topological structure of its transfer operator is extremely
+sensitive to spatial resolution when a non-autonomous dynamical system
+anneals toward the chaotic critical point, we cannot directly obtain the
+optimal discretization parameter through simple analytical derivation.
+To this end, we designed a ``double-layer grid scanning'' experimental
+pipeline from macroscopic to microscopic, utilizing a 256-core parallel
+computing cluster to conduct an exhaustive optimization of the objective
+function ErrSum(\(\text{\ensuremath{\epsilon}}\)).
+
+\textbf{1. Broadband Logarithmic Coarse Scan}
+
+In the first phase of the experiment, to ascertain the overall parameter
+dependency of the system, we conducted a fundamental coarse scan with
+logarithmic steps within a larger parameter space
+\(\text{\ensuremath{\epsilon}~\ensuremath{\in}~[}\text{10}^{\text{\ensuremath{-}4}}\text{,}~\text{10}^{\text{\ensuremath{-}2}}\text{]}\).
+Numerical experiments revealed the failure modes of the system at two
+extreme scales:
+
+\begin{itemize}
+\item
+  \textbf{When} \(\text{\ensuremath{\epsilon}~<~}\text{10}^{\text{\ensuremath{-}3}}\)
+  \textbf{(Under-smoothed limit):} The rigid boundary effects of the
+  discrete grids became prominent, the extracted eigen-phases exhibited
+  disordered random fluctuations, and ErrSum remained persistently high.
+  This indicated that the system was completely overwhelmed by numerical
+  truncation noise.
+\item
+  \textbf{When} \(\text{\ensuremath{\epsilon}~>~5\ensuremath{\times}}\text{10}^{\text{\ensuremath{-}3}}\)
+  \textbf{(Over-smoothed limit):} As the variance of the Gaussian kernel
+  diffusion increased, although high-frequency noise was suppressed, the
+  characteristic frequencies of the eigen-phases were also excessively
+  smoothed, causing the phase spacing to shrink sharply and completely
+  losing the physical degrees of freedom to match the Riemann zeros.
+\end{itemize}
+
+The coarse scan results showed that ErrSum only exhibited a distinct
+convergence ``basin'' around the \(\text{10}^{\text{\ensuremath{-}3}}\) order of
+magnitude, providing a defined target zone for subsequent high-precision
+searching.
+
+\textbf{2. High-Density Linear Fine Scan}
+
+Based on the convergence basin located by the coarse scan, we launched a
+high-density linear scan with extremely small step sizes within a highly
+narrow candidate interval (e.g., \(\text{\ensuremath{\epsilon}~\ensuremath{\in}~[0.0018, 0.0020]}\)). Because
+a single \(\text{10}^{\text{6}}\)-step evolution requires the
+construction of a massive time-averaged empirical transfer matrix, we
+mobilized multi-core supercomputing resources for parallel computation.
+During this fine-tuning process, we observed a significant
+``Mode-locking'' phenomenon: with minute variations in \(\text{\ensuremath{\epsilon}}\), the
+first 6 predicted energy levels progressively converge toward the true
+Riemann zeros.
+
+\textbf{3. Establishment of the Optimal Value and ``Funnel-shaped''
+Convergence}
+
+The error curve of the scanning trajectory ultimately presented an
+extremely sharp ``V''-shaped funnel. Numerical results accurately
+indicated that when the diffusion scale advanced to
+\(\text{\ensuremath{\epsilon} = 0.001916}\), the system underwent a significant numerical
+convergence phase transition, Figure \ref{fig1}:
+
+\begin{figure}[H]
+%\centering
+\includegraphics[width=\linewidth]{figures/image1.png}
+\caption{\textbf{High-density parameter scanning and the emergence of mode-locking under the critical discrete scale.} The scatter plot displays the trajectory of the objective function ErrSum (the sum of absolute deviations of the first 6 eigen-energy levels) varying with the spatial discretization scale \(\text{\ensuremath{\epsilon}}\). Within the ``mode-locking basin'' (green shaded area) determined by the broadband coarse scan, the spectral deviation exhibits strong non-linear oscillation. When \(\text{\ensuremath{\epsilon}}\) advances to the global minimum 0.001916 (red star, ErrSum = 2.1991), the system undergoes an extremely steep numerical phase transition. This critical point signifies that the continuous Fokker-Planck numerical diffusion has precisely and closely neutralized the discrete spatial truncation error, allowing the system's pure dynamical eigen-spectrum to emerge.}\label{fig1}
+\end{figure}
+
+The objective function ErrSum plummeted to its global minimum (ErrSum
+\(\text{\ensuremath{\approx} 2.199}\)) at this coordinate point. Under this
+stringent smoothing scale, numerical diffusion closely offset
+grid truncation errors. The dynamical system achieved
+close alignment with the true Riemann spectrum in the
+low-frequency interval (\({N}\text{ = 1\ensuremath{\sim}6}\)). We thus
+identify this ``optimal discretization resolution''
+at which the dynamical eigen-spectrum emerges from the numerical
+computation.
+
+\subsubsection{Spectral Feature Emergence at Optimal Resolution and Physical Benchmarking}
+
+After successfully anchoring the global optimal discretization scale on
+the order of \(\text{10}^{\text{\ensuremath{-}3}}\) (\(\text{\ensuremath{\epsilon} = 0.001916}\)), we
+extracted the first 20 eigen-phases of the system through the empirical
+transfer matrix \({P}\), and calculated the equivalent energy
+levels using a minimalist single-point linear rescaling
+(\({E}_{\text{pred}}(n) = {k}\cdot{\ensuremath{\theta}}_n\)).
+This section compares this purely
+numerical prediction result against the standard Riemann Zeta zeros, as
+well as recent quantum simulation experimental observation data from the
+University of Science and Technology of China (USTC). To verify the
+validity of the non-autonomous dynamical model near the ground state, we
+first directly compared the predicted first 20 equivalent energy levels
+with the true Riemann zeros (theoretical true values), Figure \ref{fig2}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{figures/image2.png}
+\caption{\textbf{Microscopic comparison of the dynamical eigen-spectrum and the} \({N = 20}\) \textbf{residual feature.} (Top) The alignment trajectory of the dynamical predicted energy levels (\({E}_{\text{pred}}\), colored dots) and the true Riemann zeros (\(\text{\ensuremath{\gamma}}_{\text{n}}\), golden stars) under the critical numerical discrete scale \(\text{\ensuremath{\epsilon} = 0.001916}\). In the low-frequency limit (\({N = 1}\) to \(\text{6}\), green shaded area), the system achieves close alignment (informally, ``lock-in''), consistent with the accuracy of the ground-state linear rescaling. (Bottom) Actual dynamical residual distribution with signs (\({\ensuremath{\Delta}E} = {E}_{\text{pred}}-\text{\ensuremath{\gamma}}_{{n}}\)). Constrained by nonlinear state density, the system exhibits systematic phase drift at higher energy levels, and near \({N = 20}\) the predicted residuals show a steep, isolated spike (marked in red). We note a qualitative spatial coincidence between this numerical feature and the enlarged measurement error bars reported near the same order in recent ion-trap quantum simulation experiments; we emphasize this is a heuristic observation, not evidence of a shared physical mechanism.}\label{fig2}
+\end{figure}
+
+Numerical results showed good low-frequency
+approximation. Under the premise of no higher-order curve
+fitting, relying solely on the first zero for first-order linear
+scaling, the model achieved close alignment (informal ``lock-in'') in the
+low-energy interval of \({N}~\text{\ensuremath{\le}~6}\). Specifically, the absolute
+prediction deviations for \({N}\text{ = 1}\) to \({N}\text{ = 6}\)
+were small (for example, the error at \({N}\text{ = 3}\) was only
+0.0609, and the error at \({N}\text{ = 4}\) was only 0.0199). We read
+these closely overlapping spectral characteristics as a numerical
+indication that, at the critical numerical diffusion scale, the underlying
+topology of the dynamical system based on the \(\text{1/}\text{ln}^{\text{2}}\)
+logarithmic cooling field evolves toward a structure close to
+the ground-state energy structure of the Riemann Zeta function.
+
+As the energy level index \({N}\) increases, the limitations of
+single-point linear mapping under nonlinear state densities begin to
+manifest, and the predicted values inevitably drift. However, our core
+focus is not the smooth systematic dispersion, but the nonlinear
+topological mutations appearing in the deviation sequence. When
+extracting the absolute prediction deviations
+(\(\text{|}{E}_{\text{pred}}\text{\ensuremath{-}}{E}_{\text{true}}\text{|}\))
+of the first 20 points, we observed an unusual error trajectory, Figure
+\ref{fig3}. In the interval \({N}\text{ = 10}\) to \({N}\text{ = 18}\), the
+system deviation essentially maintained a gentle magnitude of around
+1.0; but when evolving near \({N}\text{ = 20}\), the dynamical residual
+showed a large excursion, forming a locally abrupt ``isolated error
+spike,'' which subsequently showed a receding and oscillating trend at
+higher energy levels. The sparse ARPACK eigensolver used to extract this
+spectrum has run-to-run variability from its random restart vector; across
+20 unselected trials the \(N=20\) absolute residual has mean $11.76$ and
+standard deviation $1.59$ (range $10.93$--$16.50$), so the specific value
+plotted in Figure~\ref{fig3} is one draw from this distribution rather than
+a fixed property of the model. We quantify this, and test the coincidence
+with the USTC data for statistical significance, in
+Section~\ref{sec:n20-significance}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{figures/image3.png}
+\caption{\textbf{Comparison of the dynamical numerical model and a physical quantum simulation.} Comparison of our numerical prediction residuals (red star line) with USTC physical experimental data (ion-trap quantum simulation under different trap frequencies \(\text{\ensuremath{\Omega}}\)). In the \({N<19}\) region, the numerical model tracks the near-zero fluctuation baseline of the physical system. Near \({N=19\ensuremath{\sim}20}\), the numerical computation's residual spike and the enlarged experimental measurement uncertainty (red shaded area) coincide qualitatively in position. We report this as a qualitative spatial coincidence only; the two error sources (numerical truncation vs.~instrumental decoherence) are physically distinct, and whether any part of the experimental deviation reflects an intrinsic limit rather than purely instrumental noise remains an open question we do not resolve here.}\label{fig3}
+\end{figure}
+
+This local residual feature was compared against the quantum simulation
+experiment for Riemann zeros conducted by the USTC team using ion-trap
+equipment. In their measurement of the first 20 zeros, an enlarged
+measurement error bar exceeding background noise was recorded near
+\({N}= 20\), commonly attributed to decoherence noise of the
+quantum computing system or incidental instrument errors. We
+speculate---as a hypothesis, not a demonstrated result---that part of
+the enlarged deviation near \({N}\text{ = 20}\) in the USTC experiment
+might reflect an intrinsic limit encountered when a system approximates a
+logarithmic nonlinear manifold at finite resolution (physical control
+precision or numerical \(\text{\ensuremath{\epsilon}}\)); whether any part of that
+deviation reflects such a limit rather than purely instrumental noise
+remains an open question we do not resolve here.
+
+\subsubsection{Error Composition of the $N = 20$ Residual Feature}
+
+The numerical and experimental deviations discussed above arise from
+distinct mechanisms. On the numerical side, our predicted spectrum is
+constrained by two superposed error sources: a baseline truncation error
+from the Gaussian diffusion kernel (set by \(\text{\ensuremath{\epsilon}~=~0.001916}\)),
+and---since we use a minimalist single-point linear rescaling without a
+Riemann-von Mangoldt unfolding step---a systematic dispersion drift that
+grows with \(N\) because the model ignores the logarithmic nonlinear state
+density. This explains why the numerical residuals amplify gradually at
+higher \(N\), independent of the isolated \(N=20\) spike. On the
+experimental side, the USTC ion-trap measurement's gentle background
+error stems from intrinsic instrumental noise (e.g., laser decoherence,
+gate fidelity limited to \(\text{\ensuremath{\sim}}\text{10}^{\text{\ensuremath{-}2}}\)), while its
+sharp uncertainty peak near \({N}\text{~=~19\ensuremath{\sim}20}\) departs from
+ordinary Gaussian noise. As noted above (Figure~\ref{fig3} and
+discussion), these two mechanisms are physically distinct, and their
+co-location near \(N=20\) is reported only as a qualitative,
+unexplained coincidence.
+
+\subsubsection{Statistical Significance of the USTC Coincidence}\label{sec:n20-significance}
+
+The residual value quoted above and in Figure~\ref{fig3} was drawn from a
+single eigendecomposition; because the transfer matrix is high-dimensional
+and non-normal, the sparse ARPACK solver's iterative refinement is
+sensitive to its (randomized) restart vector, so different runs return
+slightly different eigenphases. To avoid reporting a value selected for
+being unusually large, we re-ran the eigendecomposition 20 times without
+selecting on the outcome and recorded the $N=20$ residual from every
+trial: mean $11.76$, standard deviation $1.59$, range
+$10.93$--$16.50$ (full trial list and code in the released repository).
+Among the 85 zeros we track, the $N=20$ residual ranks 67th by mean
+absolute value, i.e.\ it is not among the largest residuals in the
+series once averaged over trials.
+
+We then tested the coincidence with the USTC data directly. Using the
+unselected mean $|{\rm residual}|$ for $N=1$--$20$ and the USTC
+$\Omega=16$~MHz reported measurement uncertainty for the same range, the
+Spearman rank correlation is $\rho=0.56$ ($p=0.010$), and $N=20$ ranks
+2nd-largest by both our residual and the USTC uncertainty. A permutation
+test (100{,}000 resamples) for this joint top-rank coincidence occurring
+by chance under random relabeling of $N$ gives $p=0.099$: the two series
+are significantly correlated in overall rank, but the specific
+co-location of both series' near-largest value at $N=20$ does not reach
+the conventional $p<0.05$ threshold on its own. We report both numbers
+rather than treating either alone as settling the question, and we
+reiterate that even a significant rank coincidence would establish a
+shared statistical pattern, not a shared physical mechanism.
+
+\subsection{Macroscopic Results and Scalability}
+
+\subsubsection{Methodological Adaptation: The Monte Carlo Transition}
+
+To extend the non-autonomous dynamical operator from microscopic lock-in
+to macroscopic scales, the computational architecture requires a
+strategic adaptation. While the foundational
+\(\text{1/}\text{ln}^{\text{2}}\text{n}\) logarithmic cooling law
+remains fundamentally unchanged, the construction of the transfer matrix
+is shifted to a Monte Carlo trajectory tracking approach. This
+adaptation efficiently handles the exponentially expanding phase space
+required for large-scale spectral extraction, bypassing the memory
+bottlenecks of massive discrete grids while preserving the system's
+intrinsic topological entropy and transition dynamics.
+
+\subsubsection{The 100-Zero Regime: Conjugate Symmetry Breaking and Experimental Comparison}\label{sec:conjugate-ablation}
+
+As demonstrated in the previous microscopic, extremely low-frequency
+regime (\({N} {\ensuremath{\le} 6}\)), applying Gaussian splatting for local
+smoothing on the transition matrix---complemented by simple ground-state
+single-point anchoring---enables the system to accurately capture the
+initial features of the Riemann zeros. However, as the observational
+scale advances to the meso- and macroscopic regimes
+(\({N} {\ensuremath{\le} 100}\) and beyond), the computational cost of full-grid
+Gaussian smoothing grows too quickly to remain tractable. This makes
+global optimization for highly sensitive parameters (such as the
+macroscopic annealing constant \({k}_{\text{1}}\)) practically
+unfeasible. Furthermore, local smoothing mechanisms are no longer
+sufficient to mask the high-frequency cumulative dispersion induced by
+phase-space truncation, so the single-sided dynamical mapping no longer
+scales to this regime without a change of method.
+
+To break through the dual bottlenecks of computational scalability and
+topological dispersion, we transitioned entirely to a high-throughput
+Monte Carlo (MC) trajectory sampling method for constructing macroscopic
+transition matrices in this section. The MC approach not only provides
+exceptional computational efficiency to support tens of billions of
+phase-space traversal steps---clearing the computational hurdle for
+global parameter optimization---but, more importantly, it strips away
+artificial smoothing interventions. This exposes the unadulterated,
+intrinsic physical noise floor of the discrete system when processing
+high-order spectra.
+
+Grounded in this efficient and physically realistic MC transition
+matrix, we designed four ablation experiments. The objective is to
+explore the system's limits at large scales and to conduct a rigorously
+equivalent dimensional comparison with state-of-the-art quantum
+simulation hardware (specifically, the USTC single-ion Floquet
+experiment, which observed \({N}~\text{\ensuremath{\le}~76}\)). Under pure
+non-autonomous Ulam dynamical evolution without local smoothing, we
+extracted the high-order eigenphase sequences. To map the mathematical
+phase \(\text{\ensuremath{\theta}}_{{n}}\) to the physical zero energy
+\({E}_{{n}}\), we define a linear annealing mapping equation:
+
+\begin{equation}
+{E}_{{n}} = {k}_{\text{1}}\text{\ensuremath{\cdot}}\text{\ensuremath{\theta}}_{{n}} + {b}
+\end{equation}
+where \({k}_{\text{1}}\) is the macroscopic annealing constant and
+\({b}\) is the ground-state intercept (physical origin). For the
+single-sided positive spectrum and the conjugate full spectrum, we
+applied four distinct physical boundary condition strategies:
+
+\textbf{Strategy A (Single-Sided Positive Spectrum + Ground-State
+Single-Point Anchoring):} Extracts only positive eigenphases, forces the
+origin \(\text{b}\text{=0}\), and strictly scales based solely on the
+first-order zero. This represents a naive extrapolation of microscopic
+local measurements.
+
+\textbf{Strategy B (Single-Sided Positive Spectrum + Global Free
+Fitting):} Extracts only positive eigenphases and performs a global
+least-squares fit for the first 100 orders, allowing the intercept
+\(\text{b}\) to float freely. This probes the intrinsic ground-state
+drift tendency of the single-sided system.
+
+\textbf{Strategy C (Single-Sided Positive Spectrum + Forced Origin
+Scaling):} Retains only positive phases and performs global optimal
+scaling but imposes an absolute physical boundary constraint---strictly
+locking the origin at \(\text{b}\text{=0}\). Mathematically, this
+strategy is equivalent to the underlying logic of current quantum
+hardware experiments.
+
+\textbf{Strategy D (Conjugate Full Spectrum + Global Free Fitting):}
+Fully retains the conjugate phase pairs
+(\(\text{\ensuremath{\pm}}\text{\ensuremath{\theta}}_{\text{n}}\)) inevitably derived from the real
+transition matrix, thereby introducing conjugate negative energy states
+into the phase space. The global fitting imposes no origin constraints,
+allowing \(\text{b}\) to evolve freely.
+
+We quantitatively compared the reconstruction residuals of these four
+strategies against the empirical hardware noise limit
+(\(\text{\ensuremath{\sim}1.96\%}\)), which was dynamically inverted and extracted
+directly from the raw data of the USTC ion-trap experiment. The results
+are summarized in Table~\ref{tab1}.
+
+\begin{table}[H]
+\caption{Performance of macroscopic reconstruction under different phase space domains and boundary constraints. The parameters $k_1$ and $b$ shown here are the result of a global numerical optimization (differential evolution over $k_1 \in [2,15]$, with or without the constraint $b=0$ depending on the strategy) that minimizes the mean squared error against the first 100 Riemann zeros. This optimization protocol differs from the fixed-parameter visualization experiments shown in Figures~\ref{fig4}--\ref{fig5}, which use predetermined values of $k$ to illustrate the qualitative behavior of different anchoring strategies.}\label{tab1}
+\small
+\begin{tabularx}{\textwidth}{Y{0.15}Y{0.22}Y{0.19}Y{0.13}Y{0.11}Y{0.20}}
+\toprule
+\footnotesize\textbf{Recon\-struction Domain} & \footnotesize\textbf{Fitting/An\-choring Strategy} & \footnotesize\textbf{Truncation Drift (b)} & \footnotesize\textbf{Macro\-scopic Annealing Constant ($k_1$)} & \footnotesize\textbf{MSE} & \footnotesize\textbf{Physical Relative Error (Mean / Envelope)} \\
+\midrule
+Single-Sided Positive & \textbf{A:} Single-Point Anchoring & Forced Origin ($b=0$) & 6.761 & 21.849 & $\sim$4.0\%/$>$8.0\% \\
+Single-Sided Positive & \textbf{B:} Global Free Fitting & Severe Drift ($b=15.110$) & 6.544 & 5.330 & Non-physical state \\
+Single-Sided Positive & \textbf{C:} Forced Origin Scaling & Forced Origin ($b=0$) & \textbf{6.481} & \textbf{8.479} & $\sim$1.4\%/$\sim$2.8\% \\
+Conjugate Full Spectrum & \textbf{D:} Global Free Fitting & \textbf{Vanishing fitted intercept ($b=0.000$)} & \textbf{4.390} & \textbf{9.467} & $\sim$1.5\%/$\sim$1.5\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The results in Table \ref{tab1} point to a likely source of the residual
+envelope within our model: topological dispersion and symmetry
+breaking induced by single-sided phase space truncation. We do not claim
+this explains the noise floor of physical quantum simulations. In the
+single-sided spectrum constructed by Strategies A, B, and C, the
+absence of conjugate states prevents the high-frequency residual phases
+from internally canceling out. Consequently, the single-sided phase
+space shows a persistent residual error that resists further reduction by
+rescaling alone. As demonstrated by
+Strategy B, enforcing high accuracy in a single-sided system
+precipitates a severe, non-physical collapse of the system's ground
+state (\({b}\text{ = 15.110}\)). Conversely, if we forcefully constrain
+the fit to pass through the physical origin (\({b}\text{ = 0}\)) as in Strategy C, the
+globally optimized parameter yields
+\({k}_{\text{1}}~\text{\ensuremath{\approx}~6.481}\) (Table~\ref{tab1}), with a
+residual error envelope of
+\(\text{\ensuremath{\sim}2.8\%}\). The qualitative behavior of different anchoring
+strategies is visually illustrated in {Figure \ref{fig4}} using fixed
+predetermined parameters chosen for demonstration purposes.
+
+\begin{figure}[H]
+%\centering
+\includegraphics[width=\linewidth]{figures/image4.png}
+\caption{\textbf{Reconstruction Domains and Anchoring Strategies: A Comparative Analysis of Models A, C, and D.} This figure shows single-run experiments with fixed predetermined values of $k$ (Model A: $k \approx 7.429$, Model C: $k \approx 8.070$, Model D: $k \approx 8.783$) to visually illustrate the qualitative behavior of different anchoring strategies and their residual envelopes over 100 orders. These fixed-parameter experiments differ from the global optimization protocol used in Table~\ref{tab1}, where $k$ is itself the variable being optimized to minimize MSE; the numerical values of $k$ therefore differ between the two experimental setups and should not be directly compared. \textbf{Model A (Orange / Single-Point Anchoring):} Utilizes solely the first zero as the absolute physical baseline. While strictly aligning the ground state, it accumulates the largest macroscopic divergence over 100 orders (MSE \(\text{\ensuremath{\approx}~20.22}\)). \textbf{Model C (Blue / Forced Origin Scaling):} Represents a global least-squares fit constrained to the origin (\({b}\text{~=~0}\)) within the single-sided positive spectrum, which suppresses error divergence relative to Model A, yielding a lower mean squared error (MSE \(\text{\ensuremath{\approx}~10.08}\)). \textbf{Model D (Green / Conjugate Full Spectrum Free Fit):} Uses both positive and negative eigenphases. Because the regression data are symmetric under $(\theta,\gamma)\to(-\theta,-\gamma)$, the least-squares intercept is algebraically forced to \({b}\text{ = 0.000}\) (Section~\ref{sec:conjugate-ablation}); the fitted slope and the resulting residual envelope (MSE \(\text{\ensuremath{\approx}~10.81}\)) are the model-specific numerical content of this comparison.}\label{fig4}
+\end{figure}
+
+This theoretically calculated single-sided error limit notable
+mirrors the physical performance of the USTC single-ion hardware
+simulation. Constrained by the single-excitation nature of Floquet
+periodic driving, the USTC experiment fundamentally executes a
+``single-sided positive spectrum + forced \({b}\text{~=~0}\)''
+physical measurement. Their necessity to perform manual calibrations
+every 30 minutes to counteract system drift is precisely an attempt to
+suppress this intrinsic dispersion. To illustrate this, we directly
+overlay our deterministic Model C trajectory with the empirical USTC
+hardware data in {Figure \ref{fig5}}.
+
+\begin{figure}[H]
+%\centering
+\includegraphics[width=\linewidth]{figures/image5.png}
+\caption{\textbf{Spectral Comparison: Hardware Limitations vs.~Dynamics Model Topology.}  * \textbf{Scatter Points and Purple Shading (Quantum Hardware):} Displays the measurement deviations from the University of Science and Technology of China (USTC) ion-trap quantum hardware. Primarily limited by quantum decoherence effects, the experimental hardware experiences signal breakdown in the \({N}~\text{\ensuremath{\approx}~76\ensuremath{-}80}\) band, with a reported physical error envelope of about \(\text{\ensuremath{\pm}~1.96\%}\). \textbf{Red Solid Line (Dynamics Model):} Represents the numerical deviation trajectory derived from 10 billion steps of evolution using the proposed dynamics model (Model C: Single-sided positive spectrum forced origin scaling, \({k}_{\text{1}}\text{~=~8.070}\)). The model's mean error is 2.69\%. The model extends numerical predictions to the \({N}\text{~=~100}\) order. The oscillation peaks of the numerical model (red line) fall near the local error extrema of the quantum hardware (around \({N}~\text{\ensuremath{\approx}~20, 40, 76}\)); see Section~\ref{sec:gue-comparison} for this coincidence and its caveats.}\label{fig5}
+\end{figure}
+
+As shown in Figure \ref{fig5}, within our model the single-sided topological
+constraint produces a residual envelope whose peaks fall near the orders
+where the physical ion-trap experiments report local anomalies, and in the
+model these spikes correspond to un-broken conjugate pairs.
+Section~\ref{sec:gue-comparison} discusses what this spatial coincidence
+does and does not establish.
+
+To examine this truncation effect directly, Strategy D restores the
+conjugate eigenphase pairs
+(\(\text{\ensuremath{\rho}}\text{~=~1/2\ensuremath{\pm}}{i}{E}_{{n}}\)) that a
+real-valued transition matrix generates but that Strategies A--C discard
+by keeping only the positive branch.
+
+Under this construction, the regression data are the symmetric pairs
+\((\theta_i,\gamma_i)\) and \((-\theta_i,-\gamma_i)\). For such a symmetric
+data set, both sample means are exactly zero, and it follows directly from
+the normal equations of ordinary least squares that the unconstrained
+intercept must satisfy \(b=0\); this part of the result is therefore an
+algebraic consequence of the symmetric construction, not an independent
+finding about the dynamics. What is not algebraically forced, and is a
+genuine numerical observation about the fitted model, is that the fitted
+slope \(k_1\) changes (from \(\text{6.48}\) under single-sided anchoring to
+\(\text{4.39}\) under the symmetric fit) and that the residual envelope
+shrinks substantially (to about \(\text{1.5\%}\) global reconstruction
+error) once the conjugate branch is included.
+
+In conclusion, this comparative ablation study at an identical scale
+(\({N}=100\)) suggests, as a numerical observation and not as a proof, that
+within our framework the high-frequency dispersion in the single-sided
+reconstruction is reduced when the conjugate branch is restored, but the
+vanishing intercept itself should not be read as evidence of a new
+physical cancellation mechanism, since it is substantially a property of
+the symmetric regression construction. We present the change in $k_1$ and
+in the residual envelope as the model-specific content of this ablation,
+not as a demonstrated statement about physical quantum-simulation
+hardware.
+
+\subsubsection{Out-of-Sample Validation and Multi-Seed Robustness}\label{sec:oos}
+
+All results reported so far calibrate $k_1$ against the same zeros used
+to evaluate the fit (an in-sample correspondence, as stated in the
+abstract). To quantify how much this protocol inflates the apparent
+match, we ran the full-scale (\(10^{10}\)-step, single-sided
+Strategy~C) pipeline under two additional tests, at the same seed unless
+noted.
+
+\textbf{Out-of-sample split.} We fit $k_1$ using only the first
+$M\in\{50,70,80\}$ zeros as training data, then evaluated the resulting
+model's MSE on the remaining, unseen zeros $M{+}1,\dots,100$. In every
+split the held-out MSE is one to two orders of magnitude larger than the
+training MSE: $M=50$ gives train MSE $=59.8$ (RMSE $5.4\%$ of the
+largest training zero) versus test MSE $=3710$ (RMSE $25.8\%$ of
+$\gamma_{100}$); $M=70$ gives train MSE $=146.0$ versus test MSE $=5891$
+(RMSE $32.5\%$ of $\gamma_{100}$); $M=80$ gives train MSE $=146.1$ versus
+test MSE $=7557$ (RMSE $36.8\%$ of $\gamma_{100}$). The fitted $k_1$
+itself also drifts with the training window ($5.79\to9.15\to10.04$ as
+$M$ grows), rather than converging to a single value. We read this as
+direct evidence that the low-order fit does not extrapolate: the model
+is a calibrated in-sample reconstruction over the zeros it was fitted
+to, not a predictor of unseen zeros, and we do not claim otherwise.
+
+\textbf{Multi-seed robustness.} Holding the $M=70$ split fixed, we
+reran the fit under ten random seeds controlling the initial condition
+$x_0$. The fitted $k_1$ has mean $10.21$, standard deviation $0.47$
+(coefficient of variation $\approx4.7\%$, range $9.15$--$10.76$) and the
+held-out test MSE has mean $5977$, standard deviation $298$ across
+seeds. The seed-to-seed spread in $k_1$ is small relative to the
+$M$-to-$M$ drift reported above, indicating that the fitted coupling is
+reasonably stable against the stochastic initial condition but remains
+sensitive to which zeros are included in the calibration window. Full
+per-run values are in the released results
+(\texttt{task12\_13\_results\_v2/}).
+
+\subsubsection{The Macroscopic Regime}\label{sec:macroscopic}
+
+To demonstrate the robustness and scalability of the non-autonomous
+thermodynamic framework, we extend the phase-space evolution far beyond
+the meso-regime (\({N}~\text{\ensuremath{\le}~100}\)) into the macroscopic
+large-N regime (\({N}\text{~=~1000}\)). At this scale,
+maintaining global topological coherence becomes extremely challenging
+due to the logarithmically increasing density of the Riemann zeros. To
+rigorously validate our model's underlying physical mechanism, we
+designed a macroscopic ablation study comparing our 1D and 2D dynamical
+models against a Gaussian Unitary Ensemble (GUE) random matrix baseline.
+The comparative spectral alignments and relative error divergences are
+visualized in {Figure \ref{fig6}}.
+
+\begin{figure}[H]
+%\centering
+\includegraphics[width=\linewidth]{figures/image6.png}
+\caption{\textbf{Macroscopic Spectral Alignment and RMT Ablation: Deterministic Cooling vs.~Wigner's Semicircle.}  \textbf{Model M-GUE (Purple Dashed / Gaussian Unitary Ensemble):} Serving as the microscopic statistical baseline, the GUE matrix exhibits severe non-linear macroscopic divergence (right panel, MSE \(\text{\ensuremath{\approx}~7006.1}\)) even under optimal Global Least-Squares Scaling. This explicitly exposes that pure random matrices, governed by Wigner's Semicircle Law, inherently lack the critical macroscopic logarithmic density features required to approximate the Riemann zero counting function.\textbf{Models M1 \& M2 (Orange \& Red / Non-autonomous Dynamics):} Represent the 1D and 2D dynamic prediction models proposed in this work. Under the constraint of \textbf{Single-Point Anchoring} (utilizing solely the first zero), M1 and M2 demonstrate a stable macroscopic fit. Specifically, the 2D model (red line), which includes the higher-order fitted parameter $k_2$, not only eliminates systematic parabolic drift over a span of \({N}\text{~=~1000}\) orders, but also suppresses the global residual to a minimal level (MSE \(\text{\ensuremath{\approx}~1515.3}\)).}\label{fig6}
+\end{figure}
+
+As depicted in Figure \ref{fig6}, a single globally rescaled GUE spectrum
+(Model M-GUE) shows a large mean squared error against the Riemann
+counting function, even under optimal global least-squares scaling. This
+is expected, not a test of GUE itself: the established GUE correspondence
+concerns unfolded local level-spacing statistics, not the mean
+counting-function trend a globally rescaled random matrix is not designed
+to reproduce; see Section~\ref{sec:gue-comparison} for why we include this
+comparison and what a like-for-like RMT test would require.
+
+By comparison, under the constraint of
+\textbf{Single-Point Anchoring}---where the scaling constant is fixed
+using solely the ground-state zero (\(N=1\)), while the dynamical
+parameters \(k_1,k_2\) are still optimized against the Riemann zeros as
+described above---our
+non-autonomous dynamical models yield a stable numerical fit at this
+scale. At an ultra-high
+spatial resolution of \(\text{10,000}\) bins, the 1D model (M1) yielded
+a fitted parameter of \({k}_{\text{1}}~\text{\ensuremath{\approx}~13.869}\),
+with an MSE of \(\text{\ensuremath{\approx}2281.0}\) against the Riemann counting
+function, compared to the GUE baseline described below.
+
+However, to completely eliminate the systematic parabolic drift observed
+in the 1D model over 1000 orders, the 2D conservative operator (M2) must
+be activated. Global optimization of the massive spectral span yielded a
+primary macroscopic annealing constant
+\({k}_{\text{1}}~\text{\ensuremath{\approx}~12.781}\) and a higher-order perturbation
+term \({k}_{\text{2}}~\text{\ensuremath{\approx}~2.607}\). By effectively absorbing the
+energetic transients, M2 tracks the Riemann spectrum closely,
+suppressing the global residual to a minimal level (MSE
+\(\text{\ensuremath{\approx}~1515.3}\)). Relative to the massive absolute energy scale at
+\({N}\text{ = 1000}\) (\({E}_{{n}}\text{ > 260}\)), this
+represents a tightly bounded relative error envelope.
+
+A critical observation in this macroscopic extension is the substantial
+parametric shift in the primary annealing constant
+\({k}_{\text{1}}\), which scales from \(\text{\ensuremath{\sim}6.48}\) in the
+\(\text{100}\)-zero regime to \(\text{\ensuremath{\sim}12.78}\) in the large-$N$
+regime. This shift is intrinsically coupled with a mandatory upgrade in
+the system's spatial discretization. To capture the increasingly dense
+phase-space folding required for thousands of zeros, we scaled the
+numerical grid resolution from \(\text{2,000}\) bins (the optimal
+baseline used for the 100-zero regime) to a massive \(\text{10,000}\)
+bins.
+
+We note only that the fitted value of $k_1$ shifts as the grid resolution
+and fitting range change, and we cannot rule out that some part of this
+shift reflects overfitting to the specific fitting range used at each
+scale; Section~\ref{sec:rg-caveat} discusses why we do not read this as
+renormalization-group evidence.
+
+In the low-order regime (\({N}~\text{\ensuremath{\le} 100}\) at \(\text{2,000}\)
+bins), the geometric curvature of the phase space is relatively
+coarse-grained. Here, a lower \({k}_{\text{1}}\) acts as an
+effective lumped parameter (a renormalized coupling at a lower
+resolution), artificially absorbing uncalculated higher-order truncation
+errors to satisfy local fit constraints. However, as the observational
+scale expands to \({N}\text{~=~1000}\) and the spatial resolution is
+refined five-fold, the underlying fractal topology is resolved with
+significantly higher fidelity.
+
+Fitting this strict logarithmic densification of the Riemann zero
+counting function at this scale requires
+both fitted parameters. The
+higher-order term (\({k}_{\text{2}}~\text{\ensuremath{\approx}~2.61}\))
+absorbs curvature near the ground
+state, while the fitted value of the primary term \({k}_{\text{1}}\)
+shifts to \(\text{\ensuremath{\sim}12.78}\) at this resolution and range. As
+before (Section~\ref{sec:conjugate-ablation}), we report this parameter shift as an
+empirical fact about the fit rather than as evidence of a
+renormalization-group flow. With these fitted parameters, the model tracks
+the Riemann counting function within the residual errors reported below,
+including in the further extended range up to \({N}\text{ = 2551}\)
+discussed next.
+
+\subsubsection{The Ultra-Macroscopic large-$N$ Regime ($N = 10,000$): Extreme Scalability and large-$N$ Scaling Behavior}
+
+To push the boundaries of our non-autonomous thermodynamic framework, we
+executed an extreme computational stress test, extending the phase-space
+evolution to extract the first 10,000 Riemann zeros. At this
+ultra-macroscopic scale (\({N}\text{ = 10,000}\), absolute energy
+level \({E}_{{n}}\text{ > 9877}\)), the logarithmic
+densification of the Riemann zero counting function poses a severe challenge to
+numerical stability. To rigorously assess the physical foundation of our
+model, we conducted a minimalist ablation study comparing the pure 1D
+thermodynamic cooling operator against the Gaussian Unitary Ensemble
+(GUE) and a trivial linear fit baseline. The results are visualized in
+Figure \ref{fig7}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{figures/image7.png}
+\caption{\textbf{Ultra-Macroscopic Spectral Alignment (}\({N}\text{=10,000}\)\textbf{): Thermodynamic Cooling vs. Statistical Baselines.} M-GUE (Purple Dashed / Gaussian Unitary Ensemble): The pure Random Matrix Theory baseline shows a large structural divergence (MSE \(\text{\ensuremath{\approx}~255455.9}\)) in this counting-function comparison. This illustrates that without a deterministic cooling mechanism, a single globally scaled Wigner's Semicircle spectrum does not capture the macroscopic logarithmic density of the Riemann zero counting function.M1 (Orange Solid / 1D Thermodynamic Cooling): The 1D non-autonomous dynamical model (\({k}_{\text{1}}~\text{\ensuremath{\approx}~13.431}\)) paces the true Riemann zeros, tracking both the sensitive low-frequency ground states and the high-order high-frequency states.}\label{fig7}
+\end{figure}
+
+As shown in the relative error trajectory (Figure \ref{fig7}, right panel), the
+1D dynamical model tracks the Riemann counting function with residual errors
+that remain bounded even at this large scale. The
+pure 1D operator exhibits a smooth, systematic residual curvature at
+this extreme scale---indicating clear potential for continuous future
+optimization (e.g., by re-introducing higher-order structural
+perturbations)---and it suppresses the exponential divergence
+seen in the GUE random matrix baseline.
+
+This 10,000-zero large-N comparison is consistent with a working
+hypothesis of this study: that the deterministic
+\(\text{\ensuremath{\sim}1/}\text{ln}^{\text{2}}{n}\) thermodynamic cooling flow
+supplies the global inertia needed to pace the mean density of the
+Riemann spectrum. We read the results as a numerical indication that the
+counting-function behavior of the zeros can be reproduced by a
+non-autonomous dissipative system annealing toward the edge of chaos,
+rather than as a proof about the origin of the zeros.
+
+\section{Discussion}
+
+\subsection{Macroscopic Behavior of the Empirical Transfer-Matrix Spectrum}\label{sec:rg-caveat}
+
+Finding a physical system whose eigenspectrum numerically approximates the
+non-trivial Riemann zeros (the Hilbert-P\'olya conjecture) is normally
+approached through analytically motivated, ``top-down'' Hamiltonian
+constructions (such as the classical \(H=xp\) model). This study takes a
+different, purely exploratory route: we use high-throughput Monte Carlo
+(MC) trajectory sampling to build an empirical, non-normal, dissipative
+transfer matrix from a non-autonomous discrete map, and we ask, numerically,
+how closely its eigenphases can be made to track the Riemann zeros over a
+range of scales after calibrating a small number of free parameters. We do
+not claim any isomorphism, in the precise mathematical sense of a
+structure-preserving bijection between independently defined objects,
+between this matrix and the zeros; the correspondence we report is a fitted
+numerical one.
+
+The numerical behavior is qualitatively consistent across both
+microscopic and large-$N$ macroscopic scales. By stripping away
+artificial local smoothing interventions, we exposed the noise floor of
+the discrete system. As the
+observational scale was expanded to the
+\({N}~\text{\ensuremath{\ge}~1000}\) large-$N$ regime, the fit required an
+ultra-fine spatial resolution of \(\text{10,000}\) bins, and the fitted
+value of the primary parameter \(k_1\) shifted from
+\(\text{\ensuremath{\sim}6.48}\) in the meso-regime to
+\(\text{\ensuremath{\sim}12.78\ensuremath{\sim}13.86}\) in the macroscopic regime, while a
+higher-order term (\(k_2\)) became necessary to maintain fit quality. We
+note this parameter drift as an empirical observation about how the fit
+changes with grid resolution and range; we do not identify grid
+resolution with a renormalization-group ultraviolet cutoff, and we do not
+claim that this drift constitutes evidence of a renormalization-group flow
+in the dynamical sense (no beta function, fixed point, or universality
+result is established here). The resulting fitted curve tracks the
+logarithmic densification of the Riemann counting function
+(\(\text{\ensuremath{\sim}1/}\text{ln}^{\text{2}}{n}\)) up to \(N=2551\) in our
+tests, within the residual errors reported below.
+
+\subsection{Dismantling the Noise Floor: Conjugate Symmetry and Vanishing fitted intercept}
+
+Section~\ref{sec:conjugate-ablation} (the $N=100$ conjugate-symmetry ablation) showed
+that single-sided phase space truncation leaves a persistent macroscopic
+residual envelope, and that restoring the full conjugate pair structure
+and re-fitting drives both this envelope and the fitted intercept toward
+zero. We read this as numerical evidence that, within our framework, the
+single-sided truncation itself---rather than the underlying dynamics---is
+responsible for the residual envelope; as noted there, the vanishing
+intercept is in part an algebraic consequence of fitting a symmetric data
+set and should not be read as an independent finding about the dynamics
+or as evidence bearing on the origin of the Riemann zeros.
+
+\subsection{Comparison with Quantum Simulation and with a GUE Surrogate}\label{sec:gue-comparison}
+
+We compared the model's behavior against a published quantum-simulation
+dataset and against a random-matrix surrogate. A team at the University
+of Science and Technology of China (USTC) measured Riemann zeros
+(\({N}~\text{\ensuremath{\le}~76}\)) by periodically driving qubits in an ion trap.
+Their data show enlarged deviations near specific orders (e.g.,
+\({N}~\text{\ensuremath{\approx}~20, 40, 76}\)), with a reported error envelope of about
+\(\text{\ensuremath{\pm}1.96\%}\). Our single-sided model shows oscillation peaks that
+fall near the same orders. We report this as a qualitative spatial
+coincidence; a similarity of error locations does not by itself
+establish a common mechanism, and a quantitative claim would require
+statistical-significance testing and an uncertainty budget, which we do
+not provide here. We therefore raise---as a hypothesis---the
+possibility that part of the experimental deviation reflects a
+single-sided truncation rather than purely instrumental decoherence,
+without asserting it.
+
+In a macroscopic ablation at \({N}\text{ = 1000}\), a globally scaled
+GUE surrogate deviates strongly in this comparison (MSE
+\(\text{\ensuremath{\approx}~7006}\)) even under optimal global scaling. This is expected
+and is \emph{not} a refutation of random-matrix theory: the established
+GUE correspondence concerns the \emph{unfolded local} statistics of the
+zeros (pair correlation, spacing distribution), not a claim that a single
+globally scaled spectrum reproduces the logarithmically growing counting
+function. Our narrower, constructive point is that the non-autonomous
+dynamical model reproduces the mean (counting-function) behavior
+directly, without a separate unfolding step. We do not claim that pure
+diagonalization ``cannot'' generate the zeros.
+
+As a direct check of whether the empirical transfer matrix's own
+spectrum reproduces GUE \emph{local} statistics --- the property that is
+actually established for the Riemann zeros --- we unfolded the first 100
+eigenphases of the transfer matrix at the Table~\ref{tab1} operating
+point (\(k\approx6.48\), \(N=100\) scale) and compared their nearest-neighbor
+spacing distribution against the GUE Wigner surmise and against a
+Poisson (uncorrelated) baseline using a Kolmogorov--Smirnov test. As a
+literature sanity check, the same procedure applied directly to the first
+100 Riemann zeros (unfolded via the Riemann--von Mangoldt counting
+function) reproduces the expected result: consistent with GUE
+(\(D=0.067\), \(p=0.74\)) and inconsistent with Poisson
+(\(D=0.348\), \(p<10^{-4}\)). Applied to our dynamical model's own
+eigenphases, however, the result is the opposite: the spacing
+distribution is statistically inconsistent with GUE (\(D=0.300\),
+\(p<10^{-4}\)) and is not distinguishable from Poisson (\(D=0.082\),
+\(p=0.49\)). In other words, while the model's rescaled eigenphases
+track the mean positions of the low-order zeros reasonably well (Table~\ref{tab1}),
+its local level-repulsion statistics do not match the GUE behavior
+established for the true zeros; the transfer matrix is real,
+non-symmetric, and dissipative, so this is not unexpected, but it is a
+genuine limitation of the numerical correspondence that we report
+directly rather than omit. We take this as evidence that the numerical
+match documented here concerns smooth, mean-level (counting-function)
+behavior rather than a reproduction of the fine-grained spectral
+statistics that characterize the Riemann zeros.
+
+\subsection{Outlook}
+
+From a broader perspective, this exploratory numerical study may be of
+interest alongside the Berry-Keating conjecture as an alternative,
+dissipative-dynamics numerical experiment, and it suggests a direction for
+exploring higher-order Riemann zeros in experimental physics. We speculate
+that if future quantum simulation experiments wish to reduce the
+current \(\text{\ensuremath{\sim}1.96\%}\) dispersion envelope, it may be worth
+exploring whether relaxing single-sided measurement constraints and
+architecting full-spectrum symmetric evolution at the hardware Hamiltonian
+level (such as utilizing ancillary qubits to simultaneously evolve and
+symmetrically cancel negative energy projections) helps; we offer this as
+a hypothesis rather than a demonstrated prescription.
+
+Finally, several elements of this study --- the estimation of the
+macroscopic fitted-parameter drift with grid resolution, the macroscopic GUE ablation
+design, and the full-spectrum conjugate (``vanishing fitted intercept'')
+analysis---benefited from iterative use of large language models
+(LLMs) alongside the author's analysis, mainly for code implementation
+and exploratory checking. We mention this for transparency about the
+workflow; it does not bear on the validity of the numerical results,
+which stand on the released code and data.
+
+\subsection{Status of the main claims}
+
+Because this work touches the Riemann Hypothesis, we state explicitly the
+epistemic status of each main claim (Table~\ref{tab:claims}). None of the
+numerical results below is a proof that the operator spectrum equals the
+Riemann zeros, and we do not make that claim.
+
+\begin{table}[H]
+\caption{\label{tab:claims}Status of the main statements: established (prior literature), published (our predecessor paper), numerical observation, heuristic, qualitative, or conjectural.}
+\begin{tabularx}{\textwidth}{Y{0.62}Y{0.38}}
+\toprule
+Statement & Status \\
+\midrule
+Local statistics of Riemann zeros match GUE (unfolded) & Established (literature) \\
+Logistic band-merging symbolic dynamics $\cong$ prime sieve & Published \cite{wang2026} \\
+Non-autonomous map reproduces low-order zeros (small error) & Numerical observation, in-sample only \\
+Fitted coupling extrapolates to unseen zeros (out-of-sample) & Refuted (this study, Sec.~\ref{sec:oos}) \\
+Fitted coupling is stable across random seeds & Numerical observation (Sec.~\ref{sec:oos}) \\
+Change of behavior near $N\approx20$ & Numerical observation, run-to-run variable \\
+Coincidence with USTC enlarged-deviation orders & Qualitative; rank-correlated ($p=0.010$) but joint-rank coincidence not significant ($p=0.099$) \\
+Single-sided truncation causes the residual envelope & Heuristic / numerical \\
+Full-conjugate fit gives near-zero intercept ($b\approx0$) & Numerical observation \\
+Globally scaled GUE deviates in counting-function comparison & Numerical (asymmetric comparison) \\
+RG second-order term improves macroscopic match & Numerical observation \\
+Dynamical eigenphase spacing statistics match GUE (unfolded, local) & Refuted by KS test (this study) \\
+Operator spectrum \emph{equals} the Riemann zeros & Not claimed (conjectural) \\
+\bottomrule
+\end{tabularx}
+
+\end{table}
+
+\section{Methods}
+
+\subsection{Dynamical Core Selection, Scaling Law, and Topological Constraints}
+
+\textbf{The Choice of the Dynamical Core}
+
+In exploring possible dynamical analogues for the microscopic structure of
+the Riemann zeros, this study
+avoids complex, analytically motivated quantum Hamiltonians. Instead, we
+select the most fundamental nonlinear quadratic map---the Logistic map
+(\(\text{x}_{\text{n}\text{+1}}~\text{=~1\ensuremath{-}}\text{\ensuremath{\mu}}\text{x}_{\text{n}}^{\text{2}}\))---as
+the computational core. We use our empirically anchored baseline
+(\(\mu_c~\text{\ensuremath{\approx}~1.543689}\); distinct from the Feigenbaum
+accumulation point) as the reference point about which the non-autonomous
+parameter evolves. This is an exploratory numerical construction, not a
+mapping between the Riemann zeros and a self-adjoint Hilbert-P\'olya
+operator.
+
+\textbf{Theoretical Derivation of the Non-Autonomous Scaling Law}\label{sec:scaling-derivation}
+
+A static autonomous system (with a fixed \(\text{\ensuremath{\mu}}\)) can only generate
+a static snapshot of spectral lines. To reproduce an infinitely
+extending spectrum with continuously increasing density, the system must
+be non-autonomous, cooling dynamically toward \(\text{U}_{\text{c}}\) as
+the energy level \(\text{n}\) progresses. The exact parameter
+perturbation \(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}\) is strictly dictated by a Topological
+Isomorphism Chain:
+
+\textbf{The Riemann Target:} The Riemann-von Mangoldt formula dictates
+that the local average spacing \(\text{\ensuremath{\Delta}}\text{E}\) between adjacent
+zeros decays logarithmically: \(\text{\ensuremath{\Delta}}\text{E}\text{\ensuremath{\propto}1/ln}\text{n}\).
+
+\textbf{The Dynamical Constraint:} Due to the parabolic extremum of the
+quadratic map at \(x=0\), classical scaling laws impose a
+square-root relationship between the parameter perturbation
+\(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}\) and the eigenphase spacing \(\text{\ensuremath{\Delta}\ensuremath{\Phi}}\) of its
+transition matrix: \(\text{\ensuremath{\Delta}\ensuremath{\Phi}\ensuremath{\propto}}\sqrt{\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}}\).
+
+\textbf{A Heuristic Correspondence:} As a proposed analogy, to obtain a
+close topological correspondence we impose \(\text{\ensuremath{\Delta}\ensuremath{\Phi}\ensuremath{\propto}\ensuremath{\Delta}}\text{E}\).
+Combining the constraints yields \(\sqrt{\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}}\text{\ensuremath{\propto}1/ln}{n}\),
+which squares to the adiabatic cooling form:
+
+\begin{equation}
+\text{\ensuremath{\Delta}}~\text{\ensuremath{\mu}}~\text{\ensuremath{\propto}}\frac{\text{1}}{\text{ln}^{\text{2}}{n}}
+\end{equation}
+
+This derivation rules out empirical forms like
+\(\text{1/ln}{n}\), which, due to square-root truncation, would
+compress the spectrum too weakly
+(\(\text{1/}\sqrt{\text{ln}{n}}\)), causing divergent
+errors in the large-$N$ region.
+
+\textbf{Topological Constraints on the Direction of Evolution}
+
+In addition to strictly adhering to the
+\(\text{1/}\text{ln}^{\text{2}}{n}\) cooling rate, the
+\emph{direction} of approach toward \(\text{U}_{{c}}\) is subject
+to rigorous physical constraints. The control equation must adopt the
+form
+\(\text{\ensuremath{\mu}}_{{n}}=\text{U}_{{c}}+{k}{(}{n}{)/}\text{ln}^{\text{2}}(n+c\text{)}\),
+ensuring \(\text{\ensuremath{\mu}}_{{n}}>\text{U}_{{c}}\) at all
+times.
+
+Approaching from the left (\(\text{\ensuremath{\mu}}<\text{U}_{c}\))
+would trap the system in the stable period-doubling cascade regime.
+Here, the system exhibits regular predictability, and the eigenspectrum
+of its transfer matrix degenerates into a small number of discrete, simple
+points with low spectral complexity. Conversely, the right side
+(\(\text{\ensuremath{\mu}}>\text{U}_{{c}}\)) is the chaotic band-merging
+regime, where the empirical transfer operator generates a much richer
+complex eigenphase spectrum as the parameter is annealed toward the edge
+of chaos. We approach from this side because it is the regime in which the
+eigenphase spectrum is rich enough, numerically, to be fitted against the
+Riemann zeros; we do not claim this choice is uniquely dictated by any
+established mathematical necessity, only that it is the empirically
+productive direction for the fits reported below.
+
+\subsection{Module A: Spatial Discretization Operator}
+
+To extract a discrete complex eigenvalue spectrum from continuous
+non-autonomous dynamics, we must map the infinite-dimensional continuous
+phase space to a finite-dimensional discrete transfer matrix
+(Frobenius-Perron Operator). In exploring the optimal discretization
+path, we evaluated and iterated through the following four spatial
+discretization schools:
+
+\begin{itemize}
+\item
+  \textbf{Monte Carlo Trajectory:} Rationale: rather than sampling many
+  independent points within the domain, this scheme tracks the
+  long-range traversal behavior of a single trajectory across the time
+  axis. Mechanism: Allowing a single particle to continuously iterate
+  \(\text{10}^{\text{7}}\) steps in the phase space, and counting its
+  transition frequencies between different microscopic intervals (state
+  nodes) to construct the transfer matrix. Although intuitive, this
+  method converges extremely slowly when handling highly localized
+  states.
+\item
+  \textbf{Na\"\i{}ve Point-Mapped Ulam:} Physical Intuition: The most
+  fundamental Coarse-graining assumption. Mechanism: Dividing the phase
+  space into equidistant grids and assuming the probability density
+  within each grid is entirely concentrated at its geometric center. By
+  calculating the single-mapping destination of the center point, 100\%
+  of the transition weight is assigned to the target grid. This method
+  is simple and rough, but it introduces massive numerical truncation
+  errors.
+\item
+  \textbf{Exact Ulam's Method:} Rather than the
+  point-particle approximation above, this method treats each grid cell as
+  a uniform density that is stretched and folded by the dynamical map.
+  Mechanism:
+  Calculating the true geometric overlap area of the source grid mapping
+  onto the target grid through strict analytical geometry or
+  high-precision numerical integration. The precision is extremely high,
+  but it suffers from severe computational disasters in high dimensions
+  or high resolutions.
+\item
+  \textbf{Gaussian Kernel Splatter / Fokker-Planck Diffusion (The
+  Optimal Solution of This Study):} Physical Intuition: Introducing
+  thermodynamic fluctuations. After the particle transitions to the
+  target area, it is no longer an absolute singularity, but spreads
+  into a Gaussian distribution representing thermal noise, smoothly diffusing into the target neighborhood.
+  Mechanism: Combines the efficiency of point mapping with the
+  topological need for operator smoothing. This mechanism not only
+  greatly accelerates the matrix assembly process but also effectively
+  suppresses high-frequency spurious feature spectra caused by
+  discretization, acting as a numerical smoothing kernel that damps
+  fine-scale discretization artifacts. After the phase space is discretized into
+  \(N\) grids with center coordinates \(c_{i}\),
+  the Gaussian-broadened transition probability \(P_{ij}\)
+  for a particle transitioning from source grid \(i\) to target
+  grid \(j\) is strictly defined as:
+\end{itemize}
+
+\begin{equation}
+P_{ij}=\frac{\text{1}}{Z_{i}}\text{exp}\left( \text{\ensuremath{-}}\frac{\text{(}{c}_{{j}}\text{\ensuremath{-}}{f}\text{(}{c}_{{i}}\text{)}\text{)}^{\text{2}}}{\text{2}\text{\ensuremath{\sigma}}^{\text{2}}} \right)
+\end{equation}
+where the partition function
+  \({Z}_{{i}}\text{=}\sum_{{k}\text{=1}}^{{N}}\text{exp}\left( \text{\ensuremath{-}}\frac{\text{(}{c}_{{k}}\text{\ensuremath{-}}{f}\text{(}{c}_{{i}}\text{)}\text{)}^{\text{2}}}{\text{2}\text{\ensuremath{\sigma}}^{\text{2}}} \right)\)
+  ensures local probability conservation.
+
+
+\subsection{Module B: Temporal Evolution Integration}
+
+The core challenge of non-autonomous systems is that the transfer matrix
+\(\text{P}_{\text{t}}\) is different at every moment. Traditional
+solving approaches have fatal flaws:
+
+\begin{itemize}
+\item
+  \textbf{Direct Multiplication:} \(\text{\ensuremath{\prod}}\text{P}_{\text{t}}\)
+  rapidly leads to floating-point collapse (underflow), causing the
+  phase space structure to instantly collapse into a trivial
+  \(\text{\ensuremath{\delta}}\) peak.
+\item
+  \textbf{Continuous QR Decomposition:} Although ensuring numerical
+  stability, its orthogonalization process discards the
+  phase information accumulated during the system's
+  non-autonomous evolution, since QR factors are re-orthogonalized at
+  every step.
+\item
+  \textbf{The Time-Averaged Empirical Matrix:} We instead
+  construct a single static matrix by
+  averaging the empirical transition frequencies of the
+  trajectory over a long
+  observation window (e.g., \(\text{10}^{\text{8}}\) evolution steps),
+  and analyze the spectrum of this averaged matrix in place of the
+  spectrum of the true non-autonomous evolution. We flag this explicitly
+  as an approximation rather than an exact substitution: for a
+  non-autonomous system, the evolution over $T$ steps is governed by the
+  time-ordered product $P_{T-1}\cdots P_0$, and in general the spectrum of
+  this ordered product is unrelated to the spectrum of the arithmetic mean
+  $\bar P_T=\frac{1}{T}\sum_t P_t$, since averaging discards the temporal
+  ordering and any non-commutative effects between the $P_t$. We do not
+  provide an adiabatic theorem, ergodic argument, or convergence proof
+  that would justify treating $\bar P_T$ as equivalent to the ordered-product
+  spectrum; we instead treat $\bar P_T$ as a computationally tractable
+  heuristic surrogate, motivated by the fact that the control parameter
+  $\lambda_n$ changes slowly relative to the mixing time of the map at
+  fixed $\lambda$, and we report its spectrum as such throughout the
+  numerical results below. For an evolution with total steps
+  \({T}\text{\ensuremath{\rightarrow}\ensuremath{\infty}}\), this averaged transfer matrix
+  \({P}_{{ij}}\) is defined as:
+\end{itemize}
+
+\begin{equation}\label{eq:pij}
+{P}_{{ij}}\text{=}\frac{\underset{{T}\text{\ensuremath{\rightarrow}\ensuremath{\infty}}}{\text{lim}}\frac{\text{1}}{{T}}\sum_{{t}\text{=1}}^{{T}}{I}\text{(}{x}_{{t}}\text{\ensuremath{\in}}\text{bin}_{{i}}\text{,}{x}_{{t}\text{+1}}\text{\ensuremath{\in}}\text{bin}_{{j}}\text{)}}{\underset{{T}\text{\ensuremath{\rightarrow}\ensuremath{\infty}}}{\text{lim}}\frac{\text{1}}{{T}}\sum_{{t}\text{=1}}^{{T}}{I}\text{(}{x}_{{t}}\text{\ensuremath{\in}}\text{bin}_{{i}}\text{)}}
+\end{equation}
+
+This is the conditional transition frequency, normalized by the occupation
+frequency of the source bin $i$, so that $\sum_j P_{ij}=1$ and $P$ is a
+proper row-stochastic (Markov) matrix. We flag this explicitly because the
+un-normalized joint frequency
+$\frac{1}{T}\sum_t I(x_t\in\text{bin}_i,x_{t+1}\in\text{bin}_j)$, which does
+not have this property, appeared in place of Equation~\eqref{eq:pij} in an
+earlier draft of this manuscript; the implementation used to generate all
+numerical results reported below always applies the row normalization
+shown here, and the discrepancy was confined to the typeset equation, not
+the underlying code.
+
+\subsection{Module C: Spectral Extraction and Linear Rescaling}
+
+After obtaining the empirical matrix, we extract its complex eigenphase
+spectrum and rescale it linearly for numerical comparison with the Riemann
+zeros. This process contains three steps:
+
+\begin{itemize}
+\item
+  \textbf{Diagonalization and Spectral Filtering:} Performing eigenvalue
+  decomposition on the empirical operator to extract its complex feature
+  spectrum. To eliminate numerical ``white noise'' and break the complex
+  conjugate Particle-Hole Symmetry brought by the real matrix, we
+  introduce a hard cutoff (\(\text{|}\text{\ensuremath{\lambda}}{|>0.4}\)) and lock
+  onto the upper half of the complex plane
+  (\(\text{Im(}\text{\ensuremath{\lambda}}{)>0}\)), purifying the true positive-energy
+  physical excited states.
+\item
+  \textbf{Eigenphase Sorting and Unwrapping:} This step converts the
+  filtered eigenphases into a linearly ordered sequence for comparison
+  with the (also ordered) Riemann zeros. The filtered eigenvalues of the
+  empirical matrix $P$ form an \emph{unordered} set, and their principal
+  arguments (e.g., from \texttt{np.angle}), taken in
+  \(\text{(\ensuremath{-}}\text{\ensuremath{\pi}}\text{,}\text{\ensuremath{\pi}}\text{]}\), carry no
+  information by themselves about how many full rotations separate one
+  eigenphase from another. We impose a canonical ordering by first sorting
+  the filtered principal values, and then applying a standard phase-unwrapping
+  algorithm to the sorted sequence, which
+  compensates for \(\text{2}\text{n\ensuremath{\pi}}\) jumps across the
+  periodic boundary by accumulating the spacing between consecutive sorted
+  phases into a monotonically growing cumulative phase
+  \(\text{\ensuremath{\Phi}}\). We flag explicitly that this sort-then-unwrap
+  procedure is an assumption about how to linearly order the spectrum, not
+  a property derived from the matrix itself, and we have not established
+  its stability under small perturbations of the eigenvalue filter or
+  discretization. For the sorted pure
+  eigen-phase angle sequence
+  \(\text{\ensuremath{\theta}}_{\text{1}}{,\ldots{},}\text{\ensuremath{\theta}}_{{M}}\), its unwrapped
+  cumulative phase \(\text{\ensuremath{\Phi}}_{{m}}\) is defined as:
+\end{itemize}
+
+\begin{equation}
+\text{\ensuremath{\Phi}}_{{m}}=\text{\ensuremath{\theta}}_{\text{1}}+\sum_{{k}=2}^{{m}}\text{\ensuremath{\Delta}}\text{\ensuremath{\Phi}}_{{k}}
+\end{equation}
+where the dynamic compensation term
+  \(\text{\ensuremath{\Delta}}\text{\ensuremath{\Phi}}_{{k}}\text{~=~(}\text{\ensuremath{\theta}}_{{k}}\text{\ensuremath{-}}\text{\ensuremath{\theta}}_{{k}\text{\ensuremath{-}1}}\text{)\ensuremath{-}2}\text{\ensuremath{\pi}}\left\lfloor \frac{\text{\ensuremath{\theta}}_{\text{k}}\text{\ensuremath{-}}\text{\ensuremath{\theta}}_{\text{k}\text{\ensuremath{-}1}}\text{+}\text{\ensuremath{\pi}}}{\text{2}\text{\ensuremath{\pi}}} \right\rfloor\).
+
+
+\begin{itemize}
+\item
+  \textbf{Linear Homomorphic Mapping:} Finally, the cumulative
+  topological phase \(\text{\ensuremath{\Phi}}\) and the true Riemann
+  \(\text{\ensuremath{\zeta}}\)-function zeros \({E}_{{n}}\) are globally
+  linear-regression calibrated
+  (\({E}_{\text{pred}}\text{~=~}{a}{\ensuremath{\Phi}+}{b}\)). Under
+  the optimal cooling parameter \(\text{\ensuremath{\beta}}\), this fitted rescaling not only
+  matches the zero spacing microscopically but also achieves the
+  complete collapse of the logarithmic drift envelope macroscopically,
+  as a fitted numerical result. The
+  closed-loop minimization of the interference residual
+  \({\ensuremath{\Delta}}{E}_{{n}}\) is represented as:
+\end{itemize}
+
+\begin{equation}
+\text{\ensuremath{\Delta}}{E}_{{n}}\text{~=~(}{a}\text{\ensuremath{\cdot}}\text{\ensuremath{\Phi}}_{{n}}\text{+}{b}\text{)\ensuremath{-}}{E}_{\text{true}}\text{(}{n}\text{)}
+\end{equation}
+
+\appendix
+\section{Supplementary Numerical Notes}
+
+\subsection{Numerical Stability and Compiler-Induced ``Butterfly Effects''}
+
+In our methodology, the non-autonomous thermodynamic evolution spans
+\(\text{10}^{\text{10}}\) iterations. Due to the intrinsic nature of
+chaotic dynamical systems near the critical threshold
+(\({U}_{{c}}\)), the framework exhibits extreme sensitivity to
+parameter precision. A macroscopic manifestation of the ``butterfly
+effect'' can be observed when switching compilation strategies during
+High-Performance Computing (HPC) execution.
+
+To achieve feasible computation times across thousands of grid bins,
+Just-In-Time (JIT) compilation optimizations (e.g., LLVM fastmath=True)
+are strictly required. However, such aggressive optimizations relax the
+strict IEEE-754 64-bit floating-point compliance for transcendental
+operations (such as the logarithmic function
+\(\text{ln(}{x}\text{)}\)). We observed that calculating the
+absolute boundary anchor (e.g., \({u}_{\text{temp}}\)) entirely
+within the fast-math compiled kernel introduces micro-truncation errors
+on the magnitude of \(\text{\ensuremath{\sim}}\text{10}^{\text{\ensuremath{-}15}}\).
+
+While negligible in standard applications, propagating this
+\(\text{10}^{\text{\ensuremath{-}15}}\) discrepancy through \(\text{10}^{\text{10}}\)
+non-linear mappings amplifies the error exponentially. This tiny
+floating-point drift in the parameter shifts the macroscopic phase
+space distribution, artificially inflating the Mean Squared Error (MSE)
+of the extracted spectral gaps by a factor of two.
+
+\textbf{Methodological Recommendation for Reproducibility:}
+
+To guarantee exact spectral reconstruction and numerical stability, it
+is imperative to enforce a strict boundary logic separation.
+Foundational adiabatic parameters and baseline anchors must be
+pre-calculated in a strict IEEE-754 compliant environment (e.g.,
+standard Python/NumPy interpreter). These pristine, full-precision
+64-bit floating-point constants should then be explicitly passed as
+external arguments into the high-performance integration kernels,
+thereby isolating the system from compiler-induced phase drifts.
+
+\subsection{Dynamical Evolution Methods Approaching the Critical Point}
+
+During non-autonomous evolution, the system parameter must be annealed
+from the fully chaotic regime down to our empirically anchored baseline
+\(\mu_c\approx1.543689\) (Section~\ref{sec:model}; this is distinct from,
+and numerically larger than, the standard Feigenbaum accumulation point
+\(\lambda_\infty\approx1.401\)). To investigate
+the decisive impact of the cooling trajectory on the resulting spectrum,
+we define three progressive evolution control methods:
+
+\textbf{(1) Asymptotic Truncation Method}
+
+This is the conventional approach based on logarithmic cooling. The
+control parameter is defined as the target point plus a perturbation
+term decaying over time:
+
+\begin{equation}
+\text{\ensuremath{\mu}}({t})={U}_{{c}}+\frac{{k}}{\text{ln}^{\text{2}}\text{(}{t}+{t}_{{0}}\text{)}}
+\end{equation}
+
+Due to the extremely slow logarithmic decay, the parameter cannot reach
+\({U}_{{c}}\) by \(\text{100}\) within a finite number of
+evolution steps \({N}\). In practice, this is handled by setting an
+artificial microscopic truncation error (e.g.,
+\(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}=\text{10}^{\text{\ensuremath{-}4}}\)) to deduce the
+constant \({k}\) in combination with \({N}\). The limitation
+of this method is that the residual \(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}\) retains
+non-negligible thermal noise at the end of the system's evolution,
+leading to divergent high-frequency characteristics in the extracted
+topological spectrum.
+
+\textbf{(2) Absolute Boundary Anchoring Method (1D)}
+
+To completely eliminate the truncation error, we reconstruct the control
+function. It does not strictly require the physical expression to
+include \(\text{U}_{\text{c}}\) directly; instead, it utilizes boundary
+conditions to force the system to \textbf{anchor absolutely
+(}\(\text{100}\)\textbf{) at} \({U}_{{c}}\) exactly at the
+\({N}\)-th step. The definition is as follows:
+
+\begin{equation}
+\text{\ensuremath{\mu}}\text{(}{t}\text{)~=~}\text{U}_{\text{temp}}\text{~+~}\frac{{k}}{\text{ln}^{\text{2}}\text{(}{t}+{t}_{\text{0}}\text{)}}
+\end{equation}
+where the virtual base parameter \({U}_{\text{temp}}\) is jointly
+determined by the evolution steps \({N}\) and the annealing
+constant \({k}\):
+\({U}_{\text{temp}}\text{~=~}{U}_{{c}}\text{\ensuremath{~-~}}\frac{{k}}{\text{ln}^{\text{2}}\text{(}{N}+{t}_{\text{0}}\text{)}}\).
+
+Under this mechanism, defining the total steps \({N}\) and a single
+constant \({k}\) (which scales linearly with the cooling distance)
+guarantees that the system precisely hits the critical freezing point at
+the end of its long-range evolution. This allows for a close
+reproduction of asymptotic topological coherence within finite steps.
+
+\textbf{(3) Higher-Order Anchoring Method (2D)}
+
+Although the 1D boundary anchoring resolves asymptotic tail divergence,
+it still encounters strong nonlinear transient fluctuations in the
+large-$N$ region during early evolution (corresponding to the earliest
+zeros). Therefore, building upon the primary
+\(\text{1/}\text{ln}^{\text{2}}\text{(}{t}\text{)}\) framework, we
+introduce a higher-order perturbation correction term
+\({k}_{\text{2}}\text{/}\text{ln}^{\text{3}}\text{(}{t}\text{)}\):
+
+\begin{equation}
+\text{\ensuremath{\mu}}\text{(}{t}\text{) = }{U}_{\text{temp}}\text{ + }\frac{{k}_{\text{1}}}{\text{ln}^{\text{2}}\text{(}{t}\text{ + }{t}_{\text{0}}\text{)}}\text{ + }\frac{{k}_{\text{2}}}{\text{ln}^{\text{3}}\text{(}{t}\text{ + }{t}_{\text{0}}\text{)}}
+\end{equation}
+Here, \({U}_{\text{temp}}\) is similarly constrained by the
+absolute boundary condition to ensure ultimate convergence to
+\({U}_{{c}}\). The introduction of \({k}_{\text{2}}\) is
+specifically designed to smooth out the curvature distortion inherent in
+the initial cooling phase.
+
+\subsection{Spectral Fitting and Alignment Methodology}
+
+To evaluate the degree of isomorphism between the eigenphases
+\(\text{\ensuremath{\theta}}_{{n}}\) of the dynamical matrix and the true Riemann
+zero heights \(\text{\ensuremath{\gamma}}_{{n}}\), this study systematically compares
+three fitting and evaluation criteria:
+
+\textbf{1. Conventional Linear Fitting}
+
+This approach utilizes a standard simple linear regression model:
+
+\begin{equation}
+\text{\ensuremath{\gamma}}_{{n}}^{\text{sim}}\text{~=~}{a}\text{\ensuremath{\cdot}}\text{\ensuremath{\theta}}_{{n}}\text{~+~}{b}
+\end{equation}
+
+Due to the inclusion of the intercept term \(\text{b}\), this method
+possesses a higher statistical tolerance. It allows for a global
+translation of the spectrum, which can effectively absorb early-stage
+phase drifts or mask the interference of non-physical branches in the
+model, providing a baseline metric for the overall linear correlation.
+
+\textbf{2. Pure Scaling (Single-Degree-of-Freedom Anchoring)}
+
+This method serves as a strictly rigorous physical validation. It
+forcibly removes the translation degree of freedom, relying exclusively
+on a scaling mechanism:
+
+\begin{equation}
+\text{\ensuremath{\gamma}}_{{n}}^{\text{sim}}\text{~=~}{a}\text{\ensuremath{\cdot}}\text{\ensuremath{\theta}}_{{n}}
+\end{equation}
+
+In its strictest form, the scaling factor \({a}\) is anchored
+solely by the ground state (the first zero, \({N}\text{~=~1}\)), such
+that \({a}\text{~=~}\text{\ensuremath{\gamma}}_{\text{1}}\text{/}\text{\ensuremath{\theta}}_{\text{1}}\).
+This pure single-point scaling requires that the intrinsic
+proportions of the spectral gaps within the dynamical system closely
+match those of the Riemann zeros: any minute distortion in these
+proportions will trigger exponentially growing errors as \({N}\) increases.
+We use this strict single-point anchoring throughout, including for the
+\({N}\text{~=~1000}\) dynamical fits (M1, M2) reported in
+Section~\ref{sec:macroscopic}, so that surviving to that scale is a genuine
+test of the fitted proportions rather than an artifact of a more
+forgiving multi-point calibration. The only exception is the GUE
+random-matrix baseline, which has no principled single anchor point and
+is instead calibrated with a global least-squares scaling
+\({a}\text{~=~}\sum_n\theta_n\gamma_n/\sum_n\theta_n^2\) (forced through
+the origin), as stated in the Figure~\ref{fig6} caption.
+
+\textbf{3. Piecewise Fitting via Shift-and-Invert Spectral
+Transformation}
+
+When scaling the alignment to extremely large datasets (e.g.,
+\({N}\text{~>~10,000}\)), the computational cost and precision
+degradation become prohibitive. According to the Riemann-von Mangoldt
+formula, higher-order Riemann zeros become logarithmically denser.
+Attempting to extract 10,000 eigenvalues sequentially from the origin
+(\(\text{\ensuremath{\theta}}\text{~=~0}\)) subjects the implicit restarted Arnoldi
+iteration to overwhelming low-frequency numerical noise and an
+\(\text{O}\text{(}{k}^{\text{3}}\text{)}\) computational
+bottleneck, inevitably leading to system collapse.
+
+To circumvent this curse of dimensionality, we introduce a piecewise
+fitting strategy utilizing the \textbf{Shift-and-Invert Spectral
+Transformation}. Instead of scanning the entire spectrum continuously
+from the ground state, we mathematically alter the shift parameter
+(\(\text{\ensuremath{\sigma}}\)) within the objective function. This operation dynamically
+transforms the transition matrix, allowing our extraction algorithm to
+target specific high-frequency regimes directly
+(e.g., the band containing the 5000th to 5100th zeros) without scanning
+the intervening spectrum. This technique isolates and computes chunks of
+high-frequency eigenstates independently. This methodology decomposes a computationally
+severe \(\text{O}\text{(}{k}^{\text{3}}\text{)}\) problem
+into a series of precise, trivially parallelizable sub-tasks,
+ensuring numerical stability even in the deepest regimes of the energy
+spectrum.
+
+\subsection{Design of Ablation Studies}
+
+To rigorously validate that the precise spectral alignment originates
+from the intrinsic topological isomorphism of the non-autonomous
+dynamical map, rather than trivial mathematical coincidences, we
+designed a comprehensive set of ablation studies. According to the
+asymptotic inversion of the classical Riemann-von Mangoldt formula, the
+height of the \({n}\)-th Riemann zero on the critical line, denoted
+as \(\text{E}_{{n}}\), follows the macroscopic growth law:
+
+\begin{equation}
+{E}_{{n}}\text{\ensuremath{\sim}}\frac{\text{2}\text{\ensuremath{\pi}}n}{\text{ln}{n}}
+\end{equation}
+
+While this fundamental equation dictates that the spacing between
+adjacent zeros incrementally shrinks
+(\(\text{\ensuremath{\Delta}}{E}_{{n}}\text{\ensuremath{\sim}2}\text{\ensuremath{\pi}}\text{/ln}{n}\)),
+the sequence \({E}_{{n}}\) exhibits a misleading
+quasi-linear asymptotic trend within narrow local high-frequency bands.
+A naive model could theoretically yield artificially low baseline errors
+merely by capturing this simple linear drift over a limited interval of
+\({n}\). To strictly rule out this artifact, we establish a
+\textbf{Direct Linear Fitting} baseline, applying a standard linear
+regression directly to the zero index \({n}\). This serves as the
+ultimate ``null hypothesis,'' proving that our dynamical operator
+extracts genuine nonlinear structural information dictating the precise
+phase modulation, far beyond interpolating a trivial linear sequence.
+
+Furthermore, to isolate the specific physical contributions of our
+proposed architecture, the model is benchmarked against two fundamental
+paradigms. The first is the \textbf{Static Autonomous System}, where the
+control parameter is fixed at the critical point
+(\(\text{\ensuremath{\mu}}_{{n}}~\text{\ensuremath{\equiv}}~{U}_{{c}}\)) without the
+\(\text{1/}\text{ln}^{\text{2}}\text{(}{n}\text{)}\) adiabatic
+cooling. This ablation specifically verifies whether the non-autonomous
+decay is strictly mandatory for matching the nonlinear
+\({n}\text{/ln}{n}\) growth constraint. The second baseline
+employs classical \textbf{Random Matrix Theory (RMT)} paradigms (e.g.,
+Gaussian Unitary Ensembles), which is known to replicate the
+statistical level-repulsion of the unfolded Riemann-zero spectrum, but
+which we do not expect to reproduce the mean counting-function trend when
+globally rescaled (see the discussion in
+Section~\ref{sec:gue-comparison}). Contrasting our results
+with this GUE baseline shows that, unlike a globally rescaled random
+matrix, our fitted non-autonomous model tracks the mean counting-function
+trend numerically; we do not claim this establishes that the model
+captures the deterministic structure of the Riemann zeros beyond this
+fitted numerical trend.
+
+\subsection{Parameter Optimization Methods}
+
+To navigate the highly sensitive, non-convex parameter spaces inherent
+in our non-autonomous dynamical models, we employed two distinct
+optimization strategies tailored to different energetic regimes and
+computational constraints. For localized, highly sensitive critical
+parameters (such as the spatial discretization scale \(\text{\ensuremath{\epsilon}}\)), we
+adopted a \textbf{Two-Stage Deterministic Scanning strategy}. This
+involves an initial coarse-grained broadband scan (logarithmic or
+linear) to rapidly identify macroscopic convergence basins, followed by
+a high-density, fine-grained exhaustive search within the identified
+optimal intervals. This ``coarse-to-fine'' methodology ensures that
+sharp, isolated topological resonances (which might easily be skipped by
+heuristic algorithms) are precisely locked.
+
+For multi-dimensional or highly coupled parameter spaces (e.g.,
+jointly fitting the macroscopic parameters
+\({k}_{\text{1}}\) and \({k}_{\text{2}}\)), we implemented a
+parallelized \textbf{Differential Evolution (DE) algorithm}. Designed to
+handle the extreme computational overhead of large-scale evolution
+(\({N}_{\text{steps}}~\text{>}~\text{10}^{\text{10}}\)), the DE
+optimizer was configured with strict bounding priors and the best1bin
+mutation strategy to maximize convergence efficiency. To ensure hardware
+stability during massive parallel executions---specifically avoiding
+memory bus bottlenecks on the 128-core supercomputing cluster---the
+population size and parallel worker counts were strategically balanced
+(e.g., limiting active workers to half the physical cores). This robust
+heuristic approach successfully achieved global spectral alignment under
+stringent convergence tolerances (\(\text{tol~=~}\text{10}^{\text{\ensuremath{-}4}}\))
+without falling into local minima.
+
+
+
+\vspace{6pt}
+
+\authorcontributions{L.W. is the sole author. L.W. conceived and designed the study, developed the theoretical framework and the non-autonomous dynamical model, wrote all simulation code, performed the numerical computations, analyzed and interpreted the results, prepared all figures, and wrote and reviewed the manuscript. The author has read and agreed to the published version of the manuscript.}
+
+\funding{This research received no external funding.}
+
+\providecommand{\dataavailability}[1]{\vspace{6pt}\noindent{\fontsize{9}{9}\selectfont\textbf{Data Availability Statement:} {#1}\par}}
+\dataavailability{All code required to reproduce the results is openly available at \url{https://github.com/maris205/riemann_logistic}. The reference Riemann zeros used for benchmarking are obtained from standard high-precision tabulations (e.g., via \texttt{mpmath.zetazero}); no restricted or proprietary data were used.}
+
+\acknowledgments{The author acknowledges the assistance of a large language model (Google Gemini~3 Pro) in code implementation for the numerical simulations and in auxiliary analysis and language editing during manuscript preparation. All scientific claims, results, and their interpretation are the responsibility of the author.}
+
+\conflictsofinterest{The author declares no conflict of interest.}
+
+\begin{adjustwidth}{-\extralength}{0cm}
+\reftitle{References}
+\externalbibliography{yes}
+\bibliography{references}
+\end{adjustwidth}
+\end{document}

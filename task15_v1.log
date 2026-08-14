@@ -1,0 +1,47 @@
+1. Computing true Riemann zeros...
+2. Building the transition matrix (eps=0.001916), one-time cost...
+   Done in 4933.19s
+
+3. Running eigendecomposition 20 times WITHOUT selecting on N=20...
+   [trial 01] N=20 signed residual = 10.9290
+   [trial 02] N=20 signed residual = 11.4313
+   [trial 03] N=20 signed residual = 11.1282
+   [trial 04] N=20 signed residual = 11.2470
+   [trial 05] N=20 signed residual = 11.1209
+   [trial 06] N=20 signed residual = 11.2815
+   [trial 07] N=20 signed residual = 16.4964
+   [trial 08] N=20 signed residual = 11.2116
+   [trial 09] N=20 signed residual = 11.0570
+   [trial 10] N=20 signed residual = 11.3517
+   [trial 11] N=20 signed residual = 11.0860
+   [trial 12] N=20 signed residual = 16.5038
+   [trial 13] N=20 signed residual = 11.3673
+   [trial 14] N=20 signed residual = 11.3052
+   [trial 15] N=20 signed residual = 11.2577
+   [trial 16] N=20 signed residual = 11.3051
+   [trial 17] N=20 signed residual = 11.3477
+   [trial 18] N=20 signed residual = 11.0674
+   [trial 19] N=20 signed residual = 11.3591
+   [trial 20] N=20 signed residual = 11.2905
+
+======================================================================
+UNSELECTED (no cherry-picking) results across all valid trials:
+  n_trials_valid = 20
+  Trial #1 (single-run, first-in-sequence) N=20 residual = 10.9290
+  Mean N=20 residual across all trials = 11.7572
+  Std  N=20 residual across all trials  = 1.5859
+  Min/Max N=20 residual across trials    = 10.9290 / 16.5038
+
+  [For reference] Cherry-picked-style best trial index = 7, N=20 residual if selected this way = 16.4964
+  => Cherry-picked value vs. unselected mean: 16.4964 vs 11.7572 (ratio = 1.40x)
+======================================================================
+
+Rank of |N=20 residual| among N=1..85 by mean |residual| across trials: #67 of 85 (1=largest)
+
+4. Statistical comparison against USTC ion-trap experimental uncertainty...
+  Spearman rank correlation (our unselected mean |residual| for N=1..20 vs USTC Omega=16 MHz reported uncertainty): rho=0.5596, p=0.0103
+  Our unselected rank of N=20 by mean |residual| (1=largest): #2 of 20
+  USTC rank of N=20 by reported Omega=16 uncertainty (1=largest): #2 of 20
+  Permutation-test p-value for this joint-rank coincidence occurring by chance: 0.0993
+
+Results saved to /root/autodl-tmp/henon_mapping/riemann_logistic/task15_n20_significance/results.json

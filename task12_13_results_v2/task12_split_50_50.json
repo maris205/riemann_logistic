@@ -1,0 +1,20 @@
+{
+  "name": "task12_split_50_50",
+  "train_range": [
+    1,
+    50
+  ],
+  "test_range": [
+    51,
+    100
+  ],
+  "seed": 42,
+  "steps": 10000000000,
+  "best_k": 5.793382296770785,
+  "train_mse": 59.76512550310361,
+  "test_mse": 3710.3467209897885,
+  "time_seconds": 8199.910518169403,
+  "success": true,
+  "nit": 21,
+  "nfev": 21
+}

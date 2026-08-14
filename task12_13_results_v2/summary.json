@@ -1,0 +1,265 @@
+{
+  "results": [
+    {
+      "name": "task12_split_50_50",
+      "train_range": [
+        1,
+        50
+      ],
+      "test_range": [
+        51,
+        100
+      ],
+      "seed": 42,
+      "steps": 10000000000,
+      "best_k": 5.793382296770785,
+      "train_mse": 59.76512550310361,
+      "test_mse": 3710.3467209897885,
+      "time_seconds": 8199.910518169403,
+      "success": true,
+      "nit": 21,
+      "nfev": 21
+    },
+    {
+      "name": "task12_split_70_30",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 42,
+      "steps": 10000000000,
+      "best_k": 9.153000740011908,
+      "train_mse": 145.97286871902799,
+      "test_mse": 5891.069395760401,
+      "time_seconds": 8738.811726808548,
+      "success": true,
+      "nit": 23,
+      "nfev": 23
+    },
+    {
+      "name": "task12_split_80_20",
+      "train_range": [
+        1,
+        80
+      ],
+      "test_range": [
+        81,
+        100
+      ],
+      "seed": 42,
+      "steps": 10000000000,
+      "best_k": 10.043972640414779,
+      "train_mse": 146.08753943854506,
+      "test_mse": 7557.200774192018,
+      "time_seconds": 9940.775023460388,
+      "success": false,
+      "nit": 25,
+      "nfev": 25
+    },
+    {
+      "name": "task13_seed_42",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 42,
+      "steps": 10000000000,
+      "best_k": 9.153000740011908,
+      "train_mse": 145.97286871902799,
+      "test_mse": 5891.069395760401,
+      "time_seconds": 9291.923623085022,
+      "success": true,
+      "nit": 23,
+      "nfev": 23
+    },
+    {
+      "name": "task13_seed_123",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 123,
+      "steps": 10000000000,
+      "best_k": 10.034441853748632,
+      "train_mse": 141.63373665361954,
+      "test_mse": 5773.574347924586,
+      "time_seconds": 10195.588509321213,
+      "success": false,
+      "nit": 25,
+      "nfev": 25
+    },
+    {
+      "name": "task13_seed_456",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 456,
+      "steps": 10000000000,
+      "best_k": 10.758907023759567,
+      "train_mse": 141.5973320176907,
+      "test_mse": 5677.965393970871,
+      "time_seconds": 10166.14430141449,
+      "success": false,
+      "nit": 25,
+      "nfev": 25
+    },
+    {
+      "name": "task13_seed_789",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 789,
+      "steps": 10000000000,
+      "best_k": 10.034441853748632,
+      "train_mse": 141.63373665361954,
+      "test_mse": 5804.883448947287,
+      "time_seconds": 6735.424866914749,
+      "success": true,
+      "nit": 16,
+      "nfev": 16
+    },
+    {
+      "name": "task13_seed_2024",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 2024,
+      "steps": 10000000000,
+      "best_k": 10.034441853748632,
+      "train_mse": 141.63373665361954,
+      "test_mse": 5773.574347924586,
+      "time_seconds": 10196.935598373413,
+      "success": false,
+      "nit": 25,
+      "nfev": 25
+    },
+    {
+      "name": "task13_seed_2025",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 2025,
+      "steps": 10000000000,
+      "best_k": 10.034441853748632,
+      "train_mse": 141.63373665361954,
+      "test_mse": 5804.883448947287,
+      "time_seconds": 6653.410518169403,
+      "success": true,
+      "nit": 16,
+      "nfev": 16
+    },
+    {
+      "name": "task13_seed_3141",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 3141,
+      "steps": 10000000000,
+      "best_k": 10.761156937291826,
+      "train_mse": 159.12596080877682,
+      "test_mse": 6437.928966522303,
+      "time_seconds": 9415.01966714859,
+      "success": true,
+      "nit": 23,
+      "nfev": 23
+    },
+    {
+      "name": "task13_seed_2718",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 2718,
+      "steps": 10000000000,
+      "best_k": 10.758907023759567,
+      "train_mse": 173.77502238396505,
+      "test_mse": 6237.841211559449,
+      "time_seconds": 10191.862285614014,
+      "success": false,
+      "nit": 25,
+      "nfev": 25
+    },
+    {
+      "name": "task13_seed_1618",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 1618,
+      "steps": 10000000000,
+      "best_k": 10.482185952480862,
+      "train_mse": 165.305681212767,
+      "test_mse": 6561.105063725689,
+      "time_seconds": 9276.771384239197,
+      "success": true,
+      "nit": 24,
+      "nfev": 24
+    },
+    {
+      "name": "task13_seed_9999",
+      "train_range": [
+        1,
+        70
+      ],
+      "test_range": [
+        71,
+        100
+      ],
+      "seed": 9999,
+      "steps": 10000000000,
+      "best_k": 10.034441853748632,
+      "train_mse": 141.63373665361954,
+      "test_mse": 5804.883448947287,
+      "time_seconds": 6721.450511217117,
+      "success": true,
+      "nit": 16,
+      "nfev": 16
+    }
+  ],
+  "total_time_seconds": 10574.30816411972
+}

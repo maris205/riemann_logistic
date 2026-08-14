@@ -1,0 +1,16 @@
+{
+  "n_trials_valid": 20,
+  "n20_residual_trial1_unselected": 10.928953051682711,
+  "n20_residual_mean_unselected": 11.757213623050301,
+  "n20_residual_std_unselected": 1.585907500795145,
+  "n20_residual_min": 10.928953051682711,
+  "n20_residual_max": 16.503775265580956,
+  "n20_residual_cherrypicked_style": 16.496374133969027,
+  "rank_n20_among_all_by_mean_abs_residual": 67,
+  "plot_n": 85,
+  "spearman_rho_vs_ustc_o16_uncertainty": 0.5595553118347526,
+  "spearman_p_vs_ustc_o16_uncertainty": 0.010307285714258096,
+  "our_rank_n20_within_1_20": 2,
+  "ustc_rank_n20_within_1_20": 2,
+  "permutation_p_value_joint_n20_coincidence": 0.0993
+}

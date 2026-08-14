@@ -1,0 +1,20 @@
+{
+  "name": "task13_seed_2024",
+  "train_range": [
+    1,
+    70
+  ],
+  "test_range": [
+    71,
+    100
+  ],
+  "seed": 2024,
+  "steps": 10000000000,
+  "best_k": 10.034441853748632,
+  "train_mse": 141.63373665361954,
+  "test_mse": 5773.574347924586,
+  "time_seconds": 10196.935598373413,
+  "success": false,
+  "nit": 25,
+  "nfev": 25
+}

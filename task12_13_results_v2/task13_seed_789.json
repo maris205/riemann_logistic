@@ -1,0 +1,20 @@
+{
+  "name": "task13_seed_789",
+  "train_range": [
+    1,
+    70
+  ],
+  "test_range": [
+    71,
+    100
+  ],
+  "seed": 789,
+  "steps": 10000000000,
+  "best_k": 10.034441853748632,
+  "train_mse": 141.63373665361954,
+  "test_mse": 5804.883448947287,
+  "time_seconds": 6735.424866914749,
+  "success": true,
+  "nit": 16,
+  "nfev": 16
+}
