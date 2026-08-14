@@ -23,7 +23,6 @@ code refutes (out-of-sample extrapolation, GUE local-statistics match).
 readme.md                        <- this file
 paper/mca/main.tex                <- current manuscript (MCA submission)
 paper/mca_review/                 <- referee reports received on the prior submission
-paper/mvp*/, paper/fracfract/,... <- earlier/alternate manuscript drafts (kept for provenance)
 
 micro_*.ipynb                     <- N<=20 regime: optimal grid resolution, USTC comparison
 macro_100_*.ipynb                 <- N=100 regime: anchoring-strategy ablations (Models A-D)
@@ -40,6 +39,15 @@ task12_13_results_v2/             <- JSON output of task12_13_experiments_v2.py 
 task14_rmt_statistics/            <- JSON + PNG output of the two task14 scripts (already generated)
 task15_n20_significance/          <- JSON output of task15_n20_significance.py (already generated)
 task12_13_v2.log, task15_v1.log   <- captured stdout from the runs that produced the above
+
+backup/                           <- superseded exploratory work, kept only for provenance (not needed
+                                     to reproduce anything in the paper; see below)
+  mvp2/, mvp3/                    <- earlier iterations of the analysis, before the current notebooks
+  mvp4/                           <- the iteration that the current root-level notebooks/scripts were
+                                     promoted from; kept as a frozen snapshot of that state
+  lecture/                        <- unrelated teaching notebooks on chaos/logistic maps (context only)
+  paper_drafts/                  <- earlier manuscript drafts/templates (fracfract, sr, MDPI templates,
+                                     an old .docx) predating the current paper/mca/ submission
 ```
 
 Every `task*.py` script is self-contained (uses `pathlib.Path(__file__)` to locate
