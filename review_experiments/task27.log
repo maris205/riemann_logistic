@@ -1,0 +1,14 @@
+================================================================================
+Task 27: 缩小规模 DE 种子稳健性 (steps=2e+07, n_bins=800, popsize=24, maxiter=8, 5 个 seed)
+================================================================================
+
+[seed=1] best_k1=14.2595  MSE=43.3759  耗时=1106.8s
+[seed=2] best_k1=11.8735  MSE=39.3465  耗时=1023.0s
+[seed=3] best_k1=9.3317  MSE=47.7700  耗时=1141.4s
+[seed=4] best_k1=13.0689  MSE=42.0225  耗时=1136.7s
+[seed=5] best_k1=13.6384  MSE=33.5656  耗时=979.0s
+
+[汇总] k1 across 5 seeds: mean=12.4344 std=1.7392 range=[9.3317, 14.2595]
+[结论] 不同 seed 收敛到明显不同的 k1 —— 支持论文中'目标函数非凸多峰、优化器不保证复现同一局部最优'的诊断。
+
+[完成] 结果保存至 /root/autodl-tmp/henon_mapping/riemann_logistic/review_experiments/task27_results/de_seed_robustness_results.json

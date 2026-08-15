@@ -1,0 +1,36 @@
+[*] 构造经验转移矩阵一次 (k1=6.481, steps=1e+10)...
+[*] 矩阵构造完成，耗时 308.0s
+[*] 对同一份 P 做一次稠密特征值分解...
+[*] 特征值分解完成，耗时 1.9s, 共 2000 个特征值
+cutoff=0.2 branch=upper      order=sorted n_used=100 slope=165.3095 MSE=259.019 mean_rel_err=16.61%
+cutoff=0.2 branch=upper      order=raw    n_used=100 slope=68.1544 MSE=7460.389 mean_rel_err=63.38%
+cutoff=0.2 branch=lower      order=sorted n_used=100 slope=-52.7595 MSE=7408.774 mean_rel_err=88.68%
+cutoff=0.2 branch=lower      order=raw    n_used=100 slope=-68.1544 MSE=7460.389 mean_rel_err=63.38%
+cutoff=0.2 branch=folded_abs order=sorted n_used=100 slope=321.6649 MSE=203.212 mean_rel_err=14.51%
+cutoff=0.2 branch=folded_abs order=raw    n_used=100 slope=71.3764 MSE=6083.918 mean_rel_err=57.08%
+cutoff=0.3 branch=upper      order=sorted n_used=100 slope=145.9811 MSE=244.241 mean_rel_err=16.50%
+cutoff=0.3 branch=upper      order=raw    n_used=100 slope=68.1544 MSE=7460.389 mean_rel_err=63.38%
+cutoff=0.3 branch=lower      order=sorted n_used=100 slope=-53.4692 MSE=8115.461 mean_rel_err=91.23%
+cutoff=0.3 branch=lower      order=raw    n_used=100 slope=-68.1544 MSE=7460.389 mean_rel_err=63.38%
+cutoff=0.3 branch=folded_abs order=sorted n_used=100 slope=282.8072 MSE=238.980 mean_rel_err=15.67%
+cutoff=0.3 branch=folded_abs order=raw    n_used=100 slope=71.3764 MSE=6083.918 mean_rel_err=57.08%
+cutoff=0.4 branch=upper      order=sorted n_used=100 slope=107.0151 MSE=288.121 mean_rel_err=17.81%  <-- paper baseline
+cutoff=0.4 branch=upper      order=raw    n_used=100 slope=68.1544 MSE=7460.389 mean_rel_err=63.38%
+cutoff=0.4 branch=lower      order=sorted n_used=100 slope=-54.1131 MSE=10966.635 mean_rel_err=96.52%
+cutoff=0.4 branch=lower      order=raw    n_used=100 slope=-68.1544 MSE=7460.389 mean_rel_err=63.38%
+cutoff=0.4 branch=folded_abs order=sorted n_used=100 slope=212.1938 MSE=192.138 mean_rel_err=14.62%
+cutoff=0.4 branch=folded_abs order=raw    n_used=100 slope=71.3764 MSE=6083.918 mean_rel_err=57.08%
+cutoff=0.5 branch=upper      order=sorted n_used= 43 slope=48.0503 MSE=87.055 mean_rel_err=14.72%
+cutoff=0.5 branch=upper      order=raw    n_used= 43 slope=41.4987 MSE=1935.512 mean_rel_err=52.52%
+cutoff=0.5 branch=lower      order=sorted n_used= 43 slope=-31.3901 MSE=4256.931 mean_rel_err=86.40%
+cutoff=0.5 branch=lower      order=raw    n_used= 43 slope=-41.4987 MSE=1935.512 mean_rel_err=52.52%
+cutoff=0.5 branch=folded_abs order=sorted n_used= 86 slope=76.9331 MSE=149.555 mean_rel_err=11.98%
+cutoff=0.5 branch=folded_abs order=raw    n_used= 86 slope=65.8740 MSE=5125.486 mean_rel_err=57.98%
+cutoff=0.6 branch=upper      order=sorted FAILED (too few eigenvalues)
+cutoff=0.6 branch=upper      order=raw    FAILED (too few eigenvalues)
+cutoff=0.6 branch=lower      order=sorted FAILED (too few eigenvalues)
+cutoff=0.6 branch=lower      order=raw    FAILED (too few eigenvalues)
+cutoff=0.6 branch=folded_abs order=sorted n_used= 12 slope=21.2922 MSE=41.857 mean_rel_err=18.66%
+cutoff=0.6 branch=folded_abs order=raw    n_used= 12 slope=20.6276 MSE=136.673 mean_rel_err=33.02%
+
+[完成] 结果保存至 /root/autodl-tmp/henon_mapping/riemann_logistic/review_experiments/task24_results/sensitivity_results.json

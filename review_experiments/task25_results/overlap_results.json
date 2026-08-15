@@ -1,0 +1,40 @@
+{
+  "params": {
+    "u_c": 1.543689,
+    "k1": 6.481,
+    "offset": 100000.0,
+    "steps": 200000,
+    "n_bins": 1000,
+    "eps": 0.01,
+    "N_ZEROS": 20
+  },
+  "n_eigs_mc": 82,
+  "n_eigs_gaussian_splatting": 3,
+  "n_shared": 3,
+  "build_time_seconds": {
+    "mc": 0.9848184585571289,
+    "gaussian_splatting": 1059.9796602725983
+  },
+  "raw_phase_correlation": 0.9932898063819097,
+  "raw_phase_rms_relative_diff": 33.58689015778743,
+  "fit_mc": {
+    "n_used": 3,
+    "slope": 348.44530938566396,
+    "mse": 0.9816071624757301
+  },
+  "fit_gaussian_splatting": {
+    "n_used": 3,
+    "slope": 10.029981718104784,
+    "mse": 17.57785727833056
+  },
+  "theta_mc": [
+    0.044966880026741894,
+    0.059281929494216776,
+    0.0698346242391208
+  ],
+  "theta_gaussian_splatting": [
+    0.8514284107597117,
+    1.7997385661283383,
+    2.8475902309717105
+  ]
+}

@@ -37,7 +37,7 @@ School of Artificial Intelligence and Automation, Huazhong University of Science
 
 \corres{Correspondence: wangliang.f@gmail.com}
 
-\abstract{Whether a low-dimensional deterministic dynamical system can numerically reproduce features of the non-trivial zeros of the Riemann $\zeta$ function is an open exploratory question. Building on our recent result that the symbolic dynamics of the logistic map at its band-merging point is isomorphic to the prime sieve \cite{wang2026}, we study a non-autonomous quadratic map driven by a logarithmic cooling schedule ($\mu_n \sim 1/\ln^2 n$, introduced here as a phenomenological ansatz rather than a derived law) and construct an empirical, finite-dimensional transfer matrix from its trajectories. This matrix is generally non-normal and dissipative; its complex eigenphases are compared numerically to the Riemann zeros after calibrating a small number of free parameters against the same low-order zeros. We report this comparison as a numerical, in-sample correspondence rather than an independent prediction, and quantify the gap directly: fitting on the first $M\in\{50,70,80\}$ zeros and evaluating on the remaining, unseen zeros gives a held-out mean squared error one to two orders of magnitude larger than the training error, and the fitted coupling itself drifts with $M$; a ten-seed robustness check at fixed $M=70$ shows the fitted coupling is comparatively stable (coefficient of variation $\approx4.7\%$) against the stochastic initial condition. We also discuss the resulting model's behavior at low order ($N\lesssim 20$), where an unselected re-computation and a Spearman/permutation significance test show a qualitative rank correlation ($\rho=0.56$, $p=0.010$) with, but no significant ($p=0.099$) joint co-location of, a residual feature and enlarged error bars reported in recent ion-trap quantum simulations of the same zeros. At larger $N$ ($N\ge 1000$), we compare the model against a globally rescaled Gaussian Unitary Ensemble (GUE) surrogate on the mean counting-function trend (a different comparison from the standard unfolded local-statistics test of random-matrix theory), and we show that restoring the conjugate ($\pm\theta$) eigenphases drives a fitted linear intercept to approximately zero -- a property that, for symmetric regression data, follows in part from the symmetry of the construction itself. A separate check finds that the dynamical model's own eigenphase spacing statistics do not match the GUE prediction under a standard unfolded local-statistics test, unlike the true Riemann zeros. We are explicit throughout that these are numerical observations on a heuristic model, not a proof, a derivation, or a Hilbert--P\'olya-type operator construction, and we tabulate the epistemic status of every main claim.}
+\abstract{We study a non-autonomous quadratic map driven by a logarithmic cooling schedule ($\mu_n \sim 1/\ln^2 n$, a phenomenological ansatz), building on our recent result that the logistic map's symbolic dynamics at its band-merging point is isomorphic to the prime sieve \cite{wang2026}. From its trajectories we construct an empirical, non-normal, dissipative transfer matrix and compare its complex eigenphases to the non-trivial Riemann zeros after calibrating a few free parameters against the same low-order zeros -- an in-sample numerical correspondence, not an independent prediction. We quantify this gap directly: fitting on the first $M\in\{50,70,80\}$ zeros and evaluating on the rest gives a held-out MSE one to two orders of magnitude larger than the training error, with the fitted coupling drifting across $M$ but remaining comparatively stable across ten random seeds at fixed $M=70$ (CV $\approx4.7\%$). At low order ($N\lesssim 20$), an unselected re-computation shows a qualitative rank correlation ($\rho=0.56$, $p=0.010$) with, but no significant joint co-location ($p=0.099$) of, a residual feature reported in recent ion-trap quantum simulations of the same zeros. At larger $N$ ($N\ge 1000$), the model matches a globally rescaled GUE surrogate's mean counting-function trend better once conjugate eigenphases are restored, though this partly follows from the construction's own symmetry; a separate, standard unfolded local-statistics test shows the model's own eigenphase spacings do \emph{not} match GUE, unlike the true zeros. These are numerical observations on a heuristic model, not a proof or Hilbert--P\'olya-type operator construction; Table~\ref{tab:claims} tabulates the epistemic status of every main claim.}
 
 \keyword{Riemann zeros; non-autonomous dynamical systems; logistic map; transfer operator; empirical spectral correspondence; numerical continuation}
 
@@ -148,7 +148,8 @@ Riemann zeros across scales, from low-order eigenphase alignment (obtained
 after calibrating a small number of free parameters against the same
 low-order zeros) to macroscopic asymptotic behavior. We then examine the
 model's dependence on numerical resolution and discuss how breaking the
-intrinsic particle--hole symmetry of the eigenphase spectrum affects the
+intrinsic conjugate symmetry of the eigenphase spectrum (a consequence of
+$P$ being a real-valued matrix) affects the
 macroscopic fit. Table~\ref{tab:claims} in the Discussion states the
 epistemic status of each claim explicitly.
 
@@ -214,16 +215,16 @@ x_{n+1} \;=\; 1 \;-\; \underbrace{\left( \mu_c + \frac{k_1}{\ln^2 n} + \frac{k_2
 This explicit construction motivates a tripartite decomposition of the
 fitted parameter schedule:
 
-\textbf{Topology Maintenance (}\(\text{\ensuremath{\mu}}_{{c}}\)\textbf{):} The
-baseline term maintains the system's underlying fractal structure near
-the critical threshold.
+\textbf{Baseline Term (}\(\text{\ensuremath{\mu}}_{{c}}\)\textbf{):} This
+constant term fixes the system's operating point near the critical
+threshold.
 
-\textbf{Primary Aging Mechanism
+\textbf{Leading Correction
 (}\({k}_{\text{1}}\text{/}\text{ln}^{\text{2}}{n}\)\textbf{):}
-The dominant logarithmic decay introduces a ``dynamic aging'' process
-dependent on the iteration step \({n}\), forcing the system to
-asymptotically approach the critical attractor at the exact macroscopic
-rate required by the Riemann zero counting function.
+The dominant logarithmic decay term makes the control parameter depend
+explicitly on the iteration step \({n}\), driving the system to
+approach the critical attractor at the rate required to match the
+macroscopic growth of the Riemann zero counting function.
 
 \textbf{Higher-Order Correction
 (}\({k}_{\text{2}}\text{/}\text{ln}^{\text{3}}{n}\)\textbf{):}
@@ -323,7 +324,7 @@ the following three optimal computing modules:
   static matrix completely freezes the dynamical resonance information
   of the system.
 \item
-  \textbf{Module C: Spectral Extraction \& Homomorphic Mapping.} The
+  \textbf{Module C: Spectral Extraction and Linear Rescaling.} The
   empirical matrix \(\text{P}\) is diagonalized to extract complex
   eigenvalues and their eigen-rotation phases \(\text{\ensuremath{\theta}}_{\text{n}}\).
   After Phase Unwrapping, we insist on a single-point linear mapping
@@ -373,7 +374,7 @@ eliminating the interference
 of grid artifacts can the spectral features that we numerically compare to
 the Riemann zeros emerge cleanly from the discrete dynamics.
 
-\subsubsection{Large-Scale Numerical Scanning and Precise Localization of Optimal}
+\subsubsection{Large-Scale Numerical Scanning and Precise Localization of Optimal}\label{sec:microscopic-scan}
 
 Because the topological structure of its transfer operator is extremely
 sensitive to spatial resolution when a non-autonomous dynamical system
@@ -472,7 +473,7 @@ with the true Riemann zeros (theoretical true values), Figure \ref{fig2}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image2.png}
-\caption{\textbf{Microscopic comparison of the dynamical eigen-spectrum and the} \({N = 20}\) \textbf{residual feature.} (Top) The alignment trajectory of the dynamical predicted energy levels (\({E}_{\text{pred}}\), colored dots) and the true Riemann zeros (\(\text{\ensuremath{\gamma}}_{\text{n}}\), golden stars) under the critical numerical discrete scale \(\text{\ensuremath{\epsilon} = 0.001916}\). In the low-frequency limit (\({N = 1}\) to \(\text{6}\), green shaded area), the system achieves close alignment (informally, ``lock-in''), consistent with the accuracy of the ground-state linear rescaling. (Bottom) Actual dynamical residual distribution with signs (\({\ensuremath{\Delta}E} = {E}_{\text{pred}}-\text{\ensuremath{\gamma}}_{{n}}\)). Constrained by nonlinear state density, the system exhibits systematic phase drift at higher energy levels, and near \({N = 20}\) the predicted residuals show a steep, isolated spike (marked in red). We note a qualitative spatial coincidence between this numerical feature and the enlarged measurement error bars reported near the same order in recent ion-trap quantum simulation experiments; we emphasize this is a heuristic observation, not evidence of a shared physical mechanism.}\label{fig2}
+\caption{\textbf{Microscopic comparison of the dynamical eigen-spectrum and the} \({N = 20}\) \textbf{residual feature.} (Top) The alignment trajectory of the dynamical predicted energy levels (\({E}_{\text{pred}}\), colored dots) and the true Riemann zeros (\(\text{\ensuremath{\gamma}}_{\text{n}}\), golden stars) under the critical numerical discrete scale \(\text{\ensuremath{\epsilon} = 0.001916}\). In the low-frequency limit (\({N = 1}\) to \(\text{6}\), green shaded area), the system achieves close alignment (informally, ``lock-in''), consistent with the accuracy of the ground-state linear rescaling. (Bottom) Actual dynamical residual distribution with signs (\({\ensuremath{\Delta}E} = {E}_{\text{pred}}-\text{\ensuremath{\gamma}}_{{n}}\)). Constrained by nonlinear state density, the system exhibits systematic phase drift at higher energy levels, and near \({N = 20}\) the predicted residuals show a steep, isolated spike (marked in red), which we compare with a similarly located feature in ion-trap quantum simulation data below (Section~\ref{sec:n20-significance}).}\label{fig2}
 \end{figure}
 
 Numerical results showed good low-frequency
@@ -514,7 +515,7 @@ Section~\ref{sec:n20-significance}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth]{figures/image3.png}
-\caption{\textbf{Comparison of the dynamical numerical model and a physical quantum simulation.} Comparison of our numerical prediction residuals (red star line) with USTC physical experimental data (ion-trap quantum simulation under different trap frequencies \(\text{\ensuremath{\Omega}}\)). In the \({N<19}\) region, the numerical model tracks the near-zero fluctuation baseline of the physical system. Near \({N=19\ensuremath{\sim}20}\), the numerical computation's residual spike and the enlarged experimental measurement uncertainty (red shaded area) coincide qualitatively in position. We report this as a qualitative spatial coincidence only; the two error sources (numerical truncation vs.~instrumental decoherence) are physically distinct, and whether any part of the experimental deviation reflects an intrinsic limit rather than purely instrumental noise remains an open question we do not resolve here.}\label{fig3}
+\caption{\textbf{Comparison of the dynamical numerical model and a physical quantum simulation.} Comparison of our numerical prediction residuals (red star line) with USTC physical experimental data (ion-trap quantum simulation under different trap frequencies \(\text{\ensuremath{\Omega}}\)). In the \({N<19}\) region, the numerical model tracks the near-zero fluctuation baseline of the physical system. Near \({N=19\ensuremath{\sim}20}\), the numerical computation's residual spike and the enlarged experimental measurement uncertainty (red shaded area) coincide qualitatively in position; see Section~\ref{sec:n20-significance} below for why the two error sources are physically distinct and for the significance testing of this coincidence.}\label{fig3}
 \end{figure}
 
 This local residual feature was compared against the quantum simulation
@@ -610,7 +611,14 @@ macroscopic annealing constant \({k}_{\text{1}}\)) practically
 unfeasible. Furthermore, local smoothing mechanisms are no longer
 sufficient to mask the high-frequency cumulative dispersion induced by
 phase-space truncation, so the single-sided dynamical mapping no longer
-scales to this regime without a change of method.
+scales to this regime without a change of method. We stress that this is a
+change of method, not a validated equivalence between methods: a direct
+overlap check between the Gaussian-splatting and Monte Carlo constructions
+under matched parameters (Section~\ref{sec:post-review-checks}, item 2)
+did not find consistent eigenphases over the small range where the two
+matrices' filtered spectra could be compared, so the transition described
+here should be read as a pragmatic necessity rather than a demonstrated
+methodological continuity.
 
 To break through the dual bottlenecks of computational scalability and
 topological dispersion, we transitioned entirely to a high-throughput
@@ -675,7 +683,7 @@ directly from the raw data of the USTC ion-trap experiment. The results
 are summarized in Table~\ref{tab1}.
 
 \begin{table}[H]
-\caption{Performance of macroscopic reconstruction under different phase space domains and boundary constraints. The parameters $k_1$ and $b$ shown here are the result of a global numerical optimization (differential evolution over $k_1 \in [2,15]$, with or without the constraint $b=0$ depending on the strategy) that minimizes the mean squared error against the first 100 Riemann zeros. This optimization protocol differs from the fixed-parameter visualization experiments shown in Figures~\ref{fig4}--\ref{fig5}, which use predetermined values of $k$ to illustrate the qualitative behavior of different anchoring strategies.}\label{tab1}
+\caption{Performance of macroscopic reconstruction under different phase space domains and boundary constraints. The parameters $k_1$ and $b$ shown here are one realization of a global numerical optimization (differential evolution over $k_1 \in [2,15]$, with or without the constraint $b=0$ depending on the strategy) that minimizes the mean squared error against the first 100 Riemann zeros. We flag explicitly that this optimizer is run without a fixed random seed and with a population search parallelized across workers, and that repeated runs of the identical protocol for Strategy C converged to different local optima of a non-convex, multimodal objective ($k_1\approx6.481$, MSE$\approx8.48$ in the run reported here versus $k_1\approx8.070$, MSE$\approx10.08$ in the run used to generate the fixed-parameter Figures~\ref{fig4}--\ref{fig5} demonstration). This is a genuine run-to-run optimizer instability, not evidence of two distinct experimental protocols, and we report it as an open limitation rather than reconciling it into a single number; see the discussion accompanying Figures~\ref{fig4}--\ref{fig5} below.}\label{tab1}
 \small
 \begin{tabularx}{\textwidth}{Y{0.15}Y{0.22}Y{0.19}Y{0.13}Y{0.11}Y{0.20}}
 \toprule
@@ -705,14 +713,29 @@ the fit to pass through the physical origin (\({b}\text{ = 0}\)) as in Strategy 
 globally optimized parameter yields
 \({k}_{\text{1}}~\text{\ensuremath{\approx}~6.481}\) (Table~\ref{tab1}), with a
 residual error envelope of
-\(\text{\ensuremath{\sim}2.8\%}\). The qualitative behavior of different anchoring
-strategies is visually illustrated in {Figure \ref{fig4}} using fixed
-predetermined parameters chosen for demonstration purposes.
+\(\text{\ensuremath{\sim}2.8\%}\). We note that this Strategy-C optimum is itself
+not perfectly reproducible: an independent run of the same optimization
+protocol (differential evolution, unseeded, with a parallel worker pool)
+converged instead to \({k}_{\text{1}}~\text{\ensuremath{\approx}~8.070}\) with a
+somewhat higher MSE ($\approx10.08$ vs.\ $\approx8.48$ here). We attribute this
+to the objective function being non-convex and multimodal in $k_1$ under this
+chaotic dynamical system, rather than to any difference in method between the
+two runs, and we report both values rather than presenting either as
+uniquely canonical. The qualitative behavior of different anchoring
+strategies is visually illustrated in {Figure \ref{fig4}}, which uses the
+second of these two runs. Section~\ref{sec:post-review-checks} (item 4)
+reruns the same optimizer configuration at a reduced, tractable scale
+under five explicit fixed seeds and finds a comparably wide spread in the
+fitted $k_1$, which is independent confirmation that the objective is
+genuinely multimodal rather than a one-off artifact of these two specific
+runs; the reduced-scale $k_1$ values themselves are not numerically
+comparable to $6.481$/$8.070$, since reducing the step count changes the
+objective and not just its cost.
 
 \begin{figure}[H]
 %\centering
 \includegraphics[width=\linewidth]{figures/image4.png}
-\caption{\textbf{Reconstruction Domains and Anchoring Strategies: A Comparative Analysis of Models A, C, and D.} This figure shows single-run experiments with fixed predetermined values of $k$ (Model A: $k \approx 7.429$, Model C: $k \approx 8.070$, Model D: $k \approx 8.783$) to visually illustrate the qualitative behavior of different anchoring strategies and their residual envelopes over 100 orders. These fixed-parameter experiments differ from the global optimization protocol used in Table~\ref{tab1}, where $k$ is itself the variable being optimized to minimize MSE; the numerical values of $k$ therefore differ between the two experimental setups and should not be directly compared. \textbf{Model A (Orange / Single-Point Anchoring):} Utilizes solely the first zero as the absolute physical baseline. While strictly aligning the ground state, it accumulates the largest macroscopic divergence over 100 orders (MSE \(\text{\ensuremath{\approx}~20.22}\)). \textbf{Model C (Blue / Forced Origin Scaling):} Represents a global least-squares fit constrained to the origin (\({b}\text{~=~0}\)) within the single-sided positive spectrum, which suppresses error divergence relative to Model A, yielding a lower mean squared error (MSE \(\text{\ensuremath{\approx}~10.08}\)). \textbf{Model D (Green / Conjugate Full Spectrum Free Fit):} Uses both positive and negative eigenphases. Because the regression data are symmetric under $(\theta,\gamma)\to(-\theta,-\gamma)$, the least-squares intercept is algebraically forced to \({b}\text{ = 0.000}\) (Section~\ref{sec:conjugate-ablation}); the fitted slope and the resulting residual envelope (MSE \(\text{\ensuremath{\approx}~10.81}\)) are the model-specific numerical content of this comparison.}\label{fig4}
+\caption{\textbf{Reconstruction Domains and Anchoring Strategies: A Comparative Analysis of Models A, C, and D.} This figure shows single-run realizations of each strategy's global optimizer (Model A: $k \approx 7.429$, Model C: $k \approx 8.070$, Model D: $k \approx 8.783$) to visually illustrate the qualitative behavior of different anchoring strategies and their residual envelopes over 100 orders. As noted in the caption of Table~\ref{tab1}, an independent run of the identical Strategy-C optimization protocol converged to a different local optimum ($k_1\approx6.481$, MSE$\approx8.48$); we show both runs' numbers rather than silently picking one, since the disagreement itself is diagnostic of a multimodal fitting landscape. \textbf{Model A (Orange / Single-Point Anchoring):} Utilizes solely the first zero as the absolute physical baseline. While strictly aligning the ground state, it accumulates the largest macroscopic divergence over 100 orders (MSE \(\text{\ensuremath{\approx}~20.22}\)). \textbf{Model C (Blue / Forced Origin Scaling):} Represents a least-squares fit constrained to the origin (\({b}\text{~=~0}\)) within the single-sided positive spectrum, which suppresses error divergence relative to Model A, yielding a lower mean squared error in this run (MSE \(\text{\ensuremath{\approx}~10.08}\); see above for the run-to-run spread). \textbf{Model D (Green / Conjugate Full Spectrum Free Fit):} Uses both positive and negative eigenphases. Because the regression data are symmetric under $(\theta,\gamma)\to(-\theta,-\gamma)$, the least-squares intercept is algebraically forced to \({b}\text{ = 0.000}\) (Section~\ref{sec:conjugate-ablation}); the fitted slope and the resulting residual envelope (MSE \(\text{\ensuremath{\approx}~10.81}\)) are the model-specific numerical content of this comparison.}\label{fig4}
 \end{figure}
 
 This theoretically calculated single-sided error limit notable
@@ -729,7 +752,7 @@ hardware data in {Figure \ref{fig5}}.
 \begin{figure}[H]
 %\centering
 \includegraphics[width=\linewidth]{figures/image5.png}
-\caption{\textbf{Spectral Comparison: Hardware Limitations vs.~Dynamics Model Topology.}  * \textbf{Scatter Points and Purple Shading (Quantum Hardware):} Displays the measurement deviations from the University of Science and Technology of China (USTC) ion-trap quantum hardware. Primarily limited by quantum decoherence effects, the experimental hardware experiences signal breakdown in the \({N}~\text{\ensuremath{\approx}~76\ensuremath{-}80}\) band, with a reported physical error envelope of about \(\text{\ensuremath{\pm}~1.96\%}\). \textbf{Red Solid Line (Dynamics Model):} Represents the numerical deviation trajectory derived from 10 billion steps of evolution using the proposed dynamics model (Model C: Single-sided positive spectrum forced origin scaling, \({k}_{\text{1}}\text{~=~8.070}\)). The model's mean error is 2.69\%. The model extends numerical predictions to the \({N}\text{~=~100}\) order. The oscillation peaks of the numerical model (red line) fall near the local error extrema of the quantum hardware (around \({N}~\text{\ensuremath{\approx}~20, 40, 76}\)); see Section~\ref{sec:gue-comparison} for this coincidence and its caveats.}\label{fig5}
+\caption{\textbf{Spectral Comparison: Hardware Limitations vs.~Dynamics Model Topology.}  * \textbf{Scatter Points and Purple Shading (Quantum Hardware):} Displays the measurement deviations from the University of Science and Technology of China (USTC) ion-trap quantum hardware. Primarily limited by quantum decoherence effects, the experimental hardware experiences signal breakdown in the \({N}~\text{\ensuremath{\approx}~76\ensuremath{-}80}\) band, with a reported physical error envelope of about \(\text{\ensuremath{\pm}~1.96\%}\). \textbf{Red Solid Line (Dynamics Model):} Represents the numerical deviation trajectory derived from 10 billion steps of evolution using the proposed dynamics model (Model C: Single-sided positive spectrum forced origin scaling, \({k}_{\text{1}}\text{~=~8.070}\), the same optimizer run used in Figure~\ref{fig4}; see the run-to-run optimizer variability noted there). The model's mean error is 2.69\%. The model extends numerical predictions to the \({N}\text{~=~100}\) order. The oscillation peaks of the numerical model (red line) fall near the local error extrema of the quantum hardware (around \({N}~\text{\ensuremath{\approx}~20, 40, 76}\)); see Section~\ref{sec:gue-comparison} for this coincidence and its caveats.}\label{fig5}
 \end{figure}
 
 As shown in Figure \ref{fig5}, within our model the single-sided topological
@@ -756,7 +779,24 @@ genuine numerical observation about the fitted model, is that the fitted
 slope \(k_1\) changes (from \(\text{6.48}\) under single-sided anchoring to
 \(\text{4.39}\) under the symmetric fit) and that the residual envelope
 shrinks substantially (to about \(\text{1.5\%}\) global reconstruction
-error) once the conjugate branch is included.
+error) once the conjugate branch is included. We note that this slope
+change is \emph{not} itself a further algebraic artifact of the
+symmetrization: unlike a purely statistical exercise where one would
+mirror a single fixed set of eigenphases and re-fit, here $k_1$ is a
+dynamical parameter that is independently re-optimized for each strategy
+and enters the underlying map before the matrix $P$ and its eigenphases
+are computed (Eq.~\eqref{eq:pij}). Strategy C's positive-branch eigenphases
+at its own optimal $k_1\approx6.48$ are therefore a different numerical
+object from Strategy D's positive-branch eigenphases at its optimal
+$k_1\approx4.39$, not a mirrored copy of the same data; the two protocols
+generate two different transfer matrices before any regression is
+performed. Had we instead fixed $k_1$ at a single value and only changed
+whether the regression included the mirrored branch, the reviewer's
+expectation that the intercept-zero slope on the positive branch and the
+free-fit slope on the symmetrized branch coincide would apply exactly, by
+the same normal-equations argument used above for $b=0$; the observed
+slope change here reflects that we do not hold $k_1$ fixed between
+strategies, not a departure from that identity.
 
 In conclusion, this comparative ablation study at an identical scale
 (\({N}=100\)) suggests, as a numerical observation and not as a proof, that
@@ -804,6 +844,19 @@ reasonably stable against the stochastic initial condition but remains
 sensitive to which zeros are included in the calibration window. Full
 per-run values are in the released results
 (\texttt{task12\_13\_results\_v2/}).
+
+The same two failure modes documented here for the macroscopic $k_1$ fit
+recur elsewhere in the pipeline. Section~\ref{sec:post-review-checks}
+reports an epsilon-analog of the out-of-sample split above (training the
+microscopic discretization scale $\epsilon$ on a subset of the first 6
+zeros and testing on the rest) with the same qualitative outcome: the
+held-out error is roughly $5\times$ larger under an asymmetric train/test
+split than when $\epsilon$ is chosen with knowledge of all 6 zeros. It
+also reports a reduced-scale, explicitly-seeded re-run of the $k_1$
+optimizer itself, which shows the same seed-to-seed instability
+qualitatively (though not quantitatively, since the reduced scale changes
+the objective) as the discrepancy already disclosed in the
+Table~\ref{tab1} caption.
 
 \subsubsection{The Macroscopic Regime}\label{sec:macroscopic}
 
@@ -931,7 +984,7 @@ seen in the GUE random matrix baseline.
 This 10,000-zero large-N comparison is consistent with a working
 hypothesis of this study: that the deterministic
 \(\text{\ensuremath{\sim}1/}\text{ln}^{\text{2}}{n}\) thermodynamic cooling flow
-supplies the global inertia needed to pace the mean density of the
+supplies the global rate needed to pace the mean density of the
 Riemann spectrum. We read the results as a numerical indication that the
 counting-function behavior of the zeros can be reproduced by a
 non-autonomous dissipative system annealing toward the edge of chaos,
@@ -1086,6 +1139,7 @@ Logistic band-merging symbolic dynamics $\cong$ prime sieve & Published \cite{wa
 Non-autonomous map reproduces low-order zeros (small error) & Numerical observation, in-sample only \\
 Fitted coupling extrapolates to unseen zeros (out-of-sample) & Refuted (this study, Sec.~\ref{sec:oos}) \\
 Fitted coupling is stable across random seeds & Numerical observation (Sec.~\ref{sec:oos}) \\
+Macroscopic $k_1$ optimum is reproducible run-to-run (Strategy C, Table~\ref{tab1}) & Refuted; unseeded optimizer converges to different local optima ($k_1\approx6.48$ vs.\ $8.07$) \\
 Change of behavior near $N\approx20$ & Numerical observation, run-to-run variable \\
 Coincidence with USTC enlarged-deviation orders & Qualitative; rank-correlated ($p=0.010$) but joint-rank coincidence not significant ($p=0.099$) \\
 Single-sided truncation causes the residual envelope & Heuristic / numerical \\
@@ -1117,15 +1171,16 @@ parameter evolves. This is an exploratory numerical construction, not a
 mapping between the Riemann zeros and a self-adjoint Hilbert-P\'olya
 operator.
 
-\textbf{Theoretical Derivation of the Non-Autonomous Scaling Law}\label{sec:scaling-derivation}
+\textbf{Heuristic Motivation for the Scaling Law}\label{sec:scaling-derivation}
 
 A static autonomous system (with a fixed \(\text{\ensuremath{\mu}}\)) can only generate
 a static snapshot of spectral lines. To reproduce an infinitely
 extending spectrum with continuously increasing density, the system must
 be non-autonomous, cooling dynamically toward \(\text{U}_{\text{c}}\) as
-the energy level \(\text{n}\) progresses. The exact parameter
-perturbation \(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}\) is strictly dictated by a Topological
-Isomorphism Chain:
+the energy level \(\text{n}\) progresses. The following chain of
+heuristic correspondences motivates, but does not derive from first
+principles, a particular form for the parameter perturbation
+\(\text{\ensuremath{\Delta}}\text{\ensuremath{\mu}}\):
 
 \textbf{The Riemann Target:} The Riemann-von Mangoldt formula dictates
 that the local average spacing \(\text{\ensuremath{\Delta}}\text{E}\) between adjacent
@@ -1146,21 +1201,22 @@ which squares to the adiabatic cooling form:
 \text{\ensuremath{\Delta}}~\text{\ensuremath{\mu}}~\text{\ensuremath{\propto}}\frac{\text{1}}{\text{ln}^{\text{2}}{n}}
 \end{equation}
 
-This derivation rules out empirical forms like
-\(\text{1/ln}{n}\), which, due to square-root truncation, would
-compress the spectrum too weakly
-(\(\text{1/}\sqrt{\text{ln}{n}}\)), causing divergent
-errors in the large-$N$ region.
+Within this heuristic chain, alternative forms like
+\(\text{1/ln}{n}\) would, after the same square-root step, compress the
+spectrum too weakly (\(\text{1/}\sqrt{\text{ln}{n}}\)), producing larger
+errors in the large-$N$ region under the same fitting protocol. We do not
+claim this constitutes a proof that such alternative forms are excluded
+on independent theoretical grounds, only that \(\text{1/ln}^{\text{2}}n\)
+performs better empirically among the forms we tried.
 
-\textbf{Topological Constraints on the Direction of Evolution}
+\textbf{Choice of Direction of Evolution}
 
-In addition to strictly adhering to the
-\(\text{1/}\text{ln}^{\text{2}}{n}\) cooling rate, the
-\emph{direction} of approach toward \(\text{U}_{{c}}\) is subject
-to rigorous physical constraints. The control equation must adopt the
-form
+Beyond the \(\text{1/}\text{ln}^{\text{2}}{n}\) cooling rate motivated
+above, the \emph{direction} of approach toward \(\text{U}_{{c}}\) is a
+further modeling choice, not a derived necessity. We adopt the control
+equation
 \(\text{\ensuremath{\mu}}_{{n}}=\text{U}_{{c}}+{k}{(}{n}{)/}\text{ln}^{\text{2}}(n+c\text{)}\),
-ensuring \(\text{\ensuremath{\mu}}_{{n}}>\text{U}_{{c}}\) at all
+which keeps \(\text{\ensuremath{\mu}}_{{n}}>\text{U}_{{c}}\) at all
 times.
 
 Approaching from the left (\(\text{\ensuremath{\mu}}<\text{U}_{c}\))
@@ -1310,12 +1366,13 @@ zeros. This process contains three steps:
 \item
   \textbf{Diagonalization and Spectral Filtering:} Performing eigenvalue
   decomposition on the empirical operator to extract its complex feature
-  spectrum. To eliminate numerical ``white noise'' and break the complex
-  conjugate Particle-Hole Symmetry brought by the real matrix, we
-  introduce a hard cutoff (\(\text{|}\text{\ensuremath{\lambda}}{|>0.4}\)) and lock
-  onto the upper half of the complex plane
-  (\(\text{Im(}\text{\ensuremath{\lambda}}{)>0}\)), purifying the true positive-energy
-  physical excited states.
+  spectrum. Because $P$ is a real-valued matrix, its eigenvalues are either
+  real or occur in complex-conjugate pairs; to eliminate numerical
+  ``white noise'' and retain one representative from each conjugate pair,
+  we introduce a hard magnitude cutoff (\(\text{|}\text{\ensuremath{\lambda}}{|>0.4}\)) and
+  keep only the eigenvalues in the upper half of the complex plane
+  (\(\text{Im(}\text{\ensuremath{\lambda}}{)>0}\)); we refer to this below as the
+  upper-half-plane branch.
 \item
   \textbf{Eigenphase Sorting and Unwrapping:} This step converts the
   filtered eigenphases into a linearly ordered sequence for comparison
@@ -1349,7 +1406,7 @@ where the dynamic compensation term
 
 \begin{itemize}
 \item
-  \textbf{Linear Homomorphic Mapping:} Finally, the cumulative
+  \textbf{Linear Rescaling:} Finally, the cumulative
   topological phase \(\text{\ensuremath{\Phi}}\) and the true Riemann
   \(\text{\ensuremath{\zeta}}\)-function zeros \({E}_{{n}}\) are globally
   linear-regression calibrated
@@ -1358,7 +1415,7 @@ where the dynamic compensation term
   matches the zero spacing microscopically but also achieves the
   complete collapse of the logarithmic drift envelope macroscopically,
   as a fitted numerical result. The
-  closed-loop minimization of the interference residual
+  least-squares minimization of the residual
   \({\ensuremath{\Delta}}{E}_{{n}}\) is represented as:
 \end{itemize}
 
@@ -1406,6 +1463,109 @@ standard Python/NumPy interpreter). These pristine, full-precision
 64-bit floating-point constants should then be explicitly passed as
 external arguments into the high-performance integration kernels,
 thereby isolating the system from compiler-induced phase drifts.
+
+\subsection{Additional Robustness Checks Conducted During Peer Review}\label{sec:post-review-checks}
+
+In response to reviewer comments requesting numerical evidence rather
+than a purely qualitative acknowledgment of open limitations, we ran
+four targeted follow-up experiments. We report all four here regardless
+of outcome; two of them surface additional, previously undocumented
+weaknesses rather than resolving the concerns they were designed to
+probe, and we do not soften that finding.
+
+\textbf{(1) Sensitivity of Module C to eigenvalue-filtering choices.}
+Holding the empirical matrix fixed (single realization at $k_1=6.481$,
+$10^{10}$ steps, as in Strategy C of Table~\ref{tab1}), we varied only
+the post-hoc spectral-extraction choices described in
+Section~\ref{sec:spectral-fitting-methodology}/Module C: the magnitude
+cutoff ($|\lambda|\in\{0.2,0.3,0.4,0.5,0.6\}$), the conjugate-branch
+selection (upper half-plane, lower half-plane, or folding both halves
+by $|\!\arg\lambda|$), and whether the filtered eigenphases are sorted
+before unwrapping (as in the main text) or left in the native order
+returned by the eigensolver. The forced-origin fit reported in the main
+text (cutoff $0.4$, upper half-plane, sorted) gives MSE $\approx288$
+against the same 100 zeros used elsewhere in this comparison (a
+different, single-realization matrix than the one behind
+Table~\ref{tab1}, so this MSE is not directly comparable to the
+Table~\ref{tab1} entries). Switching only the ordering step to
+``unsorted'' inflates the MSE by roughly 20--40$\times$ (to
+$\sim$6000--11000) and can flip the sign of the fitted slope; switching
+only the branch to the lower half-plane produces a similarly large
+degradation. The cutoff value itself matters far less over the range
+tested ($0.2$--$0.5$) than the sort-before-unwrap and branch choices do.
+We had already flagged in Section~\ref{sec:spectral-fitting-methodology}
+that the sort-then-unwrap procedure is an assumption we had not
+stress-tested; this experiment confirms that the procedure is not merely
+unverified but is in fact highly non-robust to the two discrete choices
+that accompany it, and the specific combination reported in the main
+text is doing real, load-bearing work in the fit quality.
+
+\textbf{(2) Overlap consistency between the Gaussian-splatting and
+Monte Carlo matrix constructions.} We built both a Monte Carlo
+hard-count matrix (Section~\ref{sec:macroscopic}'s method) and a
+Gaussian-kernel-splatting matrix (Module A's ``Optimal Solution'',
+Section~\ref{sec:model}) under identical physical parameters
+($u_c=1.543689$, $k_1=6.481$, offset $10^5$) and identical, modest
+step/grid budgets ($2\times10^5$ steps, $1000$ bins) chosen to keep the
+splatting construction (which is far more expensive per step) tractable.
+After applying the Module C filter, the Monte Carlo matrix retained 82
+eigenvalues satisfying the filter, while the Gaussian-splatting matrix
+retained only 3, limiting the directly shared comparison range to
+$N=1$--$3$; the two methods' independently forced-origin-fitted slopes
+differed by roughly $35\times$ ($348$ vs.\ $10$) over that shared range.
+This experiment does not establish that the two constructions are
+consistent; if anything, at this step/grid scale it shows the opposite,
+and we cannot rule out that the discrepancy is an artifact of the small
+step/grid budget imposed by the splatting method's cost. We report this
+as an open negative result rather than as a validated consistency check,
+superseding the previously undocumented gap noted in our review
+responses.
+
+\textbf{(3) Out-of-sample stability of the microscopic discretization
+scale $\epsilon$.} Section~\ref{sec:microscopic-scan}'s optimal
+$\epsilon=0.001916$ was selected by jointly minimizing the error over
+all of the first 6 zeros, the same 6 zeros used to report the fit
+quality --- a target-leakage risk we had previously flagged without
+numerical evidence. Using a reduced-cost version of the same pipeline
+($2\times10^5$ steps), we split the 6 zeros into a training half and a
+held-out half two different ways. Selecting $\epsilon$ on the
+odd-indexed zeros and testing on the even-indexed zeros happened to
+recover the same $\epsilon$ as the joint 6-zero optimum, so this split
+was uninformative about leakage. Selecting $\epsilon$ on the first 3
+zeros and testing on the last 3 told a different story: the
+train-selected $\epsilon=0.001940$ gave a held-out error sum of $28.0$
+on zeros 4--6, versus $5.4$ when the joint (``all 6 zeros seen'')
+optimum $\epsilon=0.001804$ is evaluated on the same held-out zeros.
+This is direct, quantitative evidence of the target leakage we had
+previously only flagged as a possibility: an $\epsilon$ chosen without
+seeing the higher-order zeros generalizes to them roughly $5\times$
+worse than one that was allowed to see them.
+
+\textbf{(4) Seed robustness of the $k_1$ optimizer at reduced scale.}
+To probe, at a computationally tractable scale, whether the
+differential-evolution non-reproducibility documented in
+Table~\ref{tab1}'s caption (Strategy C converging to $k_1\approx6.481$
+versus $k_1\approx8.070$ across two unseeded runs at the full
+$10^{10}$-step scale) reflects a genuinely multimodal objective rather
+than a one-off fluke, we reran the same optimizer configuration
+(\texttt{differential\_evolution}, \texttt{strategy=`best1bin'},
+\texttt{polish=False}) at $2\times10^7$ steps and a reduced population
+(\texttt{popsize=24}, \texttt{maxiter=8}) under five explicit, fixed
+seeds. The fitted $k_1$ ranged from $9.33$ to $14.26$ across the five
+seeds (mean $12.43$, standard deviation $1.74$), confirming that the
+objective remains non-convex and multimodal at this reduced scale.
+We emphasize that these reduced-scale $k_1$ values are not comparable to,
+and should not be read as confirming or replacing, the full-scale
+$6.481$/$8.070$ pair in Table~\ref{tab1}: reducing the step count and
+grid resolution changes the objective function itself, not just its
+evaluation cost. What this experiment supports is the general
+diagnosis --- an unseeded population-based optimizer on this class of
+objective is not expected to reproduce a single answer run-to-run ---
+rather than a specific numerical reconciliation of the Table~\ref{tab1}
+discrepancy.
+
+All four experiments' code and raw output are retained alongside this
+manuscript's release materials for inspection.
 
 \subsection{Dynamical Evolution Methods Approaching the Critical Point}
 
@@ -1480,7 +1640,7 @@ absolute boundary condition to ensure ultimate convergence to
 specifically designed to smooth out the curvature distortion inherent in
 the initial cooling phase.
 
-\subsection{Spectral Fitting and Alignment Methodology}
+\subsection{Spectral Fitting and Alignment Methodology}\label{sec:spectral-fitting-methodology}
 
 To evaluate the degree of isomorphism between the eigenphases
 \(\text{\ensuremath{\theta}}_{{n}}\) of the dynamical matrix and the true Riemann
@@ -1636,7 +1796,102 @@ heuristic approach successfully achieved global spectral alignment under
 stringent convergence tolerances (\(\text{tol~=~}\text{10}^{\text{\ensuremath{-}4}}\))
 without falling into local minima.
 
+\subsection{Reproducibility Guide: Recommended Hardware and Experimental Pipeline}\label{sec:repro-guide}
 
+All code, notebooks, and pre-computed outputs needed to reproduce every
+numerical claim in this paper are available at
+\url{https://github.com/maris205/riemann_logistic}. This subsection summarizes
+the recommended hardware and the main experimental steps; the repository's
+\texttt{readme.md} contains a complete table mapping every claim in the paper
+to a specific script or notebook.
+
+\textbf{Recommended hardware.} No GPU is required anywhere in this study; all
+computations are CPU-bound integer/floating-point trajectory iteration and
+sparse eigendecomposition. A single modern workstation core is sufficient to
+reproduce every microscopic-regime result and all macroscopic-regime
+notebooks in minutes to tens of minutes. Two specific experiments benefit
+from more cores because their outer loop (over independent configurations or
+independent trajectory chunks) parallelizes trivially:
+\begin{itemize}
+\item The out-of-sample validation and multi-seed robustness study
+(Section~\ref{sec:oos}) runs 13 independent configurations of
+$10^{10}$ steps each; we used a 64-core machine
+(\texttt{multiprocessing.Pool}, one process per configuration,
+\texttt{OMP\_NUM\_THREADS=1} inside each worker to avoid oversubscribing
+BLAS threads), completing in $\sim$176 minutes wall-clock. With fewer
+cores, wall-clock time scales roughly as
+$13/\min(13,n_{\text{cores}})\times\sim2.3$ hours per configuration;
+every configuration is fully independent, so reducing worker count only
+lengthens, and never invalidates, the run.
+\item The large-scale $\epsilon$-resolution scan
+(Section~\ref{sec:microscopic-scan}) and the $N=20$ significance
+re-verification (Section~\ref{sec:n20-significance}) were run on
+256-core and single-machine (dense $n_{\text{bins}}=6000$ transition
+matrix, $\sim$82 minutes one-time build) configurations respectively;
+both are embarrassingly parallel or reducible to a coarser grid if fewer
+cores are available, at the cost of proportionally longer wall-clock
+time rather than different results.
+\end{itemize}
+16\,GB of RAM is sufficient for every experiment except the $N=10{,}000$
+ultra-macroscopic transfer matrix, which we recommend running on a machine
+with at least 32\,GB RAM. Total disk footprint of the repository, including
+all pre-computed JSON/log outputs, is under 1\,GB.
+
+\textbf{Software.} Python~3.12 with \texttt{numpy}, \texttt{scipy},
+\texttt{numba}, \texttt{mpmath}, and \texttt{matplotlib}
+(\texttt{pip install numpy scipy numba mpmath matplotlib}); no other
+dependencies are required. \texttt{numba}'s \texttt{@njit(fastmath=True)}
+kernels JIT-compile on first call (a few seconds of one-time overhead per
+script).
+
+\textbf{Main experimental steps.} In the order the results appear in the
+paper:
+\begin{enumerate}
+\item \emph{Microscopic regime ($N\le20$), optimal grid resolution
+$\epsilon$} (Section~\ref{sec:microscopic-scan}): run the coarse scan, then
+the fine scan, then the figure notebook, in sequence.
+\item \emph{$N=20$ significance test} (Section~\ref{sec:n20-significance}):
+run \texttt{task15\_n20\_significance.py}, which builds the transition
+matrix once and then performs 20 unselected eigendecomposition trials to
+quantify run-to-run variability honestly, rather than reporting a single
+cherry-picked trial.
+\item \emph{$N=100$ anchoring-strategy ablation}
+(Section~\ref{sec:conjugate-ablation}): run the four Model A--D notebooks
+independently, then the overlay notebook that reproduces Figure~4.
+\item \emph{Out-of-sample validation and multi-seed robustness}
+(Section~\ref{sec:oos}): run \texttt{task12\_13\_experiments\_v2.py}, which
+reproduces all 13 JSON result files (3 held-out splits $\times$ evaluation,
+plus 10 seeds at fixed $M=70$).
+\item \emph{$N=1000$ macroscopic fit} (Section~\ref{sec:macroscopic},
+Figure~6): run the corresponding notebook, which performs the strict
+single-point anchoring described in
+Section~\ref{sec:spectral-fitting-methodology} for models M1/M2 and the
+forced-origin global scaling for the GUE baseline.
+\item \emph{Unfolded local-statistics GUE comparison}
+(Section~\ref{sec:gue-comparison}): run \texttt{task14\_rmt\_unfolded.py}
+(true Riemann zeros vs.\ GUE/Poisson) and \texttt{task14\_dynamical\_rmt.py}
+(the dynamical model's own eigenphases vs.\ GUE/Poisson).
+\item \emph{Post-review robustness checks}
+(Section~\ref{sec:post-review-checks}): run, from the
+\texttt{review\_experiments/} subdirectory,
+\texttt{task24\_phase\_extraction\_sensitivity.py},
+\texttt{task25\_splatting\_vs\_mc\_overlap.py},
+\texttt{task26\_epsilon\_out\_of\_sample.py}, and
+\texttt{task27\_de\_seed\_robustness\_reduced.py} independently; each
+writes its own JSON results file and none depends on the others' output.
+These four scripts were run at deliberately reduced scale relative to the
+rest of the pipeline (see each script's header for the exact
+step/grid/population reduction and the rationale) to keep the peer-review
+turnaround tractable on a single 64-core workstation, so their absolute
+numbers are not directly comparable to the full-scale results elsewhere
+in the paper; only their qualitative conclusions are used in the main
+text.
+\end{enumerate}
+Every \texttt{task*.py} script locates its own output directory relative to
+its own file path, so it can be re-run from a fresh clone without editing any
+paths. Pre-computed outputs are committed alongside each script, so every
+numerical claim can be inspected without re-running anything, or verified by
+re-running and comparing.
 
 \vspace{6pt}
 

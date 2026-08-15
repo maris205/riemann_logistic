@@ -1,0 +1,20 @@
+================================================================================
+Task 26: epsilon out-of-sample 检验 (steps=200000, n_bins=2000, 60 个 eps 候选)
+================================================================================
+
+[*] 全部 eps 候选评估完成，耗时 62.3 分钟
+[*] 有效结果数: 60/60
+
+[split: train_odd_test_even]
+    train indices (0-based) = [0, 2, 4], test indices = [1, 3, 5]
+    train 上最优 eps = 0.001804 (train ErrSum=8.6541)
+    该 eps 在 test 上的 ErrSum = 6.725391716063925
+    对照：全部6个零点联合最优 eps = 0.001804，用它在同样 test 上的 ErrSum = 6.725391716063925
+
+[split: train_first3_test_last3]
+    train indices (0-based) = [0, 1, 2], test indices = [3, 4, 5]
+    train 上最优 eps = 0.001940 (train ErrSum=0.9788)
+    该 eps 在 test 上的 ErrSum = 28.004154794388263
+    对照：全部6个零点联合最优 eps = 0.001804，用它在同样 test 上的 ErrSum = 5.430562522745927
+
+[完成] 结果保存至 /root/autodl-tmp/henon_mapping/riemann_logistic/review_experiments/task26_results/oos_results.json

@@ -164,6 +164,11 @@ multi-seed robustness check, the unfolded-GUE local-statistics test, and the
 single-point-vs-multi-point anchoring inconsistency between the Results and
 Appendix sections).
 
+The manuscript's Appendix also has its own self-contained
+"Reproducibility Guide: Recommended Hardware and Experimental Pipeline"
+subsection, summarizing the same hardware recommendations and step-by-step
+pipeline as this readme, for readers who only have the PDF.
+
 ## Data availability
 
 The reference Riemann zeros used throughout are obtained from `mpmath.zetazero`
