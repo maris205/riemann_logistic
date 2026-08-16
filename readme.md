@@ -15,6 +15,12 @@ not proofs** — see `Table~\ref{tab:claims}` in the manuscript for the epistemi
 status of every individual result, including several that this repository's own
 code refutes (out-of-sample extrapolation, GUE local-statistics match).
 
+<p align="center">
+  <img src="paper/mca/figures/image2.png" width="45%" alt="Microscopic validation: N=1-6 lock-in and the N=20 residual spike">
+  <img src="paper/mca/figures/image6.png" width="45%" alt="N=1000 macroscopic anchoring vs. GUE baseline">
+</p>
+<p align="center"><sub>Left: microscopic lock-in (N=1-6) and the N=20 residual anomaly (Figure 2 in the manuscript). Right: N=1000 macroscopic fit (models M1/M2) against a GUE global-scaling baseline (Figure 6).</sub></p>
+
 ---
 
 ## Repository layout
