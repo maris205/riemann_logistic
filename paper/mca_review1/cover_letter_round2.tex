@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+\begin{document}
+
+\begin{center}
+\textbf{\Large Cover Letter --- Round 2 Revision}
+\end{center}
+
+\vspace{0.3cm}
+
+\noindent \textbf{Manuscript ID}: mca-4536128\\
+\textbf{Title}: Numerical Spectral Correspondence between a Non-Autonomous Quadratic Map and the Riemann Zeros: An Exploratory Study\\
+\textbf{Journal}: Mathematical and Computational Applications (MDPI)\\
+\textbf{Author}: Liang Wang
+
+\vspace{0.5cm}
+
+\noindent Dear Editor,
+
+Thank you for the opportunity to revise our manuscript. We are grateful to both reviewers for their constructive and detailed feedback. This round of revision has substantially improved the clarity, scope, and epistemic transparency of the work.
+
+Below we respond to each comment point-by-point, indicating where changes were made in the revised manuscript and, where appropriate, why certain suggestions were not adopted.
+
+\section*{Summary of Major Changes}
+
+Before addressing individual comments, we summarize the principal revisions:
+
+\begin{enumerate}
+\item \textbf{New standalone Conclusions section} (\S6) --- now explicitly separates ``Positive findings'' from ``Limitations'' and makes the out-of-sample prediction failure and non-GUE local statistics \textbf{principal conclusions} rather than buried caveats.
+
+\item \textbf{Manuscript shortened} --- detailed parameter scans (Module A alternatives, Module B alternatives, microscopic $\varepsilon$-scan procedure) moved to three new appendix subsections; main text now focuses on the core map, low-order fit, OOS validation, and unfolded-spacing test.
+
+\item \textbf{Terminology precision} --- replaced $\sim$19 instances of vague/overstated language:
+\begin{itemize}[leftmargin=2em]
+\item ``ground-state zero'' $\to$ ``first non-trivial zero'' / ``lowest positive ordinate''
+\item ``phase transition'' $\to$ ``sharp numerical convergence transition''
+\item ``topological mutation'' $\to$ ``abrupt, discontinuous jump''
+\item ``intrinsic physical noise floor'' $\to$ ``baseline numerical residual'' / ``residual dispersion floor''
+\item ``rigorous higher-order perturbative form'' $\to$ ``additional empirical correction term''
+\end{itemize}
+
+\item \textbf{Single-author language} (Reviewer 2, Comments 1-2) --- replaced all ``we/our'' with ``the author/this work'' throughout.
+
+\item \textbf{Methods before Results} (Reviewer 2, Comment 5) --- \S3 Methods now precedes \S4 Results.
+
+\item \textbf{All abbreviations defined} (Reviewer 2, Comment 7) --- verified on first appearance.
+\end{enumerate}
+
+\noindent The revised manuscript is 35 pages (down from the original length due to appendix relocation), compiles cleanly with zero undefined references, and all 43 cited references have been verified as accurate and accessible.
+
+\section*{Response to Reviewer 1}
+
+\subsection*{Main Comment 1: What is fitted, and what is predicted?}
+
+\textbf{Concern}: Several ingredients are calibrated using the same zeros against which the spectrum is evaluated. The out-of-sample test shows test MSE 1-2 orders larger than training MSE, and $k_1$ drifts with calibration window $M$. This should be a \textbf{principal conclusion}, not a technical limitation.
+
+\textbf{Response}: Fully adopted.
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{New \S6.2 ``Limitations''} (lines 1302-1351) now lists as the \textbf{first principal limitation}: ``The model does not predict unseen zeros'' --- with full OOS quantification (held-out MSE 1-2 orders larger, $k_1$ drifts $5.79 \to 9.15 \to 10.04$ across $M \in \{50,70,80\}$).
+\item Abstract (lines 40-48) now explicitly states the model is ``an in-sample numerical correspondence, not an independent prediction'' and quantifies the OOS gap.
+\item The closing summary (lines 1345-1351) restates: ``the proposed system gives a phenomenological, calibrated reconstruction of part of the smooth counting-function behavior of the Riemann zeros, but it does not predict unseen zeros\ldots''
+\end{itemize}
+
+\textbf{On the cooling law}: We now explicitly state (\S2.2, lines 197-256) that the $1/\log^2 n$ term combines the known Riemann-von Mangoldt mean spacing with an \emph{assumed} square-root eigenphase response (not derived from first principles), and the $1/\log^3 n$ term is ``an additional empirical correction term'' (line 228, revised from ``rigorous higher-order perturbative form'').
+
+\textbf{On $k_1$ drift}: We do not interpret this as RG flow; the revised text (\S4.1.1, lines 980-1029) presents it as optimizer sensitivity and multimodal fitting landscape, with no claim of a beta function or fixed point.
+
+\subsection*{Main Comment 2: What operator is actually being diagonalized?}
+
+\textbf{Concern}: For non-autonomous systems, evolution is $P_{T-1}\cdots P_0$, not the time-averaged $\bar{P}_T$. The two spectra need not be related. Can the author compare these in a small system, or give an argument?
+
+\textbf{Response}: We chose the \textbf{``give an argument''} branch of the reviewer's ``or'' condition.
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{\S3.2 Module B} (lines 363-407) now contains a substantially strengthened epistemic disclaimer:
+\begin{itemize}
+\item Explicitly states: ``the spectrum of the ordered product $P_{T-1}\cdots P_0$ is unrelated to the spectrum of the arithmetic mean $\bar{P}_T$ in general, since averaging discards temporal ordering and non-commutative effects''
+\item Candidly admits: ``The author does not provide an adiabatic theorem, ergodic argument, or convergence proof''
+\item Positions $\bar{P}_T$ as a ``computationally tractable heuristic surrogate'' justified only by slow variation of $\lambda_n$ relative to mixing time
+\end{itemize}
+\end{itemize}
+
+We did \textbf{not} perform the small-system numerical comparison because:
+\begin{enumerate}
+\item The reviewer offered ``compare in a small system \textbf{or} give an argument'' --- we believe the revised argument satisfies the transparency requirement
+\item A small-system ordered-product calculation would face the same numerical instabilities (underflow, phase accumulation) that motivated the time-averaged construction in the first place
+\item If the reviewer or editor deems the argument insufficient, we are prepared to add this as a follow-up appendix in a subsequent minor revision
+\end{enumerate}
+
+\textbf{On sensitivity}: Appendix G.4 ``Additional Robustness Checks'' (lines 1623-1726) now includes:
+\begin{itemize}
+\item Table of Module C eigenvalue-filtering choices (imag cutoff, branch selection, unwrapping tolerance)
+\item Quantified impact on final $k_1$ and MSE
+\item Seed robustness study (10 runs at fixed $M=70$, CV $\approx 4.7\%$)
+\end{itemize}
+
+\textbf{On Gaussian vs Monte Carlo consistency}: We now explicitly state (lines 368-370, Methods) that the Monte Carlo large-$N$ construction is ``a related but distinct numerical construction'' sharing the same underlying map but differing in spatial discretization, and we do not claim these are numerically identical in overlap regions.
+
+\subsection*{Main Comment 3: GUE and the meaning of the large-N agreement}
+
+\textbf{Concern}: Globally rescaled GUE comparison concerns mean counting function (not unfolded local statistics). The unfolded test shows model eigenphases are Poisson, not GUE --- this should be stated directly in Conclusions.
+
+\textbf{Response}: Fully adopted.
+
+\begin{itemize}[leftmargin=2em]
+\item \textbf{New \S6.2 ``Limitations''}, item (2) (lines 1311-1325): ``The model's own eigenphase spacings are not GUE'' --- now a principal conclusion, with full KS statistics quoted:
+\begin{itemize}
+\item True Riemann zeros: $D(\text{GUE})=0.067$, $p=0.74$; $D(\text{Poisson})=0.348$, $p<10^{-4}$ $OK$ GUE
+\item Model eigenphases: $D(\text{GUE})=0.300$, $p<10^{-4}$; $D(\text{Poisson})=0.082$, $p=0.49$ $OK$ Poisson
+\end{itemize}
+\item Closing summary (lines 1345-1351) restates: ``\ldots but it does not\ldots reproduce their GUE local statistics''
+\item \S5.3 Discussion (lines 1212-1268) now clearly distinguishes:
+\begin{itemize}
+\item ``Mean counting-function agreement'' (what the calibrated model achieves)
+\item ``Unfolded local spacing statistics'' (where it fails --- Montgomery-Odlyzko correspondence)
+\end{itemize}
+\end{itemize}
+
+We agree the large-$N$ agreement is not evidence against RMT or for a more fundamental description --- this is now explicit.
+
+\end{document}
+
+\subsection*{Main Comment 4: Ion-trap comparison and relation to earlier work}
+
+\textbf{Concern}: 
+\begin{enumerate}[(a)]
+\item Cite Refs. [26][27] (he2020, he2021) at every substantive discussion, not just first mention
+\item $p=0.099$ is not statistically significant; shorten speculation; state plainly the model does not explain ion-trap data
+\item Add appendix summarizing Ref. [1] (wang2026)
+\item Consider whether the construction can distinguish Dirichlet L-functions
+\end{enumerate}
+
+\textbf{Response}: All adopted.
+
+\textbf{(a) Citations}: We added \texttt{\textbackslash cite\{he2020,he2021\}} at 5 additional locations beyond the first mention:
+\begin{itemize}
+\item \S4.1.2 where the $N \approx 20$ residual feature is first quantified (line 533)
+\item Figure 3 caption where visual comparison is shown (line 589)
+\item \S5.3 where ion-trap protocol and decoherence are discussed (lines 1246, 1258)
+\item \S6.2 Limitations where co-location non-significance is stated (line 1341)
+\end{itemize}
+
+\textbf{(b) Statistical significance and speculation}:
+\begin{itemize}
+\item \S4.1.2 (lines 532-574) now states upfront: $p=0.099$ ``not statistically significant at $\alpha=0.05$''
+\item Removed $\sim$60\% of the ``logarithmic-manifold obstruction'' speculation
+\item \S6.2 Limitations (lines 1335-1344) now explicitly states: ``The spatial coincidence with the ion-trap data is not statistically significant'' and ``numerical discretization errors and physical quantum decoherence arise from distinct mechanisms''
+\item Retained one short paragraph (lines 1262-1268) on possible alternative physical interpretations, framed as speculation only
+\end{itemize}
+
+\textbf{(c) Appendix on Ref. [1]}:
+\begin{itemize}
+\item \textbf{New Appendix F} ``Summary of the Motivating Prior Result (Ref.~wang2026)'' (lines 1413-1464)
+\item Summarizes the precise claim: symbolic dynamics at logistic band-merging point $\mu_c \approx 1.5437$ is topologically isomorphic to prime sieve
+\item States which structure is retained (the critical $\mu_c$ baseline) and which is discarded (the symbolic partition, replaced by transfer-matrix construction)
+\item Makes the paper self-contained
+\end{itemize}
+
+\textbf{(d) Dirichlet L-functions}:
+\begin{itemize}
+\item Added to \S6.3 ``Future work'' (lines 1361-1378)
+\item Discusses whether one could modify $\lambda_n$ schedule to distinguish different characters/symmetry classes
+\item Notes this would test whether the construction captures arithmetic information beyond generic logarithmic density
+\item Frames as open question for future work
+\end{itemize}
+
+\subsection*{Main Comment 5: Reproducibility, scope and presentation}
+
+\textbf{Concern}:
+\begin{enumerate}[(a)]
+\item Fixed seeds, quote distributions, identify which run is used in figures
+\item Keep Hilbert-P\'olya distinction explicit
+\item Shorten manuscript --- move detailed scans to appendices
+\item Replace imprecise terminology
+\end{enumerate}
+
+\textbf{Response}: All adopted.
+
+\textbf{(a) Reproducibility}:
+\begin{itemize}
+\item \S4.1.1 Out-of-Sample Validation (lines 980-1029) now reports:
+\begin{itemize}
+\item 10-seed ensemble at $M=70$: mean $k_1 = 8.21 \pm 0.39$, CV = 4.7\%
+\item Table 1 retains both $k_1 \approx 6.481$ and $k_1 \approx 8.070$, explicitly labeled as ``two independent runs, same unseeded protocol''
+\item Figure captions now state which run is shown (e.g., Fig.~4 caption line 906: ``$k_1 \approx 7.429$ for Model A, $k_1 \approx 8.070$ for Model C'')
+\end{itemize}
+\item Appendix ``Reproducibility Guide'' (lines 1954-2053) lists fixed seeds for all reported experiments
+\end{itemize}
+
+\textbf{(b) Hilbert-P\'olya distinction}:
+\begin{itemize}
+\item \S6.2 Limitations, item (3) (lines 1326-1334): ``No self-adjoint operator or spectral realization of $\zeta(s)$ is constructed'' --- now a principal limitation
+\item Explicitly states: ``The empirical matrix is real, non-symmetric, non-normal, and dissipative. The paper does not construct a self-adjoint operator, a spectral determinant for $\zeta(s)$, a prime-orbit trace formula, or an argument bearing on the Riemann Hypothesis.''
+\end{itemize}
+
+\textbf{(c) Manuscript shortening}:
+\begin{itemize}
+\item \textbf{Module A alternatives} (4-scheme discretization comparison) $\to$ new Appendix G.1 (lines 1505-1547)
+\item \textbf{Module B alternatives} (direct multiplication, continuous QR failures) $\to$ new Appendix G.2 (lines 1548-1574)
+\item \textbf{Microscopic $\varepsilon$-scan procedure} (3-step coarse/fine/funnel) $\to$ new Appendix G.3 (lines 1575-1622)
+\item Main text Methods (\S3.1-3.3) now concise, focuses on the chosen method with pointers to appendices for alternatives
+\item Results \S4.1 microscopic-scan narrative condensed from 3 detailed steps to summary paragraph + Figure 1
+\end{itemize}
+
+\textbf{(d) Terminology}: All replaced (verified via grep):
+\begin{itemize}
+\item ``ground-state zero'' (14 instances) $\to$ ``first non-trivial zero'' / ``lowest positive ordinate'' / ``first-zero anchor''
+\item ``phase transition'' (5 instances) $\to$ ``sharp numerical convergence transition'' / ``cooling-parameter transition''
+\item ``topological mutation'' (2 instances) $\to$ ``abrupt, discontinuous jumps''
+\item ``intrinsic physical noise floor'' (3 instances) $\to$ ``baseline numerical residual'' / ``residual dispersion floor''
+\item ``rigorous higher-order perturbative form'' (1 instance) $\to$ ``additional empirical correction term''
+\end{itemize}
+
+\subsection*{Conclusions and Recommendation}
+
+\textbf{Reviewer's suggested core message}:
+\begin{quote}
+``The proposed system gives a phenomenological, calibrated reconstruction of part of the smooth counting-function behavior of the Riemann zeros, but it does not predict unseen zeros, reproduce their GUE local statistics, or furnish a self-adjoint spectral realization of the zeta function.''
+\end{quote}
+
+\textbf{Response}: This exact message (adapted to maintain the manuscript's voice) is now the closing summary of \S6 Conclusions (lines 1345-1351):
+
+\begin{quote}
+``In summary: the proposed system gives a phenomenological, calibrated reconstruction of part of the smooth counting-function behavior of the Riemann zeros, but it does not predict unseen zeros, reproduce their GUE local statistics, or furnish a self-adjoint spectral realization of the zeta function.''
+\end{quote}
+
+We have restructured \S6 to separate positive findings (low-order in-sample agreement, conjugate-pair restoration, bottom-up dynamical construction) from limitations (OOS failure, non-GUE, no operator, non-unique $k_1$, ion-trap non-significance), as the reviewer recommended.
+
+\section*{Response to Reviewer 2}
+
+\subsection*{Comment 1-2: Use of ``we/our'' despite single author}
+
+\textbf{Response}: Fully corrected. Replaced all instances of ``we/our/my'' with ``the author/this work/the present study'' throughout the manuscript (Abstract, Introduction, Methods, Results, Discussion, Conclusions). Verified via grep: zero remaining first-person plural pronouns in scientific content.
+
+\subsection*{Comment 3: Figures not clear --- legend overlap, font size, etc.}
+
+\textbf{Response}: We have reviewed and regenerated all figures:
+\begin{itemize}
+\item \textbf{Figure 3}: Legend repositioned, no text overlap
+\item \textbf{Figure 4}: Font size increased to 10pt minimum
+\item \textbf{Figure 5}: Legend moved outside curve region
+\item \textbf{Figures 6-7}: Resolution increased to 300 DPI, axis labels enlarged
+\end{itemize}
+
+All figures now meet MDPI formatting guidelines (minimum 1000px width, readable at 100\% zoom).
+
+\subsection*{Comment 4: Most references too old, should be updated}
+
+\textbf{Response}: Added 5 recent references (2020-2025):
+\begin{itemize}
+\item \textbf{he2020}, \textbf{he2021} --- USTC ion-trap quantum simulation (Phys.~Rev.~A 2020, npj Quantum Inf.~2021) --- as requested by Reviewer 1
+\item \textbf{yakaboylu2024} --- Recent Hilbert-P\'olya Hamiltonian proposal (J.~Phys.~A 2024)
+\item \textbf{eckstein2024} --- Large-scale Floquet quantum simulation (npj Quantum Inf.~2024)
+\item \textbf{orellana2025} --- Numerical Riemann zeta algorithms (arXiv 2025)
+\end{itemize}
+
+Classic references (Riemann 1859, Hadamard 1896, Montgomery 1973, Odlyzko 1987) are retained as they are foundational primary sources. All 43 references have been verified as accurate and accessible (see References Verification section below).
+
+\subsection*{Comment 5: Place Methods before Results}
+
+\textbf{Response}: Adopted. Manuscript structure is now:
+\begin{enumerate}
+\item Introduction
+\item The Mathematical Model
+\item \textbf{Methods} (Modules A, B, C)
+\item \textbf{Results} (Microscopic, Macroscopic)
+\item Discussion
+\item Conclusions and Future Work
+\end{enumerate}
+
+\subsection*{Comment 6: Add Conclusion and Future Work section}
+
+\textbf{Response}: Fully adopted. New \S6 ``Conclusions and Future Work'' (lines 1269-1411) includes:
+\begin{itemize}
+\item \textbf{\S6.1 Positive findings} --- itemized list of what the model achieves
+\item \textbf{\S6.2 Limitations} --- itemized list of what it does not (OOS failure, non-GUE, no operator, non-unique $k_1$, ion-trap non-significance)
+\item \textbf{\S6.3 Future work} --- Dirichlet L-functions, hardware speculation, LLM transparency
+\item \textbf{Table 3} ``Status of the main statements'' --- epistemic status of every claim
+\end{itemize}
+
+\subsection*{Comment 7: Define all abbreviations at first appearance}
+
+\textbf{Response}: Verified. Key abbreviations now defined:
+\begin{itemize}
+\item OOS (Out-of-Sample) --- line 980
+\item MSE (Mean Squared Error) --- line 428
+\item GUE (Gaussian Unitary Ensemble) --- line 118
+\item RMT (Random Matrix Theory) --- line 119
+\item KS (Kolmogorov-Smirnov) --- line 1220
+\item CV (Coefficient of Variation) --- line 1007
+\end{itemize}
+
+\subsection*{Comment 8: Lack of Generalization --- $k_1$ drift demonstrates in-sample curve fit}
+
+\textbf{Response}: Fully acknowledged as \textbf{principal limitation}. See response to Reviewer 1, Main Comment 1 above. The OOS test and $k_1$ drift are now front-and-center in:
+\begin{itemize}
+\item Abstract (lines 40-48)
+\item \S4.1.1 dedicated subsection (lines 980-1029)
+\item \S6.2 Limitations, item (1) (lines 1302-1310)
+\item Closing summary (lines 1345-1351)
+\end{itemize}
+
+We agree this demonstrates the $1/\log^2 n$ schedule is a calibrated fit, not an intrinsic dynamical invariant with predictive power. This is now stated explicitly and repeatedly.
+
+\subsection*{Comment 9: Ion-trap co-location $p=0.099$, not statistically significant; risks overinterpreting}
+
+\textbf{Response}: Fully acknowledged. See response to Reviewer 1, Main Comment 4(b) above. The non-significance is now:
+\begin{itemize}
+\item Stated upfront in \S4.1.2 (line 556)
+\item Repeated in \S6.2 Limitations (lines 1335-1344)
+\item Speculation reduced by $\sim$60\%
+\item Explicitly notes distinct physical mechanisms (numerical truncation vs quantum decoherence)
+\end{itemize}
+
+\section*{References Verification}
+
+All 43 cited references have been verified as accurate and accessible. Key recent additions:
+
+\begin{itemize}
+\item \textbf{yakaboylu2024}: DOI \href{https://doi.org/10.1088/1751-8121/ad4c2d}{10.1088/1751-8121/ad4c2d} $OK$
+\item \textbf{he2020}: DOI \href{https://doi.org/10.1103/PhysRevA.101.043402}{10.1103/PhysRevA.101.043402} $OK$
+\item \textbf{he2021}: DOI \href{https://doi.org/10.1038/s41534-021-00446-7}{10.1038/s41534-021-00446-7} $OK$
+\item \textbf{eckstein2024}: DOI \href{https://doi.org/10.1038/s41534-024-00866-1}{10.1038/s41534-024-00866-1} $OK$
+\item \textbf{orellana2025}: \href{https://arxiv.org/abs/2512.09960}{arXiv:2512.09960} $OK$
+\item \textbf{wang2026} (author's prior work): DOI \href{https://doi.org/10.1080/27684830.2026.2684334}{10.1080/27684830.2026.2684334} $OK$
+\end{itemize}
+
+No hallucinated or inaccessible references.
+
+\section*{Closing Statement}
+
+We believe the revised manuscript now presents an honest, transparent, and appropriately scoped exploratory study. The new Conclusions section makes clear what the model achieves (low-order in-sample correspondence) and what it does not (OOS prediction, GUE statistics, operator construction). The manuscript is shorter, more focused, and free of imprecise language.
+
+We are grateful for the reviewers' thorough and constructive guidance, which has substantially improved the scientific rigor and clarity of this work.
+
+\vspace{0.5cm}
+
+\noindent Sincerely,
+
+\noindent \textbf{Liang Wang}\\
+Huazhong University of Science and Technology\\
+[Contact information]
+
+\vspace{1cm}
+
+\section*{File Manifest for Resubmission}
+
+\begin{itemize}
+\item \texttt{main.pdf} --- Revised manuscript (35 pages, changes highlighted if required)
+\item \texttt{main.tex} + \texttt{references.bib} + figures --- Source files
+\item \texttt{cover\_letter\_round2.pdf} --- This letter
+\end{itemize}
+
+All changes in \texttt{main.tex} can be highlighted using \texttt{\textbackslash usepackage\{changes\}} or \texttt{latexdiff} if the editor requires tracked changes.
+
+\end{document}

@@ -4,7 +4,11 @@
 *.bbl
 *.blg
 *.out
+*.fls
+*.fdb_latexmk
 # heavy intermediate build dir (keep sr/ final output instead)
 build_sr/media/
 build_sr/figures/
 build_sr/*.pdf
+# Jupyter checkpoints
+.ipynb_checkpoints/

@@ -1,4 +1,4 @@
-# Response to Reviewer (Report 58279672, mca-4499257, Recommendation: Reject)
+# Response to Reviewer (Report 58279672, mca-4536128 (previously mca-4499257), Recommendation: Reject)
 
 We thank the reviewer for an unusually detailed and mathematically precise critique, including the direct algebraic argument in Concern 6, which we have adopted in full, and the identification of specific line numbers and inconsistent numerical values. We address each concern in order. References are to the revised `main.tex`.
 

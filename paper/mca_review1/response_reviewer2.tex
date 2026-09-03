@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{mdframed}
+
+\newmdenv[linewidth=0.5pt,leftmargin=0pt,rightmargin=0pt,innerleftmargin=8pt,innerrightmargin=8pt,innertopmargin=4pt,innerbottommargin=4pt,linecolor=gray]{quotebox}
+
+\begin{document}
+
+\begin{center}
+\textbf{\Large Point-by-Point Response to Reviewer 2 --- Round 2}
+\end{center}
+
+\vspace{0.3cm}
+
+\noindent \textbf{Manuscript ID}: mca-4536128\\
+\textbf{Title}: Numerical Spectral Correspondence between a Non-Autonomous Quadratic Map and the Riemann Zeros: An Exploratory Study\\
+\textbf{Journal}: Mathematical and Computational Applications (MDPI)\\
+\textbf{Author}: Liang Wang
+
+\vspace{0.5cm}
+
+\noindent Dear Reviewer,
+
+Thank you for your constructive and detailed feedback. Below we respond point-by-point to each comment, quoting the original text followed by our response and the specific changes made.
+
+\subsection*{Comments 1 and 2: Use of ``we/our'' despite single author}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape 1) The use of I, we, my, and our isn't preferable in scientific writing.
+
+2) The author writes we and our despite there being one author.
+\end{quotebox}
+
+\noindent\textbf{Our Response:} Fully corrected. Replaced all instances of ``we/our/my'' with ``the author/this work/the present study'' throughout the manuscript. Verified via grep: zero remaining first-person plural pronouns in scientific content.
+
+\subsection*{Comment 3: Figure quality issues}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape Some figure not clear and should be redrawn. Like in Figure 3, the legend overlaps the text box. In Figure 4, the font is not readable. In Figure 5, the legend overlaps the curve. Figures 6 and 7 are not clear. Consequently, review all figures.
+\end{quotebox}
+
+\noindent\textbf{Our Response:} We have reviewed and regenerated all figures: Figure 3 legend repositioned (no text overlap); Figure 4 font size increased to 10pt minimum; Figure 5 legend moved outside curve region; Figures 6-7 resolution increased to 300 DPI with enlarged axis labels. All figures now meet MDPI formatting guidelines.
+
+\subsection*{Comment 4: References too old}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape Most of the references are too old and should be updated.
+\end{quotebox}
+
+\noindent\textbf{Our Response:} Added 5 recent references (2020-2025) while retaining foundational primary sources:
+\begin{itemize}
+\item \textbf{he2020}, \textbf{he2021} --- USTC ion-trap quantum simulation (Phys.~Rev.~A 2020, npj Quantum Inf.~2021)
+\item \textbf{yakaboylu2024} --- Recent Hilbert-P\'olya Hamiltonian proposal (J.~Phys.~A 2024)
+\item \textbf{eckstein2024} --- Large-scale Floquet quantum simulation (npj Quantum Inf.~2024)
+\item \textbf{orellana2025} --- Numerical Riemann zeta algorithms (arXiv 2025)
+\end{itemize}
+Classic references (Riemann 1859, Hadamard 1896, Montgomery 1973, Odlyzko 1987) retained as foundational primary sources. All 43 references verified as accurate and accessible (see References Verification section below).
+
+\subsection*{Comment 5: Place Methods before Results}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape I suggest placing the methods section before the results section.
+\end{quotebox}
+
+\noindent\textbf{Our Response:} Adopted. Manuscript structure is now: (1) Introduction, (2) The Mathematical Model, (3) \textbf{Methods}, (4) \textbf{Results}, (5) Discussion, (6) Conclusions and Future Work.
+
+\subsection*{Comment 6: Add Conclusions and Future Work section}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape A conclusion and future work section should be added and supported by numerical evidence.
+\end{quotebox}
+
+\noindent\textbf{Our Response:} Fully adopted. \textbf{New \S6 ``Conclusions and Future Work''} includes \S6.1 ``Positive findings'' (with numerical support: low-order in-sample agreement, conjugate-pair restoration eliminating $b$-intercept divergence), \S6.2 ``Limitations'' (with numerical evidence for each limitation, including out-of-sample failure, non-GUE local statistics, absence of a self-adjoint operator, seed-dependence of $k_1$, and ion-trap co-location non-significance), \S6.3 ``Future work,'' and Table~2 ``Status of the main statements.''
+
+\subsection*{Comment 7: Define abbreviations}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape All abbreviations should be defined in their first appearance in the paper.
+\end{quotebox}
+
+\noindent\textbf{Our Response:} Verified and corrected. Key abbreviations are now defined at first appearance: GUE and RMT (\S1 Introduction, Gaussian Unitary Ensemble / Random Matrix Theory), MSE (Appendix~H.1, Mean Squared Error). Other quantities that could have been abbreviated (out-of-sample, coefficient of variation, Kolmogorov--Smirnov) are instead spelled out in full at every occurrence rather than introduced as abbreviations, to avoid burdening the reader with additional acronyms.
+
+\subsection*{Comment 8: Lack of Generalization}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape In Section 3.2.3, there is a Lack of Generalization. Fitting the macroscopic annealing constant $k_1$ using only the first $M \in \{50, 70, 80\}$ zeros and evaluating the resulting operator on held-out zeros causes the test MSE to explode by 1--2 orders of magnitude. The parameter $k_1$ drifts systematically ($5.79 \to 9.15 \to 10.04$) as the training window size $M$ increases. This demonstrates that the $1/\ln^2(n)$ cooling schedule operates as an in-sample parameterized curve fit rather than an intrinsic dynamical invariant reproducing the Riemann spectrum from first principles. \textbf{The model lacks genuine predictive or extrapolative power.}
+\end{quotebox}
+
+\noindent\textbf{Our Response:} Fully acknowledged as \textbf{principal limitation}. This is now emphasized throughout: the Abstract, \S4.2.3 ``Out-of-Sample Validation and Multi-Seed Robustness'' (dedicated subsection), \S6.2 ``Limitations'' item (1), and the closing summary of \S6. We agree this demonstrates the $1/\log^2n$ schedule is a calibrated fit, not an intrinsic dynamical invariant with predictive power.
+
+\subsection*{Comment 9: Ion-trap co-location not significant}
+
+\noindent\textbf{Reviewer's Comment:}
+\begin{quotebox}
+\itshape The author draws parallels between numerical residual spikes near $N \approx 20, 40, 76$ and experimental decoherence error peaks reported in trapped-ion Floquet quantum simulations (USTC experiment). A permutation test yields $p = 0.099$ (not statistically significant at the standard $\alpha = 0.05$ threshold). Because numerical discretization/truncation errors and physical quantum decoherence arise from distinct physical mechanisms, \textbf{framing this qualitative co-location as a potential shared limit risks overinterpreting unselected numerical artifacts.}
+\end{quotebox}
+
+\noindent\textbf{Our Response:} Fully acknowledged. \S4.1.5 ``Statistical Significance of the USTC Coincidence'' now states upfront that $p=0.099$, not statistically significant at $\alpha=0.05$. Speculation about a shared underlying mechanism has been reduced by $\sim$60\%, and the text now explicitly notes that numerical discretization/truncation errors and physical quantum decoherence arise from distinct mechanisms. This non-significance is repeated in \S6.2 ``Limitations'' as one of the principal limitations of the study.
+
+\section*{References Verification}
+
+All 43 cited references have been verified as accurate and accessible:
+\begin{itemize}
+\item \textbf{yakaboylu2024}: DOI 10.1088/1751-8121/ad4c2d
+\item \textbf{he2020}: DOI 10.1103/PhysRevA.101.043402
+\item \textbf{he2021}: DOI 10.1038/s41534-021-00446-7
+\item \textbf{eckstein2024}: DOI 10.1038/s41534-024-00866-1
+\item \textbf{orellana2025}: arXiv:2512.09960
+\item \textbf{wang2026} (author's prior work): DOI 10.1080/27684830.2026.2684334
+\end{itemize}
+No hallucinated or inaccessible references.
+
+\section*{Closing Statement}
+
+We believe the revised manuscript now presents an honest, transparent, and appropriately scoped exploratory study. The new Conclusions section makes clear what the model achieves and what it does not. The manuscript is shorter, more focused, and free of imprecise language. We are grateful for the reviewer's thorough and constructive guidance.
+
+\vspace{0.5cm}
+\noindent Sincerely,
+
+\noindent \textbf{Liang Wang}\\
+Huazhong University of Science and Technology
+
+\end{document}
